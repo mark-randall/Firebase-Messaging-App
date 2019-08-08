@@ -16,6 +16,22 @@ import UserNotifications
 import Fabric
 import Crashlytics
 
+
+// MARK: - Firestore
+
+extension Firestore {
+    
+    static let defaultStore: Firestore = {
+        let db = Firestore.firestore()
+        let settings = db.settings
+        db.settings = settings
+        return db
+    }()
+}
+
+
+// MARK: - AppDelegate
+
 @UIApplicationMain
 class AppDelegate: UIResponder {
 
@@ -42,12 +58,11 @@ extension AppDelegate: UIApplicationDelegate {
         authUI?.delegate = self
         authUI?.providers = [FUIGoogleAuth(), FUIEmailAuth()]
         
-        // Setup crash reporting
+        // Configure crash reporting
         Fabric.with([Crashlytics.self])
         
         // Configure Google Sign in
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-
         
         // Configure APNs
         Messaging.messaging().delegate = self
@@ -95,7 +110,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler(UIBackgroundFetchResult.newData)
     }
 }
-
 
 // MARK: - FUIAuthDelegate
 

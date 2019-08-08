@@ -16,6 +16,8 @@
 		02A7759A22FC446A000CB7CE /* MessagingPOCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7759922FC446A000CB7CE /* MessagingPOCUITests.swift */; };
 		02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A775A922FC44AA000CB7CE /* ConversationViewController.swift */; };
 		02A775AC22FC4ACD000CB7CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */; };
+		02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */; };
+		02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */; };
 		CF23C00F80B81958B4C3E1D0 /* Pods_MessagingPOCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D88D96110AC5802B4197315 /* Pods_MessagingPOCTests.framework */; };
 		FA364E07A050E508ABA60808 /* Pods_MessagingPOC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E332243A0CADF71F98FBCF0C /* Pods_MessagingPOC.framework */; };
 /* End PBXBuildFile section */
@@ -53,6 +55,8 @@
 		02A7759B22FC446A000CB7CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02A775A922FC44AA000CB7CE /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+SafeIndex.swift"; sourceTree = "<group>"; };
+		02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
 		0E89D3BC23C6C088EC5F66D1 /* Pods-MessagingPOCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessagingPOCTests/Pods-MessagingPOCTests.release.xcconfig"; sourceTree = "<group>"; };
 		1D1529BFE76B4F3B0528AACE /* Pods-MessagingPOCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOCTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MessagingPOCTests/Pods-MessagingPOCTests.debug.xcconfig"; sourceTree = "<group>"; };
 		59481075CD4D3AA93563A311 /* Pods-MessagingPOC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOC.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC.release.xcconfig"; sourceTree = "<group>"; };
@@ -115,6 +119,7 @@
 			children = (
 				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,
 				02A775A722FC4470000CB7CE /* UI */,
+				02A775AD22FCAE30000CB7CE /* Common */,
 				02A7757922FC4469000CB7CE /* AppDelegate.swift */,
 				02A7757D22FC4469000CB7CE /* Main.storyboard */,
 				02A7758022FC446A000CB7CE /* Assets.xcassets */,
@@ -149,6 +154,15 @@
 				02A775A922FC44AA000CB7CE /* ConversationViewController.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		02A775AD22FCAE30000CB7CE /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */,
+				02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		3F50C7C207F2838AE7884B71 /* Pods */ = {
@@ -423,6 +437,8 @@
 				02A7757C22FC4469000CB7CE /* ConversationsViewController.swift in Sources */,
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
 				02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */,
+				02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */,
+				02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
