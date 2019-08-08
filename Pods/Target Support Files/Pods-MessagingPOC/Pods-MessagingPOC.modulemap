@@ -1,0 +1,6 @@
+framework module Pods_MessagingPOC {
+  umbrella header "Pods-MessagingPOC-umbrella.h"
+
+  export *
+  module * { export * }
+}
