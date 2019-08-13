@@ -56,6 +56,8 @@ final class ConversationsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.tableFooterView = UIView()
+        
         conversationsSubscription = Firestore.defaultStore
             .collection("/users/\(userId)/conversations")
             .whereField("is_blocked", isEqualTo: false)
@@ -114,6 +116,21 @@ final class ConversationsViewController: UITableViewController {
         
         vc.conversationId = conversation.id
         show(vc, sender: self)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if
+            editingStyle == .delete,
+            let conversation = conversations[safe: indexPath.row]
+        {
+            Firestore.defaultStore.collection("users/\(userId)/conversations").document(conversation.id).updateData(["is_deleted": true]) { error in
+                
+                if let error = error {
+                    print(error)
+                }
+            }
+        }
     }
 }
 
