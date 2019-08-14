@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02A5E6E7230383860087EDBA /* Coordination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E6230383860087EDBA /* Coordination.swift */; };
+		02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E9230384220087EDBA /* RootCoordinator.swift */; };
+		02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6EC2303848B0087EDBA /* AppFlows.swift */; };
+		02A5E6EF23038BA10087EDBA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6EE23038BA10087EDBA /* WelcomeViewController.swift */; };
+		02A5E6F123038C830087EDBA /* ConversationsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6F023038C830087EDBA /* ConversationsCoordinator.swift */; };
+		02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6F2230393850087EDBA /* SignInCoordinator.swift */; };
 		02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7757922FC4469000CB7CE /* AppDelegate.swift */; };
 		02A7757C22FC4469000CB7CE /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7757B22FC4469000CB7CE /* ConversationsViewController.swift */; };
 		02A7757F22FC4469000CB7CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02A7757D22FC4469000CB7CE /* Main.storyboard */; };
@@ -40,6 +46,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		02A5E6E6230383860087EDBA /* Coordination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordination.swift; sourceTree = "<group>"; };
+		02A5E6E9230384220087EDBA /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
+		02A5E6EC2303848B0087EDBA /* AppFlows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlows.swift; sourceTree = "<group>"; };
+		02A5E6EE23038BA10087EDBA /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		02A5E6F023038C830087EDBA /* ConversationsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsCoordinator.swift; sourceTree = "<group>"; };
+		02A5E6F2230393850087EDBA /* SignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinator.swift; sourceTree = "<group>"; };
 		02A7757622FC4469000CB7CE /* MessagingPOC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MessagingPOC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A7757922FC4469000CB7CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02A7757B22FC4469000CB7CE /* ConversationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +104,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02A5E6E82303840D0087EDBA /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				02A5E6EC2303848B0087EDBA /* AppFlows.swift */,
+				02A5E6E6230383860087EDBA /* Coordination.swift */,
+				02A5E6E9230384220087EDBA /* RootCoordinator.swift */,
+				02A5E6F023038C830087EDBA /* ConversationsCoordinator.swift */,
+				02A5E6F2230393850087EDBA /* SignInCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		02A7756D22FC4469000CB7CE = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +141,7 @@
 		02A7757822FC4469000CB7CE /* MessagingPOC */ = {
 			isa = PBXGroup;
 			children = (
+				02A5E6E82303840D0087EDBA /* Coordinator */,
 				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,
 				02A775A722FC4470000CB7CE /* UI */,
 				02A775AD22FCAE30000CB7CE /* Common */,
@@ -152,6 +177,7 @@
 			children = (
 				02A7757B22FC4469000CB7CE /* ConversationsViewController.swift */,
 				02A775A922FC44AA000CB7CE /* ConversationViewController.swift */,
+				02A5E6EE23038BA10087EDBA /* WelcomeViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -434,11 +460,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02A5E6EF23038BA10087EDBA /* WelcomeViewController.swift in Sources */,
+				02A5E6F123038C830087EDBA /* ConversationsCoordinator.swift in Sources */,
+				02A5E6E7230383860087EDBA /* Coordination.swift in Sources */,
 				02A7757C22FC4469000CB7CE /* ConversationsViewController.swift in Sources */,
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
 				02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */,
 				02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */,
+				02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */,
+				02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */,
 				02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */,
+				02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

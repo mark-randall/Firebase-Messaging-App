@@ -8,6 +8,8 @@
 
 import UIKit
 import FirebaseFirestore
+import os.log
+import Crashlytics
 
 // MARK: - Message
 
@@ -43,6 +45,8 @@ private struct Message: Equatable {
 
 final class ConversationViewController: UITableViewController {
     
+    private let log = OSLog(subsystem: "com.messaging", category: "conversation")
+    
     // TODO: user real id
     private let userId: String = "123"
     
@@ -62,6 +66,8 @@ final class ConversationViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.tableFooterView = UIView()
+        
         guard let conversationId = self.conversationId else {
             preconditionFailure("conversationId must be set before being presented")
         }
@@ -74,12 +80,15 @@ final class ConversationViewController: UITableViewController {
             .order(by: "time", descending: true)
             .addSnapshotListener { [weak self] documentSnapshot, error in
                 
+                guard let self = self else { return }
+                
                 if let error = error {
-                    print(error)
-                    // TODO: Handle error
+                    os_log("error fetching conversation messages", log: self.log, type: .error)
+                    Crashlytics.sharedInstance().recordError(error)
+                    //TODO: Handle error
                 } else if let documentSnapshot = documentSnapshot{
                     
-                    self?.messages = documentSnapshot.documents.compactMap {
+                    self.messages = documentSnapshot.documents.compactMap {
                         Message(snapshot: $0)
                     }
                 }
@@ -114,9 +123,15 @@ final class ConversationViewController: UITableViewController {
         
         guard let message = messages[safe: indexPath.row] else { return }
         
-        Firestore.defaultStore.collection("users/\(userId)/messages").document(message.id).updateData(["is_read": true]) { error in
+        Firestore.defaultStore.collection("users/\(userId)/messages").document(message.id).updateData(["is_read": true]) { [weak self] error in
+            
+            guard let self = self else { return }
+            
             if let error = error {
-                print(error)
+                os_log("error marking message as read", log: self.log, type: .error)
+                Crashlytics.sharedInstance().recordError(error)
+            } else {
+                os_log("message marked as read", log: self.log, type: .info)
             }
         }
     }

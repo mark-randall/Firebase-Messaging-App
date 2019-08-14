@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import UIKit
 import Firebase
 import FirebaseMessaging
 import FirebaseUI
@@ -15,7 +14,6 @@ import GoogleSignIn
 import UserNotifications
 import Fabric
 import Crashlytics
-
 
 // MARK: - Firestore
 
@@ -29,13 +27,14 @@ extension Firestore {
     }()
 }
 
-
 // MARK: - AppDelegate
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
 
     var window: UIWindow?
+    
+    private var rootCoordinator: RootCoordinator?
 }
 
 // MARK: - UIApplicationDelegate
@@ -53,11 +52,6 @@ extension AppDelegate: UIApplicationDelegate {
         }
         FirebaseApp.configure(options: firebaseOptions)
         
-        // Configure Firebase Auth UI
-        let authUI = FUIAuth.defaultAuthUI()
-        authUI?.delegate = self
-        authUI?.providers = [FUIGoogleAuth(), FUIEmailAuth()]
-        
         // Configure crash reporting
         Fabric.with([Crashlytics.self])
         
@@ -69,7 +63,14 @@ extension AppDelegate: UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
         
+        rootCoordinator = RootCoordinator(rootViewController: window!.rootViewController!, completion: nil)
+
         return true
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        try? Auth.auth().signOut()
+        rootCoordinator?.start()
     }
 }
 
@@ -78,6 +79,7 @@ extension AppDelegate: UIApplicationDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        
         #if DEBUG
         print("FCM registration token: \(fcmToken)")
         #endif
@@ -89,6 +91,16 @@ extension AppDelegate: MessagingDelegate {
 // MARK: - UserNotifications
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        
+        let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?
+        if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
+            return true
+        }
+      
+        return false
+    }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
@@ -110,34 +122,4 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler(UIBackgroundFetchResult.newData)
     }
 }
-
-// MARK: - FUIAuthDelegate
-
-/// Used to customize the UI for Firebase Auth UI
-extension AppDelegate: FUIAuthDelegate {
-    
-    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, url: URL?, error: Error?) {
-        
-        // UserRepository handles success by listening for FirebaseAuth addStateDidChangeListener
-        // Current assumption is that this error doesn't need to be presented to the user
-        if let error = error {
-            
-            let ns = error as NSError
-            // If it's just the generic error that gets thrown when the login modal is dismissed
-            // without a login, we will ignore it.
-            guard ns.code != 1 else {
-                //AnalyticsManager.shared.logCustomEvent(event: AnalyticsManager.SignInEvent.signFlowCompleted(result: .canceled))
-                return
-            }
-            
-            //AnalyticsManager.shared.logCustomEvent(event: AnalyticsManager.SignInEvent.signFlowCompleted(result: .failed))
-            //window?.rootViewController?.getVisibleViewController().presentError(error)
-            return
-        }
-        
-        //AnalyticsManager.shared.logCustomEvent(event: AnalyticsManager.SignInEvent.signFlowCompleted(result: .successful))
-        //NotificationCenter.default.post(name: GlobalNotification.AuthWillComplete.name, object: self, userInfo: [:])
-    }
-}
-
 

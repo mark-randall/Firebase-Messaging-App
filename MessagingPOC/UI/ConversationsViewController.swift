@@ -8,6 +8,8 @@
 
 import UIKit
 import FirebaseFirestore
+import os.log
+import Crashlytics
 
 // MARK: - Conversation
 
@@ -39,6 +41,8 @@ private struct Conversation: Equatable {
 
 final class ConversationsViewController: UITableViewController {
 
+    private let log = OSLog(subsystem: "com.messaging", category: "conversations")
+    
     // TODO: user real id
     private let userId: String = "123"
     
@@ -56,6 +60,8 @@ final class ConversationsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Crashlytics.sharedInstance().setUserIdentifier(userId)
+        
         tableView.tableFooterView = UIView()
         
         conversationsSubscription = Firestore.defaultStore
@@ -65,12 +71,15 @@ final class ConversationsViewController: UITableViewController {
             .order(by: "time", descending: true)
             .addSnapshotListener { [weak self] documentSnapshot, error in
                 
+                guard let self = self else { return }
+                
                 if let error = error {
-                    print(error)
+                    os_log("error fetching conversations", log: self.log, type: .error)
+                    Crashlytics.sharedInstance().recordError(error)
                     // TODO: Handle error
                 } else if let documentSnapshot = documentSnapshot{
                     
-                    self?.conversations = documentSnapshot.documents.compactMap {
+                    self.conversations = documentSnapshot.documents.compactMap {
                         Conversation(snapshot: $0)
                     }
                 }
@@ -124,13 +133,17 @@ final class ConversationsViewController: UITableViewController {
             editingStyle == .delete,
             let conversation = conversations[safe: indexPath.row]
         {
-            Firestore.defaultStore.collection("users/\(userId)/conversations").document(conversation.id).updateData(["is_deleted": true]) { error in
+            Firestore.defaultStore.collection("users/\(userId)/conversations").document(conversation.id).updateData(["is_deleted": true]) { [weak self] error in
                 
+                guard let self = self else { return }
+
                 if let error = error {
-                    print(error)
+                    os_log("error deleting conversation", log: self.log, type: .error)
+                    Crashlytics.sharedInstance().recordError(error)
+                } else {
+                    os_log("deleted conversation", log: self.log, type: .info)
                 }
             }
         }
     }
 }
-

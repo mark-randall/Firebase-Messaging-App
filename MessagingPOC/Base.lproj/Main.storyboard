@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -52,7 +53,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2re-Eu-Clm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="355" y="-31"/>
+            <point key="canvasLocation" x="403" y="-31"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="w5X-b7-Rtm">
@@ -63,12 +64,55 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="ehf-fe-Pfs" kind="relationship" relationship="rootViewController" id="GuG-qn-QuA"/>
+                        <segue destination="gPK-3f-UX5" kind="relationship" relationship="rootViewController" id="JmK-8P-gMT"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WW8-Aa-dKK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-517" y="-31"/>
+            <point key="canvasLocation" x="-1846" y="-31"/>
+        </scene>
+        <!--Welcome View Controller-->
+        <scene sceneID="Egy-fg-ZLh">
+            <objects>
+                <viewController storyboardIdentifier="WelcomeViewController" id="4mS-W3-EFT" customClass="WelcomeViewController" customModule="MessagingPOC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GxP-nX-zyQ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xNV-pC-fDn">
+                                <rect key="frame" x="170" y="412" width="74" height="72.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTp-UL-UFt">
+                                        <rect key="frame" x="0.0" y="0.0" width="74" height="20.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JxF-W1-aHb">
+                                        <rect key="frame" x="0.0" y="28.5" width="74" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="VTL-yF-q20"/>
+                                        </constraints>
+                                        <state key="normal" title="Sign In"/>
+                                        <connections>
+                                            <action selector="signInButtonTapped" destination="4mS-W3-EFT" eventType="touchUpInside" id="23W-hi-ZbR"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xNV-pC-fDn" firstAttribute="centerY" secondItem="GxP-nX-zyQ" secondAttribute="centerY" id="ZCp-jE-HxV"/>
+                            <constraint firstItem="xNV-pC-fDn" firstAttribute="centerX" secondItem="GxP-nX-zyQ" secondAttribute="centerX" id="tRd-dg-l9M"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hJk-Wp-H1m"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iBR-x3-vNo"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0w8-gQ-Er6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-378" y="-31"/>
         </scene>
         <!--Conversation View Controller-->
         <scene sceneID="lee-Qq-ITb">
@@ -113,6 +157,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D9I-Z6-IvX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1228" y="-31"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="yw7-pp-Zu5">
+            <objects>
+                <viewController id="gPK-3f-UX5" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zkA-tF-JV7">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="RNt-h6-1K7"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="oFe-mp-5qJ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T2x-Jz-WeX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1846" y="701"/>
         </scene>
     </scenes>
 </document>
