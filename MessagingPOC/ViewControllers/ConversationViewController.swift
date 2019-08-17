@@ -43,7 +43,11 @@ private struct Message: Equatable {
 
 // MARK: - ConversationViewController
 
-final class ConversationViewController: UITableViewController {
+final class ConversationViewController: UITableViewController, Controller {
+    
+    weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
+    
+    var firestore: Firestore!
     
     private let log = OSLog(subsystem: "com.messaging", category: "conversation")
     
@@ -72,7 +76,7 @@ final class ConversationViewController: UITableViewController {
             preconditionFailure("conversationId must be set before being presented")
         }
         
-        conversationSubscription = Firestore.defaultStore
+        conversationSubscription = firestore
             .collection("/users/\(userId)/messages")
             .whereField("conversation_id", isEqualTo: conversationId)
             .whereField("is_blocked", isEqualTo: false)
@@ -123,7 +127,7 @@ final class ConversationViewController: UITableViewController {
         
         guard let message = messages[safe: indexPath.row] else { return }
         
-        Firestore.defaultStore.collection("users/\(userId)/messages").document(message.id).updateData(["is_read": true]) { [weak self] error in
+        firestore.collection("users/\(userId)/messages").document(message.id).updateData(["is_read": true]) { [weak self] error in
             
             guard let self = self else { return }
             

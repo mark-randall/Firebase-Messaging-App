@@ -6,17 +6,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MessagingPOC/Coordinator/SignInCoordinator.swift"
-            timestampString = "587480213.295603"
+            filePath = "MessagingPOC/Coordinators/RootCoordinator.swift"
+            timestampString = "587763192.2777359"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "createViewController(forAction:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MessagingPOC.RootCoordinator.createViewController(forAction: MessagingPOC.RootAction) throws -&gt; __C.UIViewController"
+                  moduleName = "MessagingPOC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mrandall/Development/MessagingPOC/MessagingPOC/Coordinators/RootCoordinator.swift"
+                  timestampString = "587763168.749474"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "147">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MessagingPOC.RootCoordinator.createViewController(forAction: MessagingPOC.RootAction) throws -&gt; __C.UIViewController"
+                  moduleName = "MessagingPOC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mrandall/Development/MessagingPOC/MessagingPOC/Coordinators/RootCoordinator.swift"
+                  timestampString = "587763168.752162"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "788">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

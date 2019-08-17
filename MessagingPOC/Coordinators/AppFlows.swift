@@ -10,12 +10,18 @@ import Foundation
 
 // MARK: - Flows
 
-enum ApplicationFlow: Flow {
+enum MessagingApplicationFlow: Flow {
     case root
     case conversations
     case signIn
 }
 
 enum RootAction: Action {
+    case root
     case signIn
+}
+
+enum ConversationAction: Action {
+    case root
+    case showConversation(id: String)
 }

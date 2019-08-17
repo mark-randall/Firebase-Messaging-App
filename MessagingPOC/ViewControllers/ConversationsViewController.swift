@@ -39,8 +39,12 @@ private struct Conversation: Equatable {
 
 // MARK: - ConversationsViewController
 
-final class ConversationsViewController: UITableViewController {
+final class ConversationsViewController: UITableViewController, Controller {
 
+    weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
+
+    var firestore: Firestore!
+    
     private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
     // TODO: user real id
@@ -64,7 +68,7 @@ final class ConversationsViewController: UITableViewController {
         
         tableView.tableFooterView = UIView()
         
-        conversationsSubscription = Firestore.defaultStore
+        conversationsSubscription = firestore
             .collection("/users/\(userId)/conversations")
             .whereField("is_blocked", isEqualTo: false)
             .whereField("is_deleted", isEqualTo: false)
@@ -118,13 +122,8 @@ final class ConversationsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard
-            let conversation = conversations[safe: indexPath.row],
-            let vc: ConversationViewController = try? UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
-            else { return }
-        
-        vc.conversationId = conversation.id
-        show(vc, sender: self)
+        guard let conversation = conversations[safe: indexPath.row] else { return }
+        coordinatorActionHandler?.perform(.showConversation(id: conversation.id))
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -133,7 +132,7 @@ final class ConversationsViewController: UITableViewController {
             editingStyle == .delete,
             let conversation = conversations[safe: indexPath.row]
         {
-            Firestore.defaultStore.collection("users/\(userId)/conversations").document(conversation.id).updateData(["is_deleted": true]) { [weak self] error in
+            firestore.collection("users/\(userId)/conversations").document(conversation.id).updateData(["is_deleted": true]) { [weak self] error in
                 
                 guard let self = self else { return }
 

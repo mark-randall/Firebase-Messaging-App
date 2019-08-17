@@ -15,18 +15,6 @@ import UserNotifications
 import Fabric
 import Crashlytics
 
-// MARK: - Firestore
-
-extension Firestore {
-    
-    static let defaultStore: Firestore = {
-        let db = Firestore.firestore()
-        let settings = db.settings
-        db.settings = settings
-        return db
-    }()
-}
-
 // MARK: - AppDelegate
 
 @UIApplicationMain
@@ -63,14 +51,16 @@ extension AppDelegate: UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
         
-        rootCoordinator = RootCoordinator(rootViewController: window!.rootViewController!, completion: nil)
+        try? Auth.auth().signOut()
+        rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window?.rootViewController)
+        rootCoordinator?.start()
 
         return true
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        try? Auth.auth().signOut()
-        rootCoordinator?.start()
+        
+        
     }
 }
 

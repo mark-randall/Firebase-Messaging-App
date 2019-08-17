@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0297A7792308734200A4C763 /* BaseCoordinator.swift */; };
 		02A5E6E7230383860087EDBA /* Coordination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E6230383860087EDBA /* Coordination.swift */; };
 		02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E9230384220087EDBA /* RootCoordinator.swift */; };
 		02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6EC2303848B0087EDBA /* AppFlows.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0297A7792308734200A4C763 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		02A5E6E6230383860087EDBA /* Coordination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordination.swift; sourceTree = "<group>"; };
 		02A5E6E9230384220087EDBA /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		02A5E6EC2303848B0087EDBA /* AppFlows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlows.swift; sourceTree = "<group>"; };
@@ -104,16 +106,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		02A5E6E82303840D0087EDBA /* Coordinator */ = {
+		02A5E6E82303840D0087EDBA /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
 				02A5E6EC2303848B0087EDBA /* AppFlows.swift */,
 				02A5E6E6230383860087EDBA /* Coordination.swift */,
+				0297A7792308734200A4C763 /* BaseCoordinator.swift */,
 				02A5E6E9230384220087EDBA /* RootCoordinator.swift */,
-				02A5E6F023038C830087EDBA /* ConversationsCoordinator.swift */,
 				02A5E6F2230393850087EDBA /* SignInCoordinator.swift */,
+				02A5E6F023038C830087EDBA /* ConversationsCoordinator.swift */,
 			);
-			path = Coordinator;
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		02A7756D22FC4469000CB7CE = {
@@ -141,10 +144,10 @@
 		02A7757822FC4469000CB7CE /* MessagingPOC */ = {
 			isa = PBXGroup;
 			children = (
-				02A5E6E82303840D0087EDBA /* Coordinator */,
-				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,
-				02A775A722FC4470000CB7CE /* UI */,
+				02A5E6E82303840D0087EDBA /* Coordinators */,
+				02A775A722FC4470000CB7CE /* ViewControllers */,
 				02A775AD22FCAE30000CB7CE /* Common */,
+				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,
 				02A7757922FC4469000CB7CE /* AppDelegate.swift */,
 				02A7757D22FC4469000CB7CE /* Main.storyboard */,
 				02A7758022FC446A000CB7CE /* Assets.xcassets */,
@@ -172,14 +175,14 @@
 			path = MessagingPOCUITests;
 			sourceTree = "<group>";
 		};
-		02A775A722FC4470000CB7CE /* UI */ = {
+		02A775A722FC4470000CB7CE /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				02A7757B22FC4469000CB7CE /* ConversationsViewController.swift */,
 				02A775A922FC44AA000CB7CE /* ConversationViewController.swift */,
 				02A5E6EE23038BA10087EDBA /* WelcomeViewController.swift */,
 			);
-			path = UI;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		02A775AD22FCAE30000CB7CE /* Common */ = {
@@ -467,6 +470,7 @@
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
 				02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */,
 				02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */,
+				0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */,
 				02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */,
 				02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */,
 				02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */,
