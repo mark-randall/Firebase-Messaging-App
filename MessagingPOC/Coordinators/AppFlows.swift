@@ -25,4 +25,7 @@ enum RootAction: Action {
 
 enum ConversationAction: Action {
     case showConversation(id: String)
+    case presentProfile
+    case dismissProfile
+    case logout
 }

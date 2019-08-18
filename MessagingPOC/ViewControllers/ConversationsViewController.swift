@@ -39,17 +39,22 @@ private struct Conversation: Equatable {
 
 // MARK: - ConversationsViewController
 
-final class ConversationsViewController: UITableViewController, Controller {
+final class ConversationsViewController: UITableViewController, CoordinatorController {
 
+    // MARK: - CoordinatorController
+    
     weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
 
+    // MARK: - Dependencies
+    
     var firestore: Firestore!
     
     private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
+    // MARK: - State
+    
     // TODO: user real id
     private let userId: String = "123"
-    
     private var conversationsSubscription: ListenerRegistration?
     
     private var conversations: [Conversation] = [] {
@@ -59,6 +64,14 @@ final class ConversationsViewController: UITableViewController, Controller {
         }
     }
     
+    // MARK: - Subviews
+    
+    // TODO: why doesn't this work
+    private lazy var profileButtton: UIBarButtonItem? = { [weak self] in
+        guard let self = self else { return nil }
+        return UIBarButtonItem(title: "Profile", style: .plain, target: self, action: #selector(profileButtonTapped))
+    }()
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -66,8 +79,12 @@ final class ConversationsViewController: UITableViewController, Controller {
         
         Crashlytics.sharedInstance().setUserIdentifier(userId)
         
+        // Configure subviews
         tableView.tableFooterView = UIView()
+        navigationItem.rightBarButtonItem = profileButtton
+        title = "Conversations"
         
+        // Fetch data
         conversationsSubscription = firestore
             .collection("/users/\(userId)/conversations")
             .whereField("is_blocked", isEqualTo: false)
@@ -93,6 +110,12 @@ final class ConversationsViewController: UITableViewController, Controller {
     deinit {
         conversationsSubscription?.remove()
         conversationsSubscription = nil
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction private func profileButtonTapped() {
+        try? coordinatorActionHandler?.perform(.presentProfile)
     }
     
     // MARK: - UITableViewControllerDataSource

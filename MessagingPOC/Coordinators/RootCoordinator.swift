@@ -21,13 +21,17 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         return db
     }()
     
+    private lazy var auth: Auth = {
+       return Auth.auth()
+    }()
+    
     // MARK: - Coordinator overrides
     
     override func start(presentingViewController: UIViewController?) throws {
         
         rootViewController.view.backgroundColor = .white
         
-        if Auth.auth().currentUser != nil {
+        if auth.currentUser != nil {
             try presentFlow(.conversations)
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
@@ -50,9 +54,9 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
             (rootViewController as? UINavigationController)?.viewControllers = []
             return SignInCoordinator(flow: flow, presentingViewController: rootViewController)
         case .conversations:
-            return ConversationsCoordinator(flow: flow, presentingViewController: rootViewController, firestore: firestore)
+            return ConversationsCoordinator(flow: flow, presentingViewController: rootViewController, firestore: firestore, auth: auth)
         case .root:
-            preconditionFailure("")
+            return try super.createCoordinator(forFlow: flow)
         }
     }
 
@@ -60,6 +64,8 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         switch flow {
         case .signIn:
+            try? start(presentingViewController: nil)
+        case .conversations:
             try? start(presentingViewController: nil)
         default:
             super.flowCompleted(flow, result: result)

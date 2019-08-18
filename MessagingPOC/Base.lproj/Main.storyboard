@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Conversations View Controller-->
         <scene sceneID="q2y-Lb-VBD">
             <objects>
-                <tableViewController storyboardIdentifier="ConversationsViewController" id="ehf-fe-Pfs" customClass="ConversationsViewController" customModule="MessagingPOC" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ConversationsViewController" id="ehf-fe-Pfs" userLabel="Conversations View Controller" customClass="ConversationsViewController" customModule="MessagingPOC" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nEx-0P-Mga">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -49,7 +49,13 @@
                             <outlet property="delegate" destination="ehf-fe-Pfs" id="hxr-YA-4c3"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="C5t-5S-Q3D"/>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="C5t-5S-Q3D">
+                        <barButtonItem key="rightBarButtonItem" title="Profile" id="Saw-pD-Y2j">
+                            <connections>
+                                <action selector="profileButtonTapped" destination="ehf-fe-Pfs" id="B8D-l8-gMH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2re-Eu-Clm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -58,18 +64,15 @@
         <!--Navigation Controller-->
         <scene sceneID="w5X-b7-Rtm">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WW8-Aa-dKK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="8lM-1r-Vcs" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="egz-wL-owG">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <connections>
-                        <segue destination="gPK-3f-UX5" kind="relationship" relationship="rootViewController" id="JmK-8P-gMT"/>
-                    </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WW8-Aa-dKK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1846" y="-31"/>
+            <point key="canvasLocation" x="-1425" y="-31"/>
         </scene>
         <!--Welcome View Controller-->
         <scene sceneID="Egy-fg-ZLh">
@@ -158,21 +161,56 @@
             </objects>
             <point key="canvasLocation" x="1228" y="-31"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="yw7-pp-Zu5">
+        <!--Profile View Controller-->
+        <scene sceneID="KtX-MB-fb2">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="T2x-Jz-WeX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="gPK-3f-UX5" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zkA-tF-JV7">
+                <viewController storyboardIdentifier="ProfileViewController" id="lrU-wz-6mR" customClass="ProfileViewController" customModule="MessagingPOC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IsB-hx-ujR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hji-Bg-CFp">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Ev0-wa-RWO">
+                                        <rect key="frame" x="16" y="16" width="382" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q21-jJ-6BA">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="gXC-QM-5dg"/>
+                                                </constraints>
+                                                <state key="normal" title="Logout"/>
+                                                <connections>
+                                                    <action selector="logoutButtonTapped" destination="lrU-wz-6mR" eventType="touchUpInside" id="xLl-Hn-FuX"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Ev0-wa-RWO" secondAttribute="trailing" constant="16" id="28o-w2-ibs"/>
+                                    <constraint firstItem="Ev0-wa-RWO" firstAttribute="top" secondItem="Hji-Bg-CFp" secondAttribute="top" constant="16" id="4pj-WT-SV2"/>
+                                    <constraint firstItem="Ev0-wa-RWO" firstAttribute="leading" secondItem="Hji-Bg-CFp" secondAttribute="leading" constant="16" id="kn6-J7-8lu"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ev0-wa-RWO" secondAttribute="bottom" constant="16" id="m5U-Wm-35z"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="RNt-h6-1K7"/>
+                        <constraints>
+                            <constraint firstItem="djF-g4-SNr" firstAttribute="bottom" secondItem="Hji-Bg-CFp" secondAttribute="bottom" id="C4n-pL-FIa"/>
+                            <constraint firstItem="Ev0-wa-RWO" firstAttribute="width" secondItem="IsB-hx-ujR" secondAttribute="width" constant="-32" id="Gri-PN-P87"/>
+                            <constraint firstItem="Hji-Bg-CFp" firstAttribute="leading" secondItem="djF-g4-SNr" secondAttribute="leading" id="aY4-Md-9Bp"/>
+                            <constraint firstItem="djF-g4-SNr" firstAttribute="trailing" secondItem="Hji-Bg-CFp" secondAttribute="trailing" id="cxT-ic-f8Q"/>
+                            <constraint firstItem="Hji-Bg-CFp" firstAttribute="top" secondItem="djF-g4-SNr" secondAttribute="top" id="kHc-Fb-p95"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="djF-g4-SNr"/>
                     </view>
-                    <navigationItem key="navigationItem" id="oFe-mp-5qJ"/>
+                    <navigationItem key="navigationItem" id="QmF-Jb-jXI"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hil-ls-G2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1846" y="701"/>
+            <point key="canvasLocation" x="2039" y="-31"/>
         </scene>
     </scenes>
 </document>

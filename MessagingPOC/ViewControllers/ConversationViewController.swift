@@ -43,17 +43,22 @@ private struct Message: Equatable {
 
 // MARK: - ConversationViewController
 
-final class ConversationViewController: UITableViewController, Controller {
+final class ConversationViewController: UITableViewController, CoordinatorController {
+    
+    // MARK: - CoordinatorController
     
     weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
+    
+    // MARK: - Dependencies
     
     var firestore: Firestore!
     
     private let log = OSLog(subsystem: "com.messaging", category: "conversation")
     
+    // MARK: - State
+    
     // TODO: user real id
     private let userId: String = "123"
-    
     var conversationId: String?
     
     private var conversationSubscription: ListenerRegistration?
@@ -133,9 +138,5 @@ final class ConversationViewController: UITableViewController, Controller {
                 os_log("message marked as read", log: self.log, type: .info)
             }
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
     }
 }

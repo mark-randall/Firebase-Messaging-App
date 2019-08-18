@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - Results
+// MARK: - FlowResult
 
 enum FlowResult {
     case success

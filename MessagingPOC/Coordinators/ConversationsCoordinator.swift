@@ -8,18 +8,25 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow, ConversationAction> {
     
     // MARK: - Dependencies
     
     private let firestore: Firestore
+    private let auth: Auth
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController, firestore: Firestore) {
+    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController, firestore: Firestore, auth: Auth) {
         self.firestore = firestore
+        self.auth = auth
         super.init(flow: flow, presentingViewController: presentingViewController)
+    }
+    
+    deinit {
+        print("here")
     }
     
     override func createRootViewController() -> UIViewController? {
@@ -49,6 +56,19 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             } else {
                 nc.pushViewController(vc, animated: true)
             }
+        case .presentProfile:
+            let vc = try createViewController(forAction: action)
+            let nc = UINavigationController(rootViewController: vc)
+            guard let presentingNc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            presentingNc.present(nc, animated: true, completion: nil)
+        case .dismissProfile:
+            guard let nc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            nc.dismiss(animated: true, completion: nil)
+        case .logout:
+            try auth.signOut()
+            complete(withResult: .success)
+            try perform(.dismissProfile)
+            
         }
     }
     
@@ -61,6 +81,12 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             vc.coordinatorActionHandler = actionHandler
             vc.firestore = firestore
             return vc
+        case .presentProfile:
+            let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
+            vc.coordinatorActionHandler = actionHandler
+            return vc
+        default:
+            return try super.createViewController(forAction: action)
         }
     }
 }

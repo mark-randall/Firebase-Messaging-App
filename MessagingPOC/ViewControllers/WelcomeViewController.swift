@@ -8,7 +8,9 @@
 
 import UIKit
 
-final class WelcomeViewController: UIViewController, Controller {
+final class WelcomeViewController: UIViewController, CoordinatorController {
+    
+    // MARK: - CoordinatorController
     
     weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, RootAction>?
     
@@ -17,7 +19,6 @@ final class WelcomeViewController: UIViewController, Controller {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
     
     // MARK: - Actions
     

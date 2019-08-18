@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283ACA2230994DB0010E7CD /* BaseCoordinatorWithActions.swift */; };
+		0283ACA52309955F0010E7CD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283ACA42309955F0010E7CD /* ProfileViewController.swift */; };
 		0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0297A7792308734200A4C763 /* BaseCoordinator.swift */; };
 		02A5E6E7230383860087EDBA /* Coordination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E6230383860087EDBA /* Coordination.swift */; };
 		02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E9230384220087EDBA /* RootCoordinator.swift */; };
@@ -47,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0283ACA2230994DB0010E7CD /* BaseCoordinatorWithActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinatorWithActions.swift; sourceTree = "<group>"; };
+		0283ACA42309955F0010E7CD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0297A7792308734200A4C763 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		02A5E6E6230383860087EDBA /* Coordination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordination.swift; sourceTree = "<group>"; };
 		02A5E6E9230384220087EDBA /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -109,8 +113,9 @@
 		0297A77B23088EE800A4C763 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				0297A7792308734200A4C763 /* BaseCoordinator.swift */,
 				02A5E6E6230383860087EDBA /* Coordination.swift */,
+				0297A7792308734200A4C763 /* BaseCoordinator.swift */,
+				0283ACA2230994DB0010E7CD /* BaseCoordinatorWithActions.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 				02A7757B22FC4469000CB7CE /* ConversationsViewController.swift */,
 				02A775A922FC44AA000CB7CE /* ConversationViewController.swift */,
 				02A5E6EE23038BA10087EDBA /* WelcomeViewController.swift */,
+				0283ACA42309955F0010E7CD /* ProfileViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -475,6 +481,8 @@
 				02A5E6F123038C830087EDBA /* ConversationsCoordinator.swift in Sources */,
 				02A5E6E7230383860087EDBA /* Coordination.swift in Sources */,
 				02A7757C22FC4469000CB7CE /* ConversationsViewController.swift in Sources */,
+				0283ACA52309955F0010E7CD /* ProfileViewController.swift in Sources */,
+				0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */,
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
 				02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */,
 				02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */,

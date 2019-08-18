@@ -8,53 +8,6 @@
 
 import UIKit
 
-// MARK: - Controller
-
-protocol Controller {
- 
-    associatedtype T: Flow
-    associatedtype U: Action
-    
-    var coordinatorActionHandler: ActionHandler<T, U>? { get set }
-}
-
-// MARK: - ActionHandler
-
-class ActionHandler<T: Flow, U: Action> {
-
-    private weak var coordinator: BaseCoordinatorWithActions<T,U>?
-
-    func setCoordinator(_ coordinator: BaseCoordinatorWithActions<T,U>) {
-        self.coordinator = coordinator
-    }
-
-    func perform(_ action: U) throws {
-        guard let coordinator = coordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
-        return try coordinator.perform(action)
-    }
-}
-
-// MARK: - BaseCoordinatorWithActions
-
-class BaseCoordinatorWithActions<T: Flow, U: Action>: BaseCoordinator<T> {
-    
-    let actionHandler: ActionHandler<T, U>
-    
-    override init(flow: T, presentingViewController: UIViewController) {
-        actionHandler = ActionHandler()
-        super.init(flow: flow, presentingViewController: presentingViewController)
-        actionHandler.setCoordinator(self)
-    }
-    
-    func perform(_ action: U) throws {
-        throw CoordinatorError.actionNotHandled
-    }
-    
-    func createViewController(forAction action: U) throws -> UIViewController {
-        throw CoordinatorError.actionNotHandled
-    }
-}
-
 // MARK: - BaseCoordinator
 
 class BaseCoordinator<T: Flow>: NSObject {
@@ -62,7 +15,7 @@ class BaseCoordinator<T: Flow>: NSObject {
     var flow: T
     var childFlow: T?
     
-    lazy var rootViewController: UIViewController = { [weak self] in return self?.createRootViewController() ?? UINavigationController() }()
+    lazy var rootViewController: UIViewController = { [weak self] in return self?.createRootViewController() ?? self?.presentingViewController ?? UINavigationController() }()
     private(set) weak var presentingViewController: UIViewController?
     
     private(set) var childCoordinator: BaseCoordinator<T>?
@@ -75,16 +28,18 @@ class BaseCoordinator<T: Flow>: NSObject {
     }
     
     func createRootViewController() -> UIViewController? {
-        return UINavigationController()
+        return presentingViewController
     }
     
     func start(presentingViewController: UIViewController?) throws {
     }
     
     func complete(withResult result: FlowResult) {
-        parentCoordinator?.flowCompleted(flow, result: result)
+        
+        // Nil childCoordinator before calling flowCompleted because flowCompleted may set childCoordinator if a new coordinator is created
         parentCoordinator?.childCoordinator = nil
         childFlow = nil
+        parentCoordinator?.flowCompleted(flow, result: result)
     }
     
     // MARK: - Flows
