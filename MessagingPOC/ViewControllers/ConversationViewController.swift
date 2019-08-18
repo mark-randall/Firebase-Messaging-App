@@ -72,9 +72,7 @@ final class ConversationViewController: UITableViewController, Controller {
         
         tableView.tableFooterView = UIView()
         
-        guard let conversationId = self.conversationId else {
-            preconditionFailure("conversationId must be set before being presented")
-        }
+        guard let conversationId = self.conversationId else { preconditionFailure("conversationId must be set before being presented") }
         
         conversationSubscription = firestore
             .collection("/users/\(userId)/messages")
@@ -91,10 +89,7 @@ final class ConversationViewController: UITableViewController, Controller {
                     Crashlytics.sharedInstance().recordError(error)
                     //TODO: Handle error
                 } else if let documentSnapshot = documentSnapshot{
-                    
-                    self.messages = documentSnapshot.documents.compactMap {
-                        Message(snapshot: $0)
-                    }
+                    self.messages = documentSnapshot.documents.compactMap { Message(snapshot: $0) }
                 }
         }
     }

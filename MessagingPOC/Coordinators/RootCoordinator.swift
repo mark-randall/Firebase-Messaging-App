@@ -23,21 +23,22 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
     
     // MARK: - Coordinator overrides
     
-    override func start() {
+    override func start(presentingViewController: UIViewController?) throws {
         
-        rootViewController?.view.backgroundColor = .white
+        rootViewController.view.backgroundColor = .white
         
         if Auth.auth().currentUser != nil {
-            presentFlow(MessagingApplicationFlow.conversations)
+            try presentFlow(.conversations)
         } else {
-            
-            do {
-                let vc = try createViewController(forAction: .root)
-                (rootViewController as? UINavigationController)?.viewControllers = [vc]
-            } catch {
-                complete(withResult: .error(error: error))
-            }
+            guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
+            vc.coordinatorActionHandler = actionHandler
+            nc.viewControllers = [vc]
         }
+    }
+    
+    override func createRootViewController() -> UIViewController? {
+        return presentingViewController
     }
     
     // MARK: - Coordinator flow overrides
@@ -59,33 +60,23 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         switch flow {
         case .signIn:
-            start()
-        default: break
+            try? start(presentingViewController: nil)
+        default:
+            super.flowCompleted(flow, result: result)
         }
     }
     
     // MARK: - Coordinator action overrides
     
-    override func perform(_ action: RootAction) -> ActionResult {
+    override func perform(_ action: RootAction) throws {
 
         switch action {
-        case .signIn:
-            presentFlow(.signIn)
-            return .success
-        default:
-            return super.perform(action)
-        }
-    }
-    
-    override func createViewController(forAction action: RootAction) throws -> UIViewController {
-        
-        switch action {
-        case .root:
-            let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
-            vc.coordinatorActionHandler = actionHandler
-            return vc
-        case .signIn:
-            preconditionFailure()
+        case .presentSignIn:
+            try presentFlow(.signIn)
+        case .showConversation(let id):
+            guard childFlow == .conversations else { throw CoordinatorError.actionNotAllowed }
+            guard let conversationsCoordinator = childCoordinator as? ConversationsCoordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            try conversationsCoordinator.perform(.showConversation(id: id))
         }
     }
 }

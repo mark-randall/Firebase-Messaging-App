@@ -22,6 +22,6 @@ final class WelcomeViewController: UIViewController, Controller {
     // MARK: - Actions
     
     @IBAction private func signInButtonTapped() {
-        coordinatorActionHandler?.perform(RootAction.signIn)
+        try? coordinatorActionHandler?.perform(.presentSignIn)
     }
 }

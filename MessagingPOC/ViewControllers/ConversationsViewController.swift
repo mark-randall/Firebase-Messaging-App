@@ -27,7 +27,7 @@ private struct Conversation: Equatable {
             let hasUnreadMessages = data["has_unread_messages"] as? Bool,
             let timestamp = data["time"] as? Timestamp
             else {
-            return nil
+                return nil
         }
         
         self.id = snapshot.documentID
@@ -121,9 +121,8 @@ final class ConversationsViewController: UITableViewController, Controller {
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         guard let conversation = conversations[safe: indexPath.row] else { return }
-        coordinatorActionHandler?.perform(.showConversation(id: conversation.id))
+        try? coordinatorActionHandler?.perform(.showConversation(id: conversation.id))
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

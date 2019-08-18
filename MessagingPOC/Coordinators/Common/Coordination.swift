@@ -9,23 +9,29 @@ import UIKit
 
 // MARK: - Results
 
-enum ActionResult {
+enum FlowResult {
     case success
     case error(error: Error)
-    case actionNotAllowed
 }
 
-typealias FlowResult = ActionResult
+// MARK: - CoordinatorError
 
+enum CoordinatorError: Error {
+    case coordinatorNotPropertlyConfigured
+    case actionNotHandled
+    case actionNotAllowed
+    case flowNotHandled
+    case flowNotAllowed
+}
 
 // MARK: - Action
 
 /// Request to FlowController to update application Flow or Action with a Flow
 /// NOTE: Flows are Actions
-protocol Action {
+protocol Action: Equatable {
 }
 
 // MARK: - Flow
 
-protocol Flow {
+protocol Flow: Equatable {
 }

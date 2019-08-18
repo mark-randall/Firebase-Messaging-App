@@ -17,44 +17,44 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController? = nil, firestore: Firestore) {
+    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController, firestore: Firestore) {
         self.firestore = firestore
         super.init(flow: flow, presentingViewController: presentingViewController)
     }
     
-    override func start() {
-        
-        do {
-            let vc = try createViewController(forAction: .root)
-            (rootViewController as? UINavigationController)?.viewControllers = [vc]
-            rootViewController = vc
-        } catch {
-            complete(withResult: .error(error: error))
-        }
+    override func createRootViewController() -> UIViewController? {
+        guard let vc: ConversationsViewController = try? UIViewController.create(storyboard: "Main", identifier: "ConversationsViewController") else { return nil }
+        vc.coordinatorActionHandler = actionHandler
+        vc.firestore = firestore
+        return vc
+    }
+
+    override func start(presentingViewController: UIViewController?) throws {
+        guard let nc = presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+        nc.viewControllers = [rootViewController]
     }
     
     // MARK: - CoordinatorWithActions
     
-    override func perform(_ action: ConversationAction) -> ActionResult {
+    override func perform(_ action: ConversationAction) throws  {
         
         switch action {
         case .showConversation:
-            guard let vc = try? createViewController(forAction: action) else { preconditionFailure() }
-            rootViewController?.show(vc, sender: nil)
-            return .success
-        default:
-            return super.perform(action)
+            let vc = try createViewController(forAction: action)
+            guard let nc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            
+            if nc.topViewController is ConversationViewController {
+                nc.popViewController(animated: false)
+                nc.pushViewController(vc, animated: false)
+            } else {
+                nc.pushViewController(vc, animated: true)
+            }
         }
     }
     
     override func createViewController(forAction action: ConversationAction) throws -> UIViewController {
      
         switch action {
-        case .root:
-            let vc: ConversationsViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationsViewController")
-            vc.coordinatorActionHandler = actionHandler
-            vc.firestore = firestore
-            return vc
         case .showConversation(let id):
             let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
             vc.conversationId = id

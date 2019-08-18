@@ -106,12 +106,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0297A77B23088EE800A4C763 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				0297A7792308734200A4C763 /* BaseCoordinator.swift */,
+				02A5E6E6230383860087EDBA /* Coordination.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		02A5E6E82303840D0087EDBA /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				0297A77B23088EE800A4C763 /* Common */,
 				02A5E6EC2303848B0087EDBA /* AppFlows.swift */,
-				02A5E6E6230383860087EDBA /* Coordination.swift */,
-				0297A7792308734200A4C763 /* BaseCoordinator.swift */,
 				02A5E6E9230384220087EDBA /* RootCoordinator.swift */,
 				02A5E6F2230393850087EDBA /* SignInCoordinator.swift */,
 				02A5E6F023038C830087EDBA /* ConversationsCoordinator.swift */,

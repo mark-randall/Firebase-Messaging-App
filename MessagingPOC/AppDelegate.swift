@@ -51,9 +51,13 @@ extension AppDelegate: UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
         
-        try? Auth.auth().signOut()
-        rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window?.rootViewController)
-        rootCoordinator?.start()
+        // try? Auth.auth().signOut()
+        rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window!.rootViewController!)
+        do {
+            try rootCoordinator?.start(presentingViewController: window!.rootViewController!)
+        } catch {
+            print(error)
+        }
 
         return true
     }

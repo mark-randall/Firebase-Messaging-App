@@ -16,12 +16,13 @@ enum MessagingApplicationFlow: Flow {
     case signIn
 }
 
+// MARK: - Actions for Flows
+
 enum RootAction: Action {
-    case root
-    case signIn
+    case presentSignIn
+    case showConversation(id: String)
 }
 
 enum ConversationAction: Action {
-    case root
     case showConversation(id: String)
 }

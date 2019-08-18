@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - Controller
+
 protocol Controller {
  
     associatedtype T: Flow
@@ -15,6 +17,8 @@ protocol Controller {
     
     var coordinatorActionHandler: ActionHandler<T, U>? { get set }
 }
+
+// MARK: - ActionHandler
 
 class ActionHandler<T: Flow, U: Action> {
 
@@ -24,71 +28,77 @@ class ActionHandler<T: Flow, U: Action> {
         self.coordinator = coordinator
     }
 
-    @discardableResult
-    func perform(_ action: U) -> ActionResult {
-        return coordinator?.perform(action) ?? .actionNotAllowed
+    func perform(_ action: U) throws {
+        guard let coordinator = coordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+        return try coordinator.perform(action)
     }
 }
+
+// MARK: - BaseCoordinatorWithActions
 
 class BaseCoordinatorWithActions<T: Flow, U: Action>: BaseCoordinator<T> {
     
     let actionHandler: ActionHandler<T, U>
     
-    override init(flow: T, presentingViewController: UIViewController? = nil) {
+    override init(flow: T, presentingViewController: UIViewController) {
         actionHandler = ActionHandler()
         super.init(flow: flow, presentingViewController: presentingViewController)
         actionHandler.setCoordinator(self)
     }
     
-    @discardableResult
-    func perform(_ action: U) -> ActionResult {
-        return .actionNotAllowed
+    func perform(_ action: U) throws {
+        throw CoordinatorError.actionNotHandled
     }
     
     func createViewController(forAction action: U) throws -> UIViewController {
-        preconditionFailure("Abstract method")
+        throw CoordinatorError.actionNotHandled
     }
 }
+
+// MARK: - BaseCoordinator
 
 class BaseCoordinator<T: Flow>: NSObject {
     
     var flow: T
+    var childFlow: T?
     
-    var rootViewController: UIViewController?
+    lazy var rootViewController: UIViewController = { [weak self] in return self?.createRootViewController() ?? UINavigationController() }()
+    private(set) weak var presentingViewController: UIViewController?
     
     private(set) var childCoordinator: BaseCoordinator<T>?
     weak var parentCoordinator: BaseCoordinator<T>?
     
-    init(flow: T, presentingViewController: UIViewController? = nil) {
-        self.rootViewController = presentingViewController
+    init(flow: T, presentingViewController: UIViewController) {
         self.flow = flow
+        super.init()
+        self.presentingViewController = presentingViewController
     }
     
-    func start() {
+    func createRootViewController() -> UIViewController? {
+        return UINavigationController()
+    }
+    
+    func start(presentingViewController: UIViewController?) throws {
     }
     
     func complete(withResult result: FlowResult) {
         parentCoordinator?.flowCompleted(flow, result: result)
         parentCoordinator?.childCoordinator = nil
+        childFlow = nil
     }
     
     // MARK: - Flows
     
-    func presentFlow(_ flow: T) {
-        
-        do {
-            let flowCoordinator = try createCoordinator(forFlow: flow)
-            childCoordinator = flowCoordinator
-            flowCoordinator.parentCoordinator = self
-            flowCoordinator.start()
-        } catch {
-            flowCompleted(flow, result: .error(error: error))
-        }
+    func presentFlow(_ flow: T) throws {
+        let flowCoordinator = try createCoordinator(forFlow: flow)
+        childCoordinator = flowCoordinator
+        flowCoordinator.parentCoordinator = self
+        childFlow = flow
+        try flowCoordinator.start(presentingViewController: presentingViewController)
     }
     
     func createCoordinator(forFlow flow: T) throws -> BaseCoordinator<T> {
-        flowCompleted(flow, result: .actionNotAllowed)
-        preconditionFailure("Abstract must override")
+        throw CoordinatorError.flowNotHandled
     }
     
     func flowCompleted(_ flow: T, result: FlowResult) {

@@ -23,15 +23,9 @@ final class SignInCoordinator: BaseCoordinator<MessagingApplicationFlow> {
     
     // MARK: - Coordinator
     
-    override func start() {
-        
-        guard let vc = authUI?.authViewController() else {
-            // TODO: better error
-            complete(withResult: .error(error: NSError(domain: "", code: 0, userInfo: [:])))
-            return
-        }
-        
-        rootViewController?.present(vc, animated: true, completion: nil)
+    override func start(presentingViewController: UIViewController?) throws {
+        guard let vc = authUI?.authViewController() else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+        rootViewController.present(vc, animated: true, completion: nil)
     }
 }
 
@@ -43,13 +37,11 @@ extension SignInCoordinator: FUIAuthDelegate {
         
         if let error = error {
             
-            let ns = error as NSError
-            guard ns.code != 1 else {
+            if (error as NSError).code == 1 {
                 complete(withResult: .success)
-                return
+            } else {
+                complete(withResult: .error(error: error))
             }
-
-            complete(withResult: .error(error: error))
         } else {
             complete(withResult: .success)
         }
