@@ -27,6 +27,12 @@
 		02A775AC22FC4ACD000CB7CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */; };
 		02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */; };
 		02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */; };
+		02E24B352314C77000318EA4 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B342314C77000318EA4 /* Conversation.swift */; };
+		02E24B372314C78F00318EA4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B362314C78F00318EA4 /* Message.swift */; };
+		02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3A2314C80800318EA4 /* ViewModel.swift */; };
+		02E24B3E2314C83D00318EA4 /* DispatchQueue+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */; };
+		02E24B402314C88B00318EA4 /* ConversationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3F2314C88B00318EA4 /* ConversationsViewModel.swift */; };
+		02E24B422314CE6200318EA4 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B412314CE6200318EA4 /* ConversationViewModel.swift */; };
 		CF23C00F80B81958B4C3E1D0 /* Pods_MessagingPOCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D88D96110AC5802B4197315 /* Pods_MessagingPOCTests.framework */; };
 		FA364E07A050E508ABA60808 /* Pods_MessagingPOC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E332243A0CADF71F98FBCF0C /* Pods_MessagingPOC.framework */; };
 /* End PBXBuildFile section */
@@ -75,6 +81,12 @@
 		02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+SafeIndex.swift"; sourceTree = "<group>"; };
 		02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
+		02E24B342314C77000318EA4 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
+		02E24B362314C78F00318EA4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		02E24B3A2314C80800318EA4 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Util.swift"; sourceTree = "<group>"; };
+		02E24B3F2314C88B00318EA4 /* ConversationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewModel.swift; sourceTree = "<group>"; };
+		02E24B412314CE6200318EA4 /* ConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewModel.swift; sourceTree = "<group>"; };
 		0E89D3BC23C6C088EC5F66D1 /* Pods-MessagingPOCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessagingPOCTests/Pods-MessagingPOCTests.release.xcconfig"; sourceTree = "<group>"; };
 		1D1529BFE76B4F3B0528AACE /* Pods-MessagingPOCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOCTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MessagingPOCTests/Pods-MessagingPOCTests.debug.xcconfig"; sourceTree = "<group>"; };
 		59481075CD4D3AA93563A311 /* Pods-MessagingPOC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOC.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC.release.xcconfig"; sourceTree = "<group>"; };
@@ -158,6 +170,8 @@
 			isa = PBXGroup;
 			children = (
 				02A5E6E82303840D0087EDBA /* Coordinators */,
+				02E24B332314C76100318EA4 /* Models */,
+				02E24B382314C7E100318EA4 /* ViewModels */,
 				02A775A722FC4470000CB7CE /* ViewControllers */,
 				02A775AD22FCAE30000CB7CE /* Common */,
 				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,
@@ -202,8 +216,36 @@
 		02A775AD22FCAE30000CB7CE /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */,
 				02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */,
 				02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		02E24B332314C76100318EA4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				02E24B342314C77000318EA4 /* Conversation.swift */,
+				02E24B362314C78F00318EA4 /* Message.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		02E24B382314C7E100318EA4 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				02E24B392314C7F200318EA4 /* Common */,
+				02E24B3F2314C88B00318EA4 /* ConversationsViewModel.swift */,
+				02E24B412314CE6200318EA4 /* ConversationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		02E24B392314C7F200318EA4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				02E24B3A2314C80800318EA4 /* ViewModel.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -480,8 +522,12 @@
 				02A5E6EF23038BA10087EDBA /* WelcomeViewController.swift in Sources */,
 				02A5E6F123038C830087EDBA /* ConversationsCoordinator.swift in Sources */,
 				02A5E6E7230383860087EDBA /* Coordination.swift in Sources */,
+				02E24B3E2314C83D00318EA4 /* DispatchQueue+Util.swift in Sources */,
+				02E24B352314C77000318EA4 /* Conversation.swift in Sources */,
+				02E24B422314CE6200318EA4 /* ConversationViewModel.swift in Sources */,
 				02A7757C22FC4469000CB7CE /* ConversationsViewController.swift in Sources */,
 				0283ACA52309955F0010E7CD /* ProfileViewController.swift in Sources */,
+				02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */,
 				0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */,
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
 				02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */,
@@ -489,6 +535,8 @@
 				0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */,
 				02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */,
 				02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */,
+				02E24B372314C78F00318EA4 /* Message.swift in Sources */,
+				02E24B402314C88B00318EA4 /* ConversationsViewModel.swift in Sources */,
 				02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */,
 				02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */,
 			);

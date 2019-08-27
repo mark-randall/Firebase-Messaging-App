@@ -10,6 +10,11 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
+protocol RootCoordinatorController: CoordinatorController {
+
+    var rootCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, RootAction>? { get set }
+}
+
 final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow, RootAction> {
     
     // MARK: - Dependencies
@@ -36,7 +41,8 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
-            vc.coordinatorActionHandler = actionHandler
+            vc.rootCoordinatorActionHandler = actionHandler
+            vc.currentFlow = .root
             nc.viewControllers = [vc]
         }
     }
@@ -52,7 +58,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         switch flow {
         case .signIn:
             (rootViewController as? UINavigationController)?.viewControllers = []
-            return SignInCoordinator(flow: flow, presentingViewController: rootViewController)
+            return SignInCoordinator(flow: flow, presentingViewController: rootViewController, auth: auth)
         case .conversations:
             return ConversationsCoordinator(flow: flow, presentingViewController: rootViewController, firestore: firestore, auth: auth)
         case .root:

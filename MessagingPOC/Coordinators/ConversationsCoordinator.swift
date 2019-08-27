@@ -10,6 +10,11 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
+protocol ConversationsCoordinatorController: CoordinatorController {
+    
+    var conversationsCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>? { get set }
+}
+
 final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow, ConversationAction> {
     
     // MARK: - Dependencies
@@ -25,14 +30,12 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         super.init(flow: flow, presentingViewController: presentingViewController)
     }
     
-    deinit {
-        print("here")
-    }
-    
     override func createRootViewController() -> UIViewController? {
         guard let vc: ConversationsViewController = try? UIViewController.create(storyboard: "Main", identifier: "ConversationsViewController") else { return nil }
-        vc.coordinatorActionHandler = actionHandler
-        vc.firestore = firestore
+        let vm = ConversationsViewModel(firestore: firestore)
+        vm.conversationsCoordinatorActionHandler = actionHandler
+        vm.currentFlow = .conversations
+        vc.bindViewModel(vm)
         return vc
     }
 
@@ -77,13 +80,15 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         switch action {
         case .showConversation(let id):
             let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
-            vc.conversationId = id
-            vc.coordinatorActionHandler = actionHandler
-            vc.firestore = firestore
+            let vm = ConversationViewModel(firestore: firestore, userId: "123", conversationId: id)
+            vm.conversationsCoordinatorActionHandler = actionHandler
+            vm.currentFlow = .conversations
+            vc.bindViewModel(vm)
             return vc
         case .presentProfile:
             let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
-            vc.coordinatorActionHandler = actionHandler
+            vc.conversationsCoordinatorActionHandler = actionHandler
+            vc.currentFlow = .conversations
             return vc
         default:
             return try super.createViewController(forAction: action)

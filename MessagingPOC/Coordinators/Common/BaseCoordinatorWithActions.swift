@@ -8,14 +8,13 @@
 
 import UIKit
 
-// MARK: - Controller
+// MARK: - CoordinatorController
 
 protocol CoordinatorController {
     
     associatedtype T: Flow
-    associatedtype U: Action
     
-    var coordinatorActionHandler: ActionHandler<T, U>? { get set }
+    var currentFlow: T? { get set }
 }
 
 // MARK: - ActionHandler

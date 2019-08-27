@@ -13,13 +13,17 @@ import UIKit
 // How do a add barbuttons to navc
 // Which coordinator does his?
 
-final class ProfileViewController: UIViewController, CoordinatorController {
+final class ProfileViewController: UIViewController, ConversationsCoordinatorController, SignInCoordinatorController {
     
     // MARK: - CoordinatorController
-    
-    weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
 
+    var currentFlow: MessagingApplicationFlow?
+    weak var conversationsCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
+    weak var signInCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, SignInAction>?
+    
     // MARK: - Subviews
+    
+    @IBOutlet private weak var startChattingButton: UIButton?
     
     private lazy var closeButton: UIBarButtonItem? = { [weak self] in
         guard let self = self else { return nil }
@@ -30,18 +34,42 @@ final class ProfileViewController: UIViewController, CoordinatorController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = closeButton
+        
+        // Configure VC for currentFlow
+        if let currentFlow = currentFlow {
+            
+            switch currentFlow {
+            case .conversations:
+                navigationItem.rightBarButtonItem = closeButton
+                startChattingButton?.isHidden = true
+            case .signIn:
+                startChattingButton?.isHidden = false
+            default: break
+            }
+        }
     }
     
     // MARK: - Actions
     
     @IBAction private func logoutButtonTapped() {
         
-        // TODO: what if VC is used by multiple flows?
-        try? coordinatorActionHandler?.perform(.logout)
+        if let currentFlow = currentFlow {
+            
+            switch currentFlow {
+            case .conversations:
+                try? conversationsCoordinatorActionHandler?.perform(.logout)
+            case .signIn:
+                try? signInCoordinatorActionHandler?.perform(.logout)
+            default: break
+            }
+        }
     }
     
     @objc private func closeButtonTapped() {
-        try? coordinatorActionHandler?.perform(.dismissProfile)
+        try? conversationsCoordinatorActionHandler?.perform(.dismissProfile)
+    }
+    
+    @IBAction private func startChattingButtonTapped() {
+        try? signInCoordinatorActionHandler?.perform(.showConversations)
     }
 }

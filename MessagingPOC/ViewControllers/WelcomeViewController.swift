@@ -8,11 +8,12 @@
 
 import UIKit
 
-final class WelcomeViewController: UIViewController, CoordinatorController {
+final class WelcomeViewController: UIViewController, RootCoordinatorController {
     
     // MARK: - CoordinatorController
     
-    weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, RootAction>?
+    var currentFlow: MessagingApplicationFlow?
+    weak var rootCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, RootAction>?
     
     // MARK: - UIViewController Lifecycle
     
@@ -23,6 +24,6 @@ final class WelcomeViewController: UIViewController, CoordinatorController {
     // MARK: - Actions
     
     @IBAction private func signInButtonTapped() {
-        try? coordinatorActionHandler?.perform(.presentSignIn)
+        try? rootCoordinatorActionHandler?.perform(.presentSignIn)
     }
 }

@@ -7,66 +7,15 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import os.log
-import Crashlytics
 
-// MARK: - Conversation
+final class ConversationsViewController: UITableViewController {
 
-private struct Conversation: Equatable {
-    let id: String
-    let text: String
-    let hasUnreadMessages: Bool
-    let lastMessageSend: Date
+    // MARK: - ViewModel
     
-    init?(snapshot: DocumentSnapshot) {
-        
-        guard
-            let data = snapshot.data(),
-            let text = data["last_message_text"] as? String,
-            let hasUnreadMessages = data["has_unread_messages"] as? Bool,
-            let timestamp = data["time"] as? Timestamp
-            else {
-                return nil
-        }
-        
-        self.id = snapshot.documentID
-        self.text = text
-        self.hasUnreadMessages = hasUnreadMessages
-        self.lastMessageSend = timestamp.dateValue()
-    }
-}
-
-// MARK: - ConversationsViewController
-
-final class ConversationsViewController: UITableViewController, CoordinatorController {
-
-    // MARK: - CoordinatorController
-    
-    weak var coordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
-
-    // MARK: - Dependencies
-    
-    var firestore: Firestore!
-    
-    private let log = OSLog(subsystem: "com.messaging", category: "conversations")
-    
-    // MARK: - State
-    
-    // TODO: user real id
-    private let userId: String = "123"
-    private var conversationsSubscription: ListenerRegistration?
-    
-    private var conversations: [Conversation] = [] {
-        didSet {
-            // TODO: support diffing / updating
-            tableView.reloadData()
-        }
-    }
+    private var viewModel: ConversationsViewModelProtocol?
     
     // MARK: - Subviews
     
-    // TODO: why doesn't this work
     private lazy var profileButtton: UIBarButtonItem? = { [weak self] in
         guard let self = self else { return nil }
         return UIBarButtonItem(title: "Profile", style: .plain, target: self, action: #selector(profileButtonTapped))
@@ -76,59 +25,38 @@ final class ConversationsViewController: UITableViewController, CoordinatorContr
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Crashlytics.sharedInstance().setUserIdentifier(userId)
-        
+
         // Configure subviews
         tableView.tableFooterView = UIView()
         navigationItem.rightBarButtonItem = profileButtton
-        title = "Conversations"
-        
-        // Fetch data
-        conversationsSubscription = firestore
-            .collection("/users/\(userId)/conversations")
-            .whereField("is_blocked", isEqualTo: false)
-            .whereField("is_deleted", isEqualTo: false)
-            .order(by: "time", descending: true)
-            .addSnapshotListener { [weak self] documentSnapshot, error in
-                
-                guard let self = self else { return }
-                
-                if let error = error {
-                    os_log("error fetching conversations", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
-                    // TODO: Handle error
-                } else if let documentSnapshot = documentSnapshot{
-                    
-                    self.conversations = documentSnapshot.documents.compactMap {
-                        Conversation(snapshot: $0)
-                    }
-                }
-            }
     }
     
-    deinit {
-        conversationsSubscription?.remove()
-        conversationsSubscription = nil
+    func bindViewModel(_ viewModel: ConversationsViewModelProtocol) {
+        self.viewModel = viewModel
+        
+        viewModel.subscribeToViewState { [weak self] viewState in
+            self?.navigationItem.title = viewState.title
+            self?.tableView.reloadData()
+        }
     }
     
     // MARK: - Actions
     
     @IBAction private func profileButtonTapped() {
-        try? coordinatorActionHandler?.perform(.presentProfile)
+        viewModel?.handleViewEvent(.profileButtonTapped)
     }
     
     // MARK: - UITableViewControllerDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversations.count
+        return viewModel?.viewState?.conversations.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         // TODO: custom cell with config method
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        guard let conversation = conversations[safe: indexPath.row] else { return cell }
+        guard let conversation = viewModel?.viewState?.conversations[safe: indexPath.row] else { return cell }
         cell.textLabel?.text = conversation.text
         cell.detailTextLabel?.text = "@: \(conversation.lastMessageSend)"
         
@@ -144,27 +72,13 @@ final class ConversationsViewController: UITableViewController, CoordinatorContr
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let conversation = conversations[safe: indexPath.row] else { return }
-        try? coordinatorActionHandler?.perform(.showConversation(id: conversation.id))
+        viewModel?.handleViewEvent(.conversationSelected(indexPath))
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        if
-            editingStyle == .delete,
-            let conversation = conversations[safe: indexPath.row]
-        {
-            firestore.collection("users/\(userId)/conversations").document(conversation.id).updateData(["is_deleted": true]) { [weak self] error in
-                
-                guard let self = self else { return }
-
-                if let error = error {
-                    os_log("error deleting conversation", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
-                } else {
-                    os_log("deleted conversation", log: self.log, type: .info)
-                }
-            }
+        if editingStyle == .delete {
+            viewModel?.handleViewEvent(.conversationDeleted(indexPath))
         }
     }
 }

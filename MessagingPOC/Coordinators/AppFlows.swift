@@ -23,6 +23,12 @@ enum RootAction: Action {
     case showConversation(id: String)
 }
 
+enum SignInAction: Action {
+    case showProfile
+    case logout
+    case showConversations
+}
+
 enum ConversationAction: Action {
     case showConversation(id: String)
     case presentProfile
