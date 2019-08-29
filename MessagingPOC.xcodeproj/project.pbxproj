@@ -148,7 +148,6 @@
 			isa = PBXGroup;
 			children = (
 				02A7757822FC4469000CB7CE /* MessagingPOC */,
-				02A7758D22FC446A000CB7CE /* MessagingPOCTests */,
 				02A7759822FC446A000CB7CE /* MessagingPOCUITests */,
 				02A7757722FC4469000CB7CE /* Products */,
 				3F50C7C207F2838AE7884B71 /* Pods */,
@@ -179,6 +178,7 @@
 				02A7757D22FC4469000CB7CE /* Main.storyboard */,
 				02A7758022FC446A000CB7CE /* Assets.xcassets */,
 				02A7758222FC446A000CB7CE /* LaunchScreen.storyboard */,
+				02A7758D22FC446A000CB7CE /* MessagingPOCTests */,
 				02A7758522FC446A000CB7CE /* Info.plist */,
 			);
 			path = MessagingPOC;

@@ -52,16 +52,18 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     private var conversations: [Conversation] = []
     
     // TODO: user real id
-    private let userId: String = "123"
+    private let userId: String
     private var conversationsSubscription: ListenerRegistration?
     
     // MARK: - Init
     
-    init(firestore: Firestore) {
+    init(firestore: Firestore, userId: String) {
         self.firestore = firestore
+        self.userId = userId
         super.init()
         
         Crashlytics.sharedInstance().setUserIdentifier(userId)
+        os_log("show converations for %@", log: self.log, type: .info, userId)
         
         // Fetch data
         conversationsSubscription = firestore
@@ -117,7 +119,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
             
         case .conversationSelected(let indexPath):
             guard let conversation = conversations[safe: indexPath.row] else { return }
-            try? conversationsCoordinatorActionHandler?.perform(.showConversation(id: conversation.id))
+            try? conversationsCoordinatorActionHandler?.perform(.showConversation(conversationId: conversation.id))
             
         case .profileButtonTapped:
             try? conversationsCoordinatorActionHandler?.perform(.presentProfile)

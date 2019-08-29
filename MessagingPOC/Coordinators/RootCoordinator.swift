@@ -36,7 +36,12 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         rootViewController.view.backgroundColor = .white
         
-        if auth.currentUser != nil {
+        if let user = auth.currentUser {
+            
+            user.getIDToken { token, _ in
+                print("!!!!", token)
+            }
+            
             try presentFlow(.conversations)
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
@@ -60,7 +65,8 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
             (rootViewController as? UINavigationController)?.viewControllers = []
             return SignInCoordinator(flow: flow, presentingViewController: rootViewController, auth: auth)
         case .conversations:
-            return ConversationsCoordinator(flow: flow, presentingViewController: rootViewController, firestore: firestore, auth: auth)
+            guard let uid = auth.currentUser?.uid else { throw CoordinatorError.flowNotAllowed }
+            return ConversationsCoordinator(flow: flow, presentingViewController: rootViewController, firestore: firestore, auth: auth, uid: uid)
         case .root:
             return try super.createCoordinator(forFlow: flow)
         }
@@ -88,7 +94,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         case .showConversation(let id):
             guard childFlow == .conversations else { throw CoordinatorError.actionNotAllowed }
             guard let conversationsCoordinator = childCoordinator as? ConversationsCoordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
-            try conversationsCoordinator.perform(.showConversation(id: id))
+            try conversationsCoordinator.perform(.showConversation(conversationId: id))
         }
     }
 }

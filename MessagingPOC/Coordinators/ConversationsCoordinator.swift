@@ -21,18 +21,26 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
     
     private let firestore: Firestore
     private let auth: Auth
+    private let uid: String
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController, firestore: Firestore, auth: Auth) {
+    init(
+        flow: MessagingApplicationFlow,
+        presentingViewController: UIViewController,
+        firestore: Firestore,
+        auth: Auth,
+        uid: String
+    ) {
         self.firestore = firestore
         self.auth = auth
+        self.uid = uid
         super.init(flow: flow, presentingViewController: presentingViewController)
     }
     
     override func createRootViewController() -> UIViewController? {
         guard let vc: ConversationsViewController = try? UIViewController.create(storyboard: "Main", identifier: "ConversationsViewController") else { return nil }
-        let vm = ConversationsViewModel(firestore: firestore)
+        let vm = ConversationsViewModel(firestore: firestore, userId: uid)
         vm.conversationsCoordinatorActionHandler = actionHandler
         vm.currentFlow = .conversations
         vc.bindViewModel(vm)
@@ -80,7 +88,7 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         switch action {
         case .showConversation(let id):
             let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
-            let vm = ConversationViewModel(firestore: firestore, userId: "123", conversationId: id)
+            let vm = ConversationViewModel(firestore: firestore, userId: uid, conversationId: id)
             vm.conversationsCoordinatorActionHandler = actionHandler
             vm.currentFlow = .conversations
             vc.bindViewModel(vm)

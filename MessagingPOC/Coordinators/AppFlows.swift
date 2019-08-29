@@ -30,7 +30,7 @@ enum SignInAction: Action {
 }
 
 enum ConversationAction: Action {
-    case showConversation(id: String)
+    case showConversation(conversationId: String)
     case presentProfile
     case dismissProfile
     case logout
