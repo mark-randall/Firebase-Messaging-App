@@ -14,6 +14,27 @@ final class ConversationViewController: UITableViewController {
     
     private var viewModel: ConversationViewModelProtocol?
     
+    // MARK: - Subviews
+    
+    private lazy var chatInputView: ConversationInputView = {
+        let input = ConversationInputView.create()
+        input.addTarget(self, action: #selector(chatInputEditingDidEnd), for: .editingDidEnd)
+        return input
+    }()
+    
+    // MARK: - UIViewController AccessoryView
+    
+    override var inputAccessoryView: UIView? {
+        return chatInputView
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    override var canResignFirstResponder: Bool {
+        return true
+    }
     
     // MARK: - UIViewController Lifecycle
     
@@ -21,8 +42,14 @@ final class ConversationViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.tableFooterView = UIView()
+        tableView.keyboardDismissMode = .interactive
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        becomeFirstResponder()
+    }
+    
     // MARK: - Bind ViewModel
     
     func bindViewModel(_ viewModel: ConversationViewModelProtocol) {
@@ -32,6 +59,12 @@ final class ConversationViewController: UITableViewController {
             self?.navigationItem.title = viewState.title
             self?.tableView.reloadData()
         }
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func chatInputEditingDidEnd() {
+        chatInputView.clear()
     }
     
     // MARK: - UITableViewControllerDataSource

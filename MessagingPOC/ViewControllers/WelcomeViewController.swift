@@ -19,6 +19,7 @@ final class WelcomeViewController: UIViewController, RootCoordinatorController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        becomeFirstResponder()
     }
     
     // MARK: - Actions

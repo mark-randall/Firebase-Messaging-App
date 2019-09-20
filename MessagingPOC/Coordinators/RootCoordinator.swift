@@ -36,12 +36,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         rootViewController.view.backgroundColor = .white
         
-        if let user = auth.currentUser {
-            
-            user.getIDToken { token, _ in
-                print("!!!!", token)
-            }
-            
+        if auth.currentUser != nil {
             try presentFlow(.conversations)
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
