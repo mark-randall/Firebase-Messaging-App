@@ -14,13 +14,6 @@ final class ConversationsViewController: UITableViewController {
     
     private var viewModel: ConversationsViewModelProtocol?
     
-    // MARK: - Subviews
-    
-    private lazy var profileButtton: UIBarButtonItem? = { [weak self] in
-        guard let self = self else { return nil }
-        return UIBarButtonItem(title: "Profile", style: .plain, target: self, action: #selector(profileButtonTapped))
-    }()
-    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -28,7 +21,6 @@ final class ConversationsViewController: UITableViewController {
 
         // Configure subviews
         tableView.tableFooterView = UIView()
-        navigationItem.rightBarButtonItem = profileButtton
     }
     
     func bindViewModel(_ viewModel: ConversationsViewModelProtocol) {
@@ -44,6 +36,10 @@ final class ConversationsViewController: UITableViewController {
     
     @IBAction private func profileButtonTapped() {
         viewModel?.handleViewEvent(.profileButtonTapped)
+    }
+    
+    @IBAction private func addButtonTapped() {
+        viewModel?.handleViewEvent(.addButtonTapped)
     }
     
     // MARK: - UITableViewControllerDataSource

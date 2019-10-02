@@ -14,6 +14,10 @@ final class ConversationInputView: UIControl {
         return UIView.create(fromNib: "ConversationInputView")!
     }
     
+    var text: String {
+        return textView.text
+    }
+    
     // MARK: - Subviews
     
     @IBOutlet private weak var placeHolderLabel: UILabel! {
@@ -47,10 +51,14 @@ final class ConversationInputView: UIControl {
         }
     }
     
-    // MARK: - Init
+    // MARK: - InitA
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: bounds.width, height: textView.intrinsicContentSize.height)
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        return textView.becomeFirstResponder()
     }
     
     // MARK: - Actions

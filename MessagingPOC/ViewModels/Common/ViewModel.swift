@@ -51,7 +51,7 @@ class ViewModel<ViewState: Equatable, ViewEffect, ViewEvent> {
         }
     }
 
-    // TODO: determine why to hide from View. Should not be called by View.
+    // TODO: determine how to hide from View. Should not be called by View.
     func updateViewState(_ viewState: ViewState) {
         guard viewState != self.viewState else { return }
         self.viewState = viewState

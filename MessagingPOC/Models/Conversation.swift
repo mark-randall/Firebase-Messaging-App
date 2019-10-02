@@ -11,10 +11,14 @@ import FirebaseFirestore
 
 struct Conversation: Equatable {
     
+    // MARK: - Properties
+    
     let id: String
     let text: String
     let hasUnreadMessages: Bool
     let lastMessageSend: Date
+    
+    // MARK: - Init
     
     init?(snapshot: DocumentSnapshot) {
         

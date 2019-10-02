@@ -29,6 +29,7 @@ enum ConversationsViewEvent {
     case conversationSelected(IndexPath)
     case conversationDeleted(IndexPath)
     case profileButtonTapped
+    case addButtonTapped
 }
 
 // MARK: - ViewModel
@@ -62,7 +63,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
         self.userId = userId
         super.init()
         
-        Crashlytics.sharedInstance().setUserIdentifier(userId)
+        Crashlytics.sharedInstance().setUserIdentifier(userId) // TODO: should this be here
         os_log("show converations for %@", log: self.log, type: .info, userId)
         
         // Fetch data
@@ -105,17 +106,20 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
             
             guard let conversation = conversations[safe: indexPath.row] else { return }
             
-            firestore.collection("users/\(userId)/conversations").document(conversation.id).updateData(["is_deleted": true]) { [weak self] error in
+            firestore
+                .collection("users/\(userId)/conversations")
+                .document(conversation.id)
+                .updateData(["is_deleted": true]) { [weak self] error in
                 
-                guard let self = self else { return }
-                
-                if let error = error {
-                    os_log("error deleting conversation", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
-                } else {
-                    os_log("deleted conversation", log: self.log, type: .info)
+                    guard let self = self else { return }
+                    
+                    if let error = error {
+                        os_log("error deleting conversation", log: self.log, type: .error)
+                        Crashlytics.sharedInstance().recordError(error)
+                    } else {
+                        os_log("deleted conversation", log: self.log, type: .info)
+                    }
                 }
-            }
             
         case .conversationSelected(let indexPath):
             guard let conversation = conversations[safe: indexPath.row] else { return }
@@ -123,6 +127,9 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
             
         case .profileButtonTapped:
             try? conversationsCoordinatorActionHandler?.perform(.presentProfile)
+            
+        case .addButtonTapped:
+            try? conversationsCoordinatorActionHandler?.perform(.presentAddConversation)
         }
     }
 }

@@ -43,10 +43,8 @@ final class ConversationViewController: UITableViewController {
         
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        tableView.allowsSelection = false
+        
         becomeFirstResponder()
     }
     
@@ -64,6 +62,7 @@ final class ConversationViewController: UITableViewController {
     // MARK: - Actions
     
     @objc private func chatInputEditingDidEnd() {
+        viewModel?.handleViewEvent(.sendMessage(chatInputView.text))
         chatInputView.clear()
     }
     

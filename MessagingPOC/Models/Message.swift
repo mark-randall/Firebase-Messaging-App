@@ -9,13 +9,23 @@
 import Foundation
 import FirebaseFirestore
 
-struct Message: Equatable {
+struct Message: Equatable, Comparable, Hashable {
+    
+    // MARK: - Comparable
+    
+    static func < (lhs: Message, rhs: Message) -> Bool {
+        return lhs.sent < rhs.sent
+    }
+    
+    // MARK: - Properties
     
     let id: String
     let text: String
     let isRead: Bool
     let sent: Date
     let from: String
+    
+    // MARK: - Init
     
     init?(snapshot: DocumentSnapshot) {
         

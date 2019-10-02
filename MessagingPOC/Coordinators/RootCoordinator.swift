@@ -57,7 +57,6 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         switch flow {
         case .signIn:
-            (rootViewController as? UINavigationController)?.viewControllers = []
             return SignInCoordinator(flow: flow, presentingViewController: rootViewController, auth: auth)
         case .conversations:
             guard let uid = auth.currentUser?.uid else { throw CoordinatorError.flowNotAllowed }
@@ -71,7 +70,9 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         switch flow {
         case .signIn:
-            try? start(presentingViewController: nil)
+            if case .success = result {
+                try? start(presentingViewController: nil)
+            }
         case .conversations:
             try? start(presentingViewController: nil)
         default:

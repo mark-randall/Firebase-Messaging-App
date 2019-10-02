@@ -67,6 +67,8 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             } else {
                 nc.pushViewController(vc, animated: true)
             }
+        case .presentAddConversation:
+            break;
         case .presentProfile:
             let vc = try createViewController(forAction: action)
             let nc = UINavigationController(rootViewController: vc)
@@ -79,7 +81,6 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             try auth.signOut()
             complete(withResult: .success)
             try perform(.dismissProfile)
-            
         }
     }
     
