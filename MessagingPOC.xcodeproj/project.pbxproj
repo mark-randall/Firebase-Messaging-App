@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,9 @@
 		023053EA2333140500293682 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053E92333140500293682 /* UIView+Autolayout.swift */; };
 		023053F02335914C00293682 /* UIView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053EF2335914C00293682 /* UIView+Xib.swift */; };
 		023053F22335918200293682 /* ConversationInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023053F12335918200293682 /* ConversationInputView.xib */; };
+		023053F42337D2A400293682 /* SentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053F32337D2A400293682 /* SentMessage.swift */; };
+		026DB83D23450270005EAC48 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026DB83C23450270005EAC48 /* ContactsViewModel.swift */; };
+		026DB83F2345042F005EAC48 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026DB83E2345042F005EAC48 /* Contact.swift */; };
 		0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283ACA2230994DB0010E7CD /* BaseCoordinatorWithActions.swift */; };
 		0283ACA52309955F0010E7CD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283ACA42309955F0010E7CD /* ProfileViewController.swift */; };
 		0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0297A7792308734200A4C763 /* BaseCoordinator.swift */; };
@@ -63,6 +66,10 @@
 		023053E92333140500293682 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		023053EF2335914C00293682 /* UIView+Xib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Xib.swift"; sourceTree = "<group>"; };
 		023053F12335918200293682 /* ConversationInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationInputView.xib; sourceTree = "<group>"; };
+		023053F32337D2A400293682 /* SentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentMessage.swift; sourceTree = "<group>"; };
+		026DB83B2344420E005EAC48 /* MessagingPOC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MessagingPOC.entitlements; sourceTree = "<group>"; };
+		026DB83C23450270005EAC48 /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
+		026DB83E2345042F005EAC48 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		0283ACA2230994DB0010E7CD /* BaseCoordinatorWithActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinatorWithActions.swift; sourceTree = "<group>"; };
 		0283ACA42309955F0010E7CD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0297A7792308734200A4C763 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
@@ -176,6 +183,7 @@
 		02A7757822FC4469000CB7CE /* MessagingPOC */ = {
 			isa = PBXGroup;
 			children = (
+				026DB83B2344420E005EAC48 /* MessagingPOC.entitlements */,
 				02A5E6E82303840D0087EDBA /* Coordinators */,
 				02E24B332314C76100318EA4 /* Models */,
 				02E24B382314C7E100318EA4 /* ViewModels */,
@@ -240,6 +248,8 @@
 			children = (
 				02E24B342314C77000318EA4 /* Conversation.swift */,
 				02E24B362314C78F00318EA4 /* Message.swift */,
+				023053F32337D2A400293682 /* SentMessage.swift */,
+				026DB83E2345042F005EAC48 /* Contact.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -250,6 +260,7 @@
 				02E24B392314C7F200318EA4 /* Common */,
 				02E24B3F2314C88B00318EA4 /* ConversationsViewModel.swift */,
 				02E24B412314CE6200318EA4 /* ConversationViewModel.swift */,
+				026DB83C23450270005EAC48 /* ContactsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -443,36 +454,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BA624283242BD04BA882DA20 /* [CP] Copy Pods Resources */ = {
@@ -481,26 +471,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseEmailAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseEmailAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MessagingPOC/Pods-MessagingPOC-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C9EFEFE1EBCBD7B93F75A1EF /* [CP] Check Pods Manifest.lock */ = {
@@ -532,9 +511,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				026DB83F2345042F005EAC48 /* Contact.swift in Sources */,
 				02A5E6EF23038BA10087EDBA /* WelcomeViewController.swift in Sources */,
 				02A5E6F123038C830087EDBA /* ConversationsCoordinator.swift in Sources */,
 				02A5E6E7230383860087EDBA /* Coordination.swift in Sources */,
+				023053F42337D2A400293682 /* SentMessage.swift in Sources */,
 				02E24B3E2314C83D00318EA4 /* DispatchQueue+Util.swift in Sources */,
 				023053E8233313AB00293682 /* ConversationInputView.swift in Sources */,
 				02E24B352314C77000318EA4 /* Conversation.swift in Sources */,
@@ -547,6 +528,7 @@
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
 				02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */,
 				02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */,
+				026DB83D23450270005EAC48 /* ContactsViewModel.swift in Sources */,
 				0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */,
 				02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */,
 				02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */,
@@ -730,6 +712,7 @@
 			baseConfigurationReference = 892DFD47A2B7895B96AACCD0 /* Pods-MessagingPOC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MessagingPOC/MessagingPOC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U2ZKB248CQ;
 				INFOPLIST_FILE = MessagingPOC/Info.plist;
@@ -749,6 +732,7 @@
 			baseConfigurationReference = 59481075CD4D3AA93563A311 /* Pods-MessagingPOC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MessagingPOC/MessagingPOC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U2ZKB248CQ;
 				INFOPLIST_FILE = MessagingPOC/Info.plist;

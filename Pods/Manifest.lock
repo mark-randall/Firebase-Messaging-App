@@ -102,6 +102,8 @@ PODS:
   - FirebaseUI/Google (8.0.4):
     - FirebaseUI/Auth
     - GoogleSignIn (~> 4.0)
+  - FirebaseUI/Phone (8.0.4):
+    - FirebaseUI/Auth
   - GoogleAppMeasurement (6.0.3):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -180,10 +182,11 @@ DEPENDENCIES:
   - FirebaseUI/Auth
   - FirebaseUI/Email
   - FirebaseUI/Google
+  - FirebaseUI/Phone
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - BoringSSL-GRPC
     - Crashlytics
     - Fabric
@@ -241,6 +244,6 @@ SPEC CHECKSUMS:
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   SwiftLint: 9fc1143bbacec37f94994a7d0d2a85b2154b6294
 
-PODFILE CHECKSUM: 96d47775518298db11610f566a51067e164c099f
+PODFILE CHECKSUM: 1b3c5120911d4017945f6f6259558999a00bc0a2
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.0

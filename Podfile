@@ -20,6 +20,7 @@ def commonPods
     pod 'FirebaseUI/Auth'
     pod 'FirebaseUI/Google'
     pod 'FirebaseUI/Email'
+    pod 'FirebaseUI/Phone'
     
     #Linting swift syntax
     pod 'SwiftLint'

@@ -64,7 +64,9 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         
-        
+//        Auth.auth().currentUser?.updateEmail(to: "mrandall@nerdery.com") {
+//            print($0)
+//        }
     }
 }
 
@@ -77,6 +79,7 @@ extension AppDelegate: MessagingDelegate {
         #if DEBUG
         print("FCM registration token: \(fcmToken)")
         #endif
+        
         
         //userRepository?.updatePushToken(to: fcmToken)
     }
