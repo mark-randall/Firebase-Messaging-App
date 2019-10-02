@@ -96,8 +96,9 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             return vc
         case .presentProfile:
             let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
-            vc.conversationsCoordinatorActionHandler = actionHandler
-            vc.currentFlow = .conversations
+            let vm = ProfileViewModel(currentFlow: .conversations)
+            vm.conversationsCoordinatorActionHandler = actionHandler
+            vc.bindViewModel(vm)
             return vc
         default:
             return try super.createViewController(forAction: action)

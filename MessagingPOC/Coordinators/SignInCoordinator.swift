@@ -65,8 +65,9 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
         switch action {
         case .showProfile:
             let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
-            vc.signInCoordinatorActionHandler = actionHandler
-            vc.currentFlow = .signIn
+            let vm = ProfileViewModel(currentFlow: .signIn)
+            vm.signInCoordinatorActionHandler = actionHandler
+            vc.bindViewModel(vm)
             return vc
         default:
             return try super.createViewController(forAction: action)
@@ -90,9 +91,5 @@ extension SignInCoordinator: FUIAuthDelegate {
         } else {
             try? perform(.showProfile)
         }
-    }
-    
-    func authUI(_ authUI: FUIAuth, didFinish operation: FUIAccountSettingsOperationType, error: Error?) {
-        
     }
 }

@@ -8,18 +8,11 @@
 
 import UIKit
 
-// TODO: left off how to properly coorindate this screen??
-// What puts it in a UINavigationController
-// How do a add barbuttons to navc
-// Which coordinator does his?
-
-final class ProfileViewController: UIViewController, ConversationsCoordinatorController, SignInCoordinatorController {
+final class ProfileViewController: UIViewController {
     
-    // MARK: - CoordinatorController
-
-    var currentFlow: MessagingApplicationFlow?
-    weak var conversationsCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
-    weak var signInCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, SignInAction>?
+    // MARK: - ViewModel
+    
+    private var viewModel: ProfileViewModelProtocol?
     
     // MARK: - Subviews
     
@@ -35,41 +28,37 @@ final class ProfileViewController: UIViewController, ConversationsCoordinatorCon
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Configure VC for currentFlow
-        if let currentFlow = currentFlow {
+    }
+    
+    // MARK: - Bind ViewModel
+    
+    func bindViewModel(_ viewModel: ProfileViewModelProtocol) {
+        self.viewModel = viewModel
+        
+        viewModel.subscribeToViewState { [weak self] viewState in
             
-            switch currentFlow {
-            case .conversations:
-                navigationItem.rightBarButtonItem = closeButton
-                startChattingButton?.isHidden = true
-            case .signIn:
-                startChattingButton?.isHidden = false
-            default: break
+            if viewState.showCloseButton {
+                self?.navigationItem.rightBarButtonItem = self?.closeButton
+            } else {
+                self?.navigationItem.rightBarButtonItem = nil
             }
+            
+            self?.startChattingButton?.isHidden = !viewState.showStartChattingButton
         }
     }
+
     
     // MARK: - Actions
     
     @IBAction private func logoutButtonTapped() {
-        
-        if let currentFlow = currentFlow {
-            
-            switch currentFlow {
-            case .conversations:
-                try? conversationsCoordinatorActionHandler?.perform(.logout)
-            case .signIn:
-                try? signInCoordinatorActionHandler?.perform(.logout)
-            default: break
-            }
-        }
+        viewModel?.handleViewEvent(.loggoutButtonTapped)
     }
     
     @objc private func closeButtonTapped() {
-        try? conversationsCoordinatorActionHandler?.perform(.dismissProfile)
+        viewModel?.handleViewEvent(.closeButtonTapped)
     }
     
     @IBAction private func startChattingButtonTapped() {
-        try? signInCoordinatorActionHandler?.perform(.showConversations)
+        viewModel?.handleViewEvent(.startChattingButtonTapped)
     }
 }
