@@ -24,7 +24,8 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
     private lazy var authUI: FUIAuth? = { [weak self] in
         let authUI = FUIAuth.defaultAuthUI()
         authUI?.delegate = self
-        authUI?.providers = [FUIGoogleAuth(), FUIEmailAuth()]
+        let phoneAuth = FUIPhoneAuth.init(authUI: FUIAuth.defaultAuthUI()!)
+        authUI?.providers = [FUIGoogleAuth(), FUIEmailAuth(), phoneAuth]
         return authUI
     }()
     
@@ -81,7 +82,7 @@ extension SignInCoordinator: FUIAuthDelegate {
         
         if let error = error {
             
-            if (error as NSError).code == 1 {
+            if (error as NSError).code == FUIAuthErrorCode.userCancelledSignIn.rawValue {
                 complete(withResult: .success)
             } else {
                 complete(withResult: .error(error: error))
@@ -89,5 +90,9 @@ extension SignInCoordinator: FUIAuthDelegate {
         } else {
             try? perform(.showProfile)
         }
+    }
+    
+    func authUI(_ authUI: FUIAuth, didFinish operation: FUIAccountSettingsOperationType, error: Error?) {
+        
     }
 }
