@@ -8,23 +8,21 @@
 
 import UIKit
 
-final class WelcomeViewController: UIViewController, RootCoordinatorController {
+final class WelcomeViewController: UIViewController {
     
-    // MARK: - CoordinatorController
+    // MARK: - ViewModel
+        
+    private var viewModel: WelcomeViewModelProtocol?
+   
+    // MARK: - Bind ViewModel
     
-    var currentFlow: MessagingApplicationFlow?
-    weak var rootCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, RootAction>?
-    
-    // MARK: - UIViewController Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        becomeFirstResponder()
+    func bindViewModel(_ viewModel: WelcomeViewModelProtocol) {
+        self.viewModel = viewModel
     }
     
     // MARK: - Actions
     
     @IBAction private func signInButtonTapped() {
-        try? rootCoordinatorActionHandler?.perform(.presentSignIn)
+        viewModel?.handleViewEvent(.signInButtonTapped)
     }
 }

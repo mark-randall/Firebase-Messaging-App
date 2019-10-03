@@ -35,13 +35,12 @@ enum ConversationViewEvent {
 
 // MARK: - ViewModel
 
-typealias ConversationViewModelProtocol = ViewModel<ConversationViewState, ConversationViewEffect, ConversationViewEvent>
+typealias ConversationViewModelProtocol = ViewModel<MessagingApplicationFlow, ConversationViewState, ConversationViewEffect, ConversationViewEvent>
 
 final class ConversationViewModel: ConversationViewModelProtocol, ConversationsCoordinatorController {
     
     // MARK: - CoordinatorController
     
-    var currentFlow: MessagingApplicationFlow?
     weak var conversationsCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
     
     // MARK: - Dependencies
@@ -58,11 +57,11 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     
     // MARK: - Init
     
-    init(firestore: Firestore, userId: String, conversationId: String? = nil) {
+    init(flow: MessagingApplicationFlow, firestore: Firestore, userId: String, conversationId: String? = nil) {
         self.firestore = firestore
         self.userId = userId
         self.conversationId = conversationId
-        super.init()
+        super.init(flow: flow)
         
         if let conversationId = conversationId {
             subscribeTo(conversationId: conversationId)
@@ -70,7 +69,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             updateViewState(ConversationViewState(contactsEditable: true))
         }
     }
-    
+        
     private func subscribeTo(conversationId: String) {
     
         conversationSubscription?.remove()

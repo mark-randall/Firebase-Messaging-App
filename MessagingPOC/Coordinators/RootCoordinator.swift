@@ -41,8 +41,8 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
-            vc.rootCoordinatorActionHandler = actionHandler
-            vc.currentFlow = .root
+            let vm = WelcomeViewModel(flow: flow)
+            vc.bindViewModel(vm)
             nc.viewControllers = [vc]
         }
     }

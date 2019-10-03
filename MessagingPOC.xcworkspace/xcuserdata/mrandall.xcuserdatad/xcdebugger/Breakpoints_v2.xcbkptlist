@@ -64,9 +64,9 @@
             filePath = "MessagingPOC/ViewModels/ProfileViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "init(currentFlow:)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "init(flow:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

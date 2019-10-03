@@ -12,8 +12,10 @@ import Foundation
 /// - ViewEffects - events from the VM the needs to be handled by the view. e.g. present error
 /// - ViewEvents - user actions and system events from the View the VM needs to handled. e.g. button tapped
 ///
-class ViewModel<ViewState: Equatable, ViewEffect, ViewEvent> {
+class ViewModel<F: Flow, ViewState: Equatable, ViewEffect, ViewEvent> {
 
+    private(set) var currentFlow: F
+    
     private(set) var viewState: ViewState? {
         didSet {
             if let viewState = self.viewState {
@@ -27,6 +29,14 @@ class ViewModel<ViewState: Equatable, ViewEffect, ViewEvent> {
     private var viewStateSubscription: ((ViewState) -> Void)?
     private var viewEffectSubscription: ((ViewEffect) -> Void)?
 
+    // MARK: - Init
+    
+    init(flow: F) {
+        self.currentFlow = flow
+    }
+    
+    // MARK: - ViewModel lifecycle
+    
     func subscribeToViewState(_ completion: @escaping (ViewState) -> Void) {
         if let viewState = self.viewState {
             DispatchQueue.main.async {
@@ -44,7 +54,7 @@ class ViewModel<ViewState: Equatable, ViewEffect, ViewEvent> {
         // Override as necessary
     }
 
-    // TODO: determine why to hide from View. Should not be called by View.
+    // TODO: determine how to hide from View. Should not be called by View.
     func performViewEffect(_ viewEffect: ViewEffect) {
         DispatchQueue.main.execute { [weak self] in
             self?.viewEffectSubscription?(viewEffect)

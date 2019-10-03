@@ -12,9 +12,9 @@ import UIKit
 
 protocol CoordinatorController {
     
-    associatedtype T: Flow
+    associatedtype F: Flow
     
-    var currentFlow: T? { get set }
+    var currentFlow: F { get }
 }
 
 // MARK: - ActionHandler

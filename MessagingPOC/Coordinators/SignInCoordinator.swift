@@ -42,9 +42,7 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
         guard let vc = authUI?.authViewController() else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
         rootViewController.present(vc, animated: true, completion: nil)
     }
-    
-    // MARK: - Actions
-    
+        
     override func perform(_ action: SignInAction) throws {
         
         switch action {
@@ -65,7 +63,7 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
         switch action {
         case .showProfile:
             let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
-            let vm = ProfileViewModel(currentFlow: .signIn)
+            let vm = ProfileViewModel(flow: flow)
             vm.signInCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             return vc

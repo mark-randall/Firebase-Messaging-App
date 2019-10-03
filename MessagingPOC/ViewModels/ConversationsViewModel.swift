@@ -34,13 +34,12 @@ enum ConversationsViewEvent {
 
 // MARK: - ViewModel
 
-typealias ConversationsViewModelProtocol = ViewModel<ConversationsViewState, ConversationsViewEffect, ConversationsViewEvent>
+typealias ConversationsViewModelProtocol = ViewModel<MessagingApplicationFlow, ConversationsViewState, ConversationsViewEffect, ConversationsViewEvent>
 
 final class ConversationsViewModel: ConversationsViewModelProtocol, ConversationsCoordinatorController {
 
     // MARK: - CoordinatorController
     
-    var currentFlow: MessagingApplicationFlow?
     weak var conversationsCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
     
     // MARK: - Dependencies
@@ -58,10 +57,10 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     
     // MARK: - Init
     
-    init(firestore: Firestore, userId: String) {
+    init(flow: MessagingApplicationFlow, firestore: Firestore, userId: String) {
         self.firestore = firestore
         self.userId = userId
-        super.init()
+        super.init(flow: flow)
         
         Crashlytics.sharedInstance().setUserIdentifier(userId) // TODO: should this be here
         os_log("show converations for %@", log: self.log, type: .info, userId)

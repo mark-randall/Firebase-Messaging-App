@@ -27,13 +27,12 @@ enum ContactsViewEffect {
 enum ContactsViewEvent {
 }
 
-typealias ContactsViewModelProtocol = ViewModel<ContactsViewState, ContactsViewEffect, ContactsViewEvent>
+typealias ContactsViewModelProtocol = ViewModel<MessagingApplicationFlow, ContactsViewState, ContactsViewEffect, ContactsViewEvent>
 
 final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinatorController {
     
     // MARK: - CoordinatorController
     
-    var currentFlow: MessagingApplicationFlow?
     weak var conversationsCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, ConversationAction>?
     
     // MARK: - Dependencies
@@ -43,7 +42,8 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
     
     // MARK: - Init
     
-    init(firestore: Firestore) {
+    init(flow: MessagingApplicationFlow, firestore: Firestore) {
         self.firestore = firestore
+        super.init(flow: flow)
     }
 }

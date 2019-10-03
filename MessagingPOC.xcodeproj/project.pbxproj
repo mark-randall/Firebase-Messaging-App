@@ -11,6 +11,7 @@
 		021A63C62345675400169EF3 /* ConversationContactsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 021A63C52345675400169EF3 /* ConversationContactsView.xib */; };
 		021A63C8234570E000169EF3 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63C7234570E000169EF3 /* ContactsViewController.swift */; };
 		021A63CA2345739600169EF3 /* UIViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */; };
+		021A63CC23459E4100169EF3 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63CB23459E4100169EF3 /* WelcomeViewModel.swift */; };
 		023053E8233313AB00293682 /* ConversationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053E7233313AB00293682 /* ConversationInputView.swift */; };
 		023053EA2333140500293682 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053E92333140500293682 /* UIView+Autolayout.swift */; };
 		023053F02335914C00293682 /* UIView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053EF2335914C00293682 /* UIView+Xib.swift */; };
@@ -71,6 +72,7 @@
 		021A63C52345675400169EF3 /* ConversationContactsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationContactsView.xib; sourceTree = "<group>"; };
 		021A63C7234570E000169EF3 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Hierarchy.swift"; sourceTree = "<group>"; };
+		021A63CB23459E4100169EF3 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		023053E7233313AB00293682 /* ConversationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationInputView.swift; sourceTree = "<group>"; };
 		023053E92333140500293682 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		023053EF2335914C00293682 /* UIView+Xib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Xib.swift"; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				02E24B412314CE6200318EA4 /* ConversationViewModel.swift */,
 				026DB83C23450270005EAC48 /* ContactsViewModel.swift */,
 				026DB8402345238C005EAC48 /* ProfileViewModel.swift */,
+				021A63CB23459E4100169EF3 /* WelcomeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				02E24B402314C88B00318EA4 /* ConversationsViewModel.swift in Sources */,
 				02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */,
 				02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */,
+				021A63CC23459E4100169EF3 /* WelcomeViewModel.swift in Sources */,
 				023053F02335914C00293682 /* UIView+Xib.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
