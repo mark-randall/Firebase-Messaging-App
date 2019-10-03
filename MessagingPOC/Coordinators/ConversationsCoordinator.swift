@@ -68,7 +68,9 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
                 nc.pushViewController(vc, animated: true)
             }
         case .presentAddConversation:
-            break;
+            let vc = try createViewController(forAction: action)
+            let nc = UINavigationController(rootViewController: vc)
+            presentingViewController?.present(nc, animated: true, completion: nil)
         case .presentProfile:
             let vc = try createViewController(forAction: action)
             let nc = UINavigationController(rootViewController: vc)
@@ -77,10 +79,13 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         case .dismissProfile:
             guard let nc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             nc.dismiss(animated: true, completion: nil)
+        case .presentAddContacts:
+            let vc = try createViewController(forAction: action)
+            let nc = UINavigationController(rootViewController: vc)
+            presentingViewController?.present(nc, animated: true, completion: nil)
         case .logout:
             try auth.signOut()
             complete(withResult: .success)
-            try perform(.dismissProfile)
         }
     }
     
@@ -94,9 +99,22 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             vm.currentFlow = .conversations
             vc.bindViewModel(vm)
             return vc
+        case .presentAddConversation:
+            let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
+            let vm = ConversationViewModel(firestore: firestore, userId: uid)
+            vm.conversationsCoordinatorActionHandler = actionHandler
+            vm.currentFlow = .conversations
+            vc.bindViewModel(vm)
+            return vc
         case .presentProfile:
             let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
             let vm = ProfileViewModel(currentFlow: .conversations)
+            vm.conversationsCoordinatorActionHandler = actionHandler
+            vc.bindViewModel(vm)
+            return vc
+        case .presentAddContacts:
+            let vc: ContactsViewController = try UIViewController.create(storyboard: "Main", identifier: "ContactsViewController")
+            let vm = ContactsViewModel(firestore: firestore)
             vm.conversationsCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             return vc

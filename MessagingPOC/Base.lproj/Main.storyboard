@@ -53,7 +53,11 @@
                                 <action selector="profileButtonTapped" destination="ehf-fe-Pfs" id="B8D-l8-gMH"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="dMa-0J-ic4"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="dMa-0J-ic4">
+                            <connections>
+                                <action selector="addButtonTapped" destination="ehf-fe-Pfs" id="13m-DQ-GuA"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                 </tableViewController>
@@ -228,6 +232,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hil-ls-G2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2039" y="-31"/>
+        </scene>
+        <!--Contacts View Controller-->
+        <scene sceneID="OqY-ks-gqE">
+            <objects>
+                <tableViewController storyboardIdentifier="ContactsViewController" id="TUh-X0-zkS" customClass="ContactsViewController" customModule="MessagingPOC" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="eiP-U1-UCT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="MNB-Dt-mcz">
+                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MNB-Dt-mcz" id="3sn-UA-nYQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="TUh-X0-zkS" id="dpg-Cu-yXN"/>
+                            <outlet property="delegate" destination="TUh-X0-zkS" id="S0V-x2-pVw"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3OY-OV-tvp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2886" y="-31"/>
         </scene>
     </scenes>
 </document>

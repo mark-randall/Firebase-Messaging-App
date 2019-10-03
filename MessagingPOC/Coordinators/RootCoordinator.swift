@@ -74,6 +74,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
                 try? start(presentingViewController: nil)
             }
         case .conversations:
+            (rootViewController as? UINavigationController)?.topViewController?.dismiss(animated: true, completion: nil)
             try? start(presentingViewController: nil)
         default:
             super.flowCompleted(flow, result: result)

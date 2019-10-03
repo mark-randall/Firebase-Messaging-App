@@ -14,8 +14,10 @@ import Crashlytics
 // MARK: - ViewState
 
 struct ConversationViewState: Equatable {
+
     let title = "Conversation"
-    var messages: [Message]
+    var contactsEditable: Bool = false
+    var messages: [Message] = []
 }
 
 // MARK: - ViewEffect
@@ -28,20 +30,8 @@ enum ConversationViewEffect {
 enum ConversationViewEvent {
     case messageViewed(IndexPath)
     case sendMessage(String)
+    case addContactTapped
 }
-
-//extension Collection where Element == Query {
-//
-//    func addSnapshotListener(_ completion: FIRQuerySnapshotBlock) -> [ListenerRegistration] {
-//
-//        return []
-//    }
-//
-//    func addSnapshotListener<T>(_ completion: Result<T, Error>) -> [ListenerRegistration] {
-//
-//        return []
-//    }
-//}
 
 // MARK: - ViewModel
 
@@ -62,18 +52,30 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     // MARK: - State
     
     private let userId: String
-    private let conversationId: String
+    private let conversationId: String?
     private var conversationSubscription: ListenerRegistration?
     private var conversationPendingSendSubscriptionSent: ListenerRegistration?
     
     // MARK: - Init
     
-    init(firestore: Firestore, userId: String, conversationId: String) {
+    init(firestore: Firestore, userId: String, conversationId: String? = nil) {
         self.firestore = firestore
         self.userId = userId
         self.conversationId = conversationId
         super.init()
+        
+        if let conversationId = conversationId {
+            subscribeTo(conversationId: conversationId)
+        } else {
+            updateViewState(ConversationViewState(contactsEditable: true))
+        }
+    }
     
+    private func subscribeTo(conversationId: String) {
+    
+        conversationSubscription?.remove()
+        conversationPendingSendSubscriptionSent?.remove()
+        
         conversationSubscription = firestore
             .collection("/users/\(userId)/conversations/\(conversationId)/messages")
             .whereField("is_blocked", isEqualTo: false)
@@ -126,6 +128,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             
         case .messageViewed(let indexPath):
             
+            guard let conversationId = self.conversationId else { return }
             guard let message = viewState?.messages[safe: indexPath.row] else { return }
             guard !message.isRead else { return }
             
@@ -146,6 +149,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             
         case .sendMessage(let message):
             
+            guard let conversationId = self.conversationId else { return }
             let data = SentMessage(conversationId: conversationId, senderId: userId, text: message).data
             
             firestore
@@ -162,6 +166,9 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
                         os_log("message sent", log: self.log, type: .info)
                     }
                 }
+            
+        case .addContactTapped:
+            try? conversationsCoordinatorActionHandler?.perform(.presentAddContacts)
         }
     }
 }

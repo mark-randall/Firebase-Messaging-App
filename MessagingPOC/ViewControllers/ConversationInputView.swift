@@ -14,6 +14,8 @@ final class ConversationInputView: UIControl {
         return UIView.create(fromNib: "ConversationInputView")!
     }
     
+    // MARK: - Internal properties
+    
     var text: String {
         return textView.text
     }
@@ -38,7 +40,6 @@ final class ConversationInputView: UIControl {
             textView.layer.borderWidth = 1
             textView.layer.cornerRadius = 22
             textView.delegate = self
-            
         }
     }
     
@@ -51,7 +52,7 @@ final class ConversationInputView: UIControl {
         }
     }
     
-    // MARK: - InitA
+    // MARK: - Init
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: bounds.width, height: textView.intrinsicContentSize.height)

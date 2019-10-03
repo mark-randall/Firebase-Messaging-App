@@ -22,6 +22,12 @@ final class ConversationViewController: UITableViewController {
         return input
     }()
     
+    private lazy var contactsView: ConversationContactsView = {
+        let contacts = ConversationContactsView.create()
+        contacts.addTarget(self, action: #selector(contactEditingDidBegin), for: .editingDidBegin)
+        return contacts
+    }()
+    
     // MARK: - UIViewController AccessoryView
     
     override var inputAccessoryView: UIView? {
@@ -45,6 +51,8 @@ final class ConversationViewController: UITableViewController {
         tableView.keyboardDismissMode = .interactive
         tableView.allowsSelection = false
         
+        tableView.tableHeaderView = contactsView
+        
         becomeFirstResponder()
     }
     
@@ -54,6 +62,7 @@ final class ConversationViewController: UITableViewController {
         self.viewModel = viewModel
         
         viewModel.subscribeToViewState { [weak self] viewState in
+            self?.contactsView.isEditable = viewState.contactsEditable
             self?.navigationItem.title = viewState.title
             self?.tableView.reloadData()
         }
@@ -64,6 +73,10 @@ final class ConversationViewController: UITableViewController {
     @objc private func chatInputEditingDidEnd() {
         viewModel?.handleViewEvent(.sendMessage(chatInputView.text))
         chatInputView.clear()
+    }
+    
+    @objc private func contactEditingDidBegin() {
+        viewModel?.handleViewEvent(.addContactTapped)
     }
     
     // MARK: - UITableViewControllerDataSource

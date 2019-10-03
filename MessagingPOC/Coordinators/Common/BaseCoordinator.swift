@@ -15,8 +15,11 @@ class BaseCoordinator<T: Flow>: NSObject {
     var flow: T
     var childFlow: T?
     
-    lazy var rootViewController: UIViewController = { [weak self] in return self?.createRootViewController() ?? self?.presentingViewController ?? UINavigationController() }()
-    private(set) weak var presentingViewController: UIViewController?
+    private(set) var rootViewController: UIViewController!
+    
+    var presentingViewController: UIViewController? {
+        rootViewController?.getTopNavigationOrTabbarController()
+    }
     
     private(set) var childCoordinator: BaseCoordinator<T>?
     weak var parentCoordinator: BaseCoordinator<T>?
@@ -24,11 +27,11 @@ class BaseCoordinator<T: Flow>: NSObject {
     init(flow: T, presentingViewController: UIViewController) {
         self.flow = flow
         super.init()
-        self.presentingViewController = presentingViewController
+        rootViewController = createRootViewController() ?? presentingViewController
     }
     
     func createRootViewController() -> UIViewController? {
-        return presentingViewController
+        return nil
     }
     
     func start(presentingViewController: UIViewController?) throws {
