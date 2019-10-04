@@ -13,6 +13,10 @@
 		021A63CA2345739600169EF3 /* UIViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */; };
 		021A63CC23459E4100169EF3 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63CB23459E4100169EF3 /* WelcomeViewModel.swift */; };
 		021A63CF2345A0F100169EF3 /* LoggingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63CE2345A0F100169EF3 /* LoggingManager.swift */; };
+		021A63DA2346D2A000169EF3 /* MessagesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63D92346D2A000169EF3 /* MessagesRepository.swift */; };
+		021A63DC2346D46300169EF3 /* FirestoreMessagesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63DB2346D46300169EF3 /* FirestoreMessagesRepository.swift */; };
+		021A63DF2347A07E00169EF3 /* Firestore+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63DE2347A07E00169EF3 /* Firestore+Combine.swift */; };
+		021A63E32347B34F00169EF3 /* Result+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63E22347B34F00169EF3 /* Result+Util.swift */; };
 		023053E8233313AB00293682 /* ConversationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053E7233313AB00293682 /* ConversationInputView.swift */; };
 		023053EA2333140500293682 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053E92333140500293682 /* UIView+Autolayout.swift */; };
 		023053F02335914C00293682 /* UIView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053EF2335914C00293682 /* UIView+Xib.swift */; };
@@ -75,6 +79,10 @@
 		021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Hierarchy.swift"; sourceTree = "<group>"; };
 		021A63CB23459E4100169EF3 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		021A63CE2345A0F100169EF3 /* LoggingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingManager.swift; sourceTree = "<group>"; };
+		021A63D92346D2A000169EF3 /* MessagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesRepository.swift; sourceTree = "<group>"; };
+		021A63DB2346D46300169EF3 /* FirestoreMessagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreMessagesRepository.swift; sourceTree = "<group>"; };
+		021A63DE2347A07E00169EF3 /* Firestore+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firestore+Combine.swift"; sourceTree = "<group>"; };
+		021A63E22347B34F00169EF3 /* Result+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Util.swift"; sourceTree = "<group>"; };
 		023053E7233313AB00293682 /* ConversationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationInputView.swift; sourceTree = "<group>"; };
 		023053E92333140500293682 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		023053EF2335914C00293682 /* UIView+Xib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Xib.swift"; sourceTree = "<group>"; };
@@ -170,6 +178,48 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
+		021A63D82346C62600169EF3 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				028683CE2347C33500C65879 /* Firebase */,
+				021A63D92346D2A000169EF3 /* MessagesRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		021A63DD2347A06100169EF3 /* FirebaseFirestore */ = {
+			isa = PBXGroup;
+			children = (
+				021A63DE2347A07E00169EF3 /* Firestore+Combine.swift */,
+			);
+			path = FirebaseFirestore;
+			sourceTree = "<group>";
+		};
+		021A63E02347B33300169EF3 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		021A63E12347B33900169EF3 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				021A63E22347B34F00169EF3 /* Result+Util.swift */,
+				02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
+		028683CE2347C33500C65879 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				021A63DB2346D46300169EF3 /* FirestoreMessagesRepository.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		0297A77B23088EE800A4C763 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +268,7 @@
 			children = (
 				026DB83B2344420E005EAC48 /* MessagingPOC.entitlements */,
 				021A63CD2345A0D900169EF3 /* DataSources */,
+				021A63D82346C62600169EF3 /* Repositories */,
 				02A5E6E82303840D0087EDBA /* Coordinators */,
 				02E24B332314C76100318EA4 /* Models */,
 				02E24B382314C7E100318EA4 /* ViewModels */,
@@ -271,9 +322,10 @@
 		02A775AD22FCAE30000CB7CE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				021A63E12347B33900169EF3 /* Swift */,
+				021A63E02347B33300169EF3 /* Foundation */,
+				021A63DD2347A06100169EF3 /* FirebaseFirestore */,
 				021A63D02346AF9800169EF3 /* UIKit */,
-				02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */,
-				02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -557,6 +609,7 @@
 				026DB8412345238C005EAC48 /* ProfileViewModel.swift in Sources */,
 				02A5E6E7230383860087EDBA /* Coordination.swift in Sources */,
 				023053F42337D2A400293682 /* SentMessage.swift in Sources */,
+				021A63E32347B34F00169EF3 /* Result+Util.swift in Sources */,
 				02E24B3E2314C83D00318EA4 /* DispatchQueue+Util.swift in Sources */,
 				023053E8233313AB00293682 /* ConversationInputView.swift in Sources */,
 				02E24B352314C77000318EA4 /* Conversation.swift in Sources */,
@@ -565,6 +618,7 @@
 				0283ACA52309955F0010E7CD /* ProfileViewController.swift in Sources */,
 				02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */,
 				0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */,
+				021A63DA2346D2A000169EF3 /* MessagesRepository.swift in Sources */,
 				023053EA2333140500293682 /* UIView+Autolayout.swift in Sources */,
 				021A63CF2345A0F100169EF3 /* LoggingManager.swift in Sources */,
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
@@ -573,6 +627,8 @@
 				02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */,
 				026DB83D23450270005EAC48 /* ContactsViewModel.swift in Sources */,
 				0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */,
+				021A63DC2346D46300169EF3 /* FirestoreMessagesRepository.swift in Sources */,
+				021A63DF2347A07E00169EF3 /* Firestore+Combine.swift in Sources */,
 				02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */,
 				02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */,
 				02E24B372314C78F00318EA4 /* Message.swift in Sources */,
@@ -760,6 +816,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U2ZKB248CQ;
 				INFOPLIST_FILE = MessagingPOC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -780,6 +837,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U2ZKB248CQ;
 				INFOPLIST_FILE = MessagingPOC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

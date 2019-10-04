@@ -44,6 +44,7 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
     // MARK: - ViewModel lifecycle
     
     func subscribeToViewState(_ completion: @escaping (VState) -> Void) {
+        
         if let viewState = self.viewState {
             DispatchQueue.main.async {
                 completion(viewState)

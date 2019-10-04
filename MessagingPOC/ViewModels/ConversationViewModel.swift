@@ -10,6 +10,7 @@ import Foundation
 import FirebaseFirestore
 import os.log
 import Crashlytics
+import Combine
 
 // MARK: - ViewState
 
@@ -45,20 +46,20 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     
     // MARK: - Dependencies
     
-    private let firestore: Firestore
+    private let messageRepostiory: MessagesRepository
     private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
     // MARK: - State
     
     private let userId: String
     private let conversationId: String?
-    private var conversationSubscription: ListenerRegistration?
-    private var conversationPendingSendSubscriptionSent: ListenerRegistration?
+    
+    private var cancellable: AnyCancellable?
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, firestore: Firestore, userId: String, conversationId: String? = nil) {
-        self.firestore = firestore
+    init(flow: MessagingApplicationFlow, messageRepostiory: MessagesRepository, userId: String, conversationId: String? = nil) {
+        self.messageRepostiory = messageRepostiory
         self.userId = userId
         self.conversationId = conversationId
         super.init(flow: flow)
@@ -72,51 +73,14 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         
     private func subscribeTo(conversationId: String) {
     
-        conversationSubscription?.remove()
-        conversationPendingSendSubscriptionSent?.remove()
-        
-        conversationSubscription = firestore
-            .collection("/users/\(userId)/conversations/\(conversationId)/messages")
-            .whereField("is_blocked", isEqualTo: false)
-            .whereField("is_deleted", isEqualTo: false)
-            .addSnapshotListener { [weak self] documentSnapshot, error in
-                
-                guard let self = self else { return }
-                
-                if let error = error {
-                    os_log("error fetching conversation messages", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
-                    //TODO: Handle error
-                } else if let documentSnapshot = documentSnapshot {
-                    let messages = documentSnapshot.documents.compactMap { Message(snapshot: $0) }
-                    let newAndExistingMessages = Array(Set((self.viewState?.messages ?? []) + messages)).sorted()
-                    self.updateViewState(ConversationViewState(messages: newAndExistingMessages))
-                }
+        cancellable = messageRepostiory.fetchMessages(forUserId: userId, conversationId: conversationId).sink { [weak self] result in
+            
+            switch result {
+            case .failure: break
+            case .success(let messages):
+                self?.updateViewState(ConversationViewState(messages: messages))
             }
-        
-        conversationPendingSendSubscriptionSent = firestore
-            .collection("/users/\(userId)/conversations/\(conversationId)/send_pending_messages")
-            .addSnapshotListener { [weak self] documentSnapshot, error in
-                
-                guard let self = self else { return }
-                
-                if let error = error {
-                    os_log("error fetching conversation messages", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
-                    //TODO: Handle error
-                } else if let documentSnapshot = documentSnapshot {
-                    let messages = documentSnapshot.documents.compactMap { Message(snapshot: $0) }
-                    let newAndExistingMessages = Array(Set((self.viewState?.messages ?? []) + messages)).sorted()
-                    self.updateViewState(ConversationViewState(messages: newAndExistingMessages))
-                }
         }
-    }
-    
-    deinit {
-        conversationSubscription?.remove()
-        conversationSubscription = nil
-        conversationPendingSendSubscriptionSent?.remove()
-        conversationPendingSendSubscriptionSent = nil
     }
     
     // MARK: - Handle ViewEvent
@@ -132,40 +96,36 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             guard let message = viewState?.messages[safe: indexPath.row] else { return }
             guard !message.isRead else { return }
             
-            firestore
-                .collection("users/\(userId)/conversations/\(conversationId)/messages")
-                .document(message.id)
-                .updateData(["is_read": true]) { [weak self] error in
+            _ = messageRepostiory.updateMessageAsRead(forUserId: userId, conversationId: conversationId, messageId: message.id).sink { [weak self] result in
                 
-                    guard let self = self else { return }
-                    
-                    if let error = error {
-                        os_log("error marking message as read", log: self.log, type: .error)
-                        Crashlytics.sharedInstance().recordError(error)
-                    } else {
-                        os_log("message marked as read", log: self.log, type: .info)
-                    }
+                guard let self = self else { return }
+                
+                switch result {
+                case .failure(let error):
+                    os_log("error marking message as read", log: self.log, type: .error)
+                    Crashlytics.sharedInstance().recordError(error)
+                case .success:
+                    os_log("message marked as read", log: self.log, type: .info)
                 }
-            
+            }
+
         case .sendMessage(let message):
             
             guard let conversationId = self.conversationId else { return }
-            let data = SentMessage(conversationId: conversationId, senderId: userId, text: message).data
+            let message = SentMessage(conversationId: conversationId, senderId: userId, text: message)
             
-            firestore
-                .collection("users/\(userId)/conversations/\(conversationId)/send_pending_messages")
-                .document(UUID().uuidString)
-                .setData(data) { [weak self] error in
-                    
-                    guard let self = self else { return }
-                    
-                    if let error = error {
-                        os_log("error sending message", log: self.log, type: .error)
-                        Crashlytics.sharedInstance().recordError(error)
-                    } else {
-                        os_log("message sent", log: self.log, type: .info)
-                    }
+            _ = messageRepostiory.sendMessage(forUserId: userId, conversationId: conversationId, message: message).sink { [weak self] result in
+                
+                guard let self = self else { return }
+                
+                switch result {
+                case .failure(let error):
+                    os_log("error sending message", log: self.log, type: .error)
+                    Crashlytics.sharedInstance().recordError(error)
+                case .success:
+                    os_log("message sent", log: self.log, type: .info)
                 }
+            }
             
         case .addContactTapped:
             try? conversationsCoordinatorActionHandler?.perform(.presentAddContacts)

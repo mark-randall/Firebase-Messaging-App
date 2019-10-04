@@ -26,6 +26,10 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         return db
     }()
     
+    private lazy var messagesRepository: MessagesRepository = { [unowned self] in
+        return FirestoreMessagesRepository(firestore: self.firestore)
+    }()
+    
     private lazy var auth: Auth = {
        return Auth.auth()
     }()
@@ -61,7 +65,14 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
             return SignInCoordinator(flow: flow, presentingViewController: rootViewController, auth: auth)
         case .conversations:
             guard let uid = auth.currentUser?.uid else { throw CoordinatorError.flowNotAllowed }
-            return ConversationsCoordinator(flow: flow, presentingViewController: rootViewController, firestore: firestore, auth: auth, uid: uid)
+            return ConversationsCoordinator(
+                flow: flow,
+                presentingViewController: rootViewController,
+                firestore: firestore,
+                messagesRepository: messagesRepository,
+                auth: auth,
+                uid: uid
+            )
         case .root:
             return try super.createCoordinator(forFlow: flow)
         }
@@ -81,7 +92,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
             super.flowCompleted(flow, result: result)
         }
         
-        LoggingManager.shared.log(flow, at: .debug)
+        LoggingManager.shared.log(MessagingApplicationFlow.root, at: .debug)
     }
     
     // MARK: - Coordinator action overrides

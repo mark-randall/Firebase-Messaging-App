@@ -13,9 +13,11 @@ struct SentMessage: Equatable {
     
     // MARK: - Properties
     
-    let senderId: String
-    let text: String
-    let conversationId: String
+    private let senderId: String
+    private let text: String
+    private let conversationId: String
+    
+    var id: String = UUID().uuidString
     
     var data: [String: Any] {
         return [

@@ -10,6 +10,7 @@ import Foundation
 import FirebaseFirestore
 import os.log
 import Crashlytics
+import Combine
 
 // MARK: - ViewState
 
@@ -44,55 +45,35 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     
     // MARK: - Dependencies
 
-    private let firestore: Firestore
+    private let messagesRepository: MessagesRepository
     private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
     // MARK: - State
     
     private var conversations: [Conversation] = []
-    
-    // TODO: user real id
     private let userId: String
-    private var conversationsSubscription: ListenerRegistration?
+    
+    private var cancellable: AnyCancellable?
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, firestore: Firestore, userId: String) {
-        self.firestore = firestore
+    init(flow: MessagingApplicationFlow, messagesRepository: MessagesRepository, userId: String) {
+        self.messagesRepository = messagesRepository
         self.userId = userId
         super.init(flow: flow)
         
         Crashlytics.sharedInstance().setUserIdentifier(userId) // TODO: should this be here
         os_log("show converations for %@", log: self.log, type: .info, userId)
         
-        // Fetch data
-        conversationsSubscription = firestore
-            .collection("/users/\(userId)/conversations")
-            .whereField("is_blocked", isEqualTo: false)
-            .whereField("is_deleted", isEqualTo: false)
-            .order(by: "time", descending: true)
-            .addSnapshotListener { [weak self] documentSnapshot, error in
-                
-                guard let self = self else { return }
-                
-                if let error = error {
-                    os_log("error fetching conversations", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
-                    // TODO: Handle error
-                } else if let documentSnapshot = documentSnapshot{
-                    
-                    self.conversations = documentSnapshot.documents.compactMap {
-                        Conversation(snapshot: $0)
-                    }
+        cancellable = messagesRepository.fetchConversations(forUserId: userId).sink { [weak self] result in
             
-                    self.updateViewState(ConversationsViewState(conversations: self.conversations))
-                }
+            switch result {
+            case .failure: break
+            case .success(let conversations):
+                self?.conversations = conversations
+                self?.updateViewState(ConversationsViewState(conversations: conversations))
             }
-    }
-    
-    deinit {
-        conversationsSubscription?.remove()
-        conversationsSubscription = nil
+        }
     }
     
     // MARK: - Handle ViewEvent
@@ -105,21 +86,19 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
         case .conversationDeleted(let indexPath):
             
             guard let conversation = conversations[safe: indexPath.row] else { return }
-            
-            firestore
-                .collection("users/\(userId)/conversations")
-                .document(conversation.id)
-                .updateData(["is_deleted": true]) { [weak self] error in
+                        
+            _ = messagesRepository.deleteConversation(forUserId: userId, conversationId: conversation.id).sink { [weak self] result in
                 
-                    guard let self = self else { return }
-                    
-                    if let error = error {
-                        os_log("error deleting conversation", log: self.log, type: .error)
-                        Crashlytics.sharedInstance().recordError(error)
-                    } else {
-                        os_log("deleted conversation", log: self.log, type: .info)
-                    }
+                guard let self = self else { return }
+                
+                switch result {
+                case .failure(let error):
+                    os_log("error deleting conversation", log: self.log, type: .error)
+                    Crashlytics.sharedInstance().recordError(error)
+                case .success:
+                    os_log("deleted conversation", log: self.log, type: .info)
                 }
+            }
             
         case .conversationSelected(let indexPath):
             guard let conversation = conversations[safe: indexPath.row] else { return }
