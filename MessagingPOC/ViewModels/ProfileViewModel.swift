@@ -30,6 +30,8 @@ enum ProfileViewEvent: ViewEvent {
     case startChattingButtonTapped
 }
 
+// MARK: - ViewModel
+
 typealias ProfileViewModelProtocol = ViewModel<MessagingApplicationFlow, ProfileViewState, ProfileViewEffect, ProfileViewEvent>
 
 final class ProfileViewModel: ProfileViewModelProtocol, ConversationsCoordinatorController, SignInCoordinatorController {

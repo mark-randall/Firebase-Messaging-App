@@ -26,6 +26,8 @@ enum WelcomeViewEvent: ViewEvent {
     case signInButtonTapped
 }
 
+// MARK: - ViewModel
+
 typealias WelcomeViewModelProtocol = ViewModel<MessagingApplicationFlow, WelcomeViewState, WelcomeViewEffect, WelcomeViewEvent>
 
 final class WelcomeViewModel: WelcomeViewModelProtocol, RootCoordinatorController {

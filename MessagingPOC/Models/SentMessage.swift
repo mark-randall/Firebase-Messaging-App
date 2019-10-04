@@ -13,10 +13,6 @@ struct SentMessage: Equatable {
     
     // MARK: - Properties
     
-    private let senderId: String
-    private let text: String
-    private let conversationId: String
-    
     var id: String = UUID().uuidString
     
     var data: [String: Any] {
@@ -32,6 +28,10 @@ struct SentMessage: Equatable {
             "is_read": true
         ]
     }
+    
+    private let senderId: String
+    private let text: String
+    private let conversationId: String
     
     // MARK: - Init
 

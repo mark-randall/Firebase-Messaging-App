@@ -27,6 +27,8 @@ enum ContactsViewEffect: ViewEffect {
 enum ContactsViewEvent: ViewEvent {
 }
 
+// MARK: - ViewModel
+
 typealias ContactsViewModelProtocol = ViewModel<MessagingApplicationFlow, ContactsViewState, ContactsViewEffect, ContactsViewEvent>
 
 final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinatorController {
