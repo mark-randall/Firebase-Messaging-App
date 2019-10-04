@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Conversation: Equatable {
+struct Conversation: Equatable, Hashable {
     
     // MARK: - Properties
     

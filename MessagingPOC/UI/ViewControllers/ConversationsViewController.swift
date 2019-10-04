@@ -14,6 +14,28 @@ final class ConversationsViewController: UITableViewController {
     
     private var viewModel: ConversationsViewModelProtocol?
     
+    // MARK: - Datasource
+    
+    enum Section: CaseIterable {
+        case conversations
+    }
+    
+    private lazy var dataSource: UITableViewDiffableDataSource<Section, Conversation> = { [unowned self] in
+        
+        return EditableDiffableDataSource(
+            tableView: tableView,
+            cellProvider: { [weak self] tableView, indexPath, contact in
+                
+                // TODO: custom cell with config method
+                let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+                guard let conversation = self?.viewModel?.viewState?.conversations[safe: indexPath.row] else { return cell }
+                cell.textLabel?.text = conversation.text
+                cell.detailTextLabel?.text = "@: \(conversation.lastMessageSend)"
+                return cell
+            }
+        )
+    }()
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -21,14 +43,21 @@ final class ConversationsViewController: UITableViewController {
 
         // Configure subviews
         tableView.tableFooterView = UIView()
+        dataSource.defaultRowAnimation = .fade
     }
+    
+    // MARK: - Bind ViewModel
     
     func bindViewModel(_ viewModel: ConversationsViewModelProtocol) {
         self.viewModel = viewModel
         
         viewModel.subscribeToViewState { [weak self] viewState in
             self?.navigationItem.title = viewState.title
-            self?.tableView.reloadData()
+            var snapshot = NSDiffableDataSourceSnapshot<Section, Conversation>()
+            snapshot.appendSections(Section.allCases)
+            snapshot.appendItems(viewState.conversations, toSection: Section.conversations)
+            let animate = self?.tableView.numberOfSections ?? 0 > 0
+            self?.dataSource.apply(snapshot, animatingDifferences: animate)
         }
     }
     
@@ -41,40 +70,25 @@ final class ConversationsViewController: UITableViewController {
     @IBAction private func addButtonTapped() {
         viewModel?.handleViewEvent(.addButtonTapped)
     }
-    
-    // MARK: - UITableViewControllerDataSource
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.viewState?.conversations.count ?? 0
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+}
 
-        // TODO: custom cell with config method
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        guard let conversation = viewModel?.viewState?.conversations[safe: indexPath.row] else { return cell }
-        cell.textLabel?.text = conversation.text
-        cell.detailTextLabel?.text = "@: \(conversation.lastMessageSend)"
-        
-        if conversation.hasUnreadMessages {
-            cell.backgroundColor = .yellow
-        } else {
-            cell.backgroundColor = .white
-        }
-        
-        return cell
-    }
+// MARK: - UITableViewDelegate
     
-    // MARK: - UITableViewDelegate
-    
+extension ConversationsViewController {
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel?.handleViewEvent(.conversationSelected(indexPath))
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        if editingStyle == .delete {
-            viewModel?.handleViewEvent(.conversationDeleted(indexPath))
+        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completed in
+            self?.viewModel?.handleViewEvent(.conversationDeleted(indexPath))
+            completed(true)
         }
+        //action.backgroundColor = .red
+        let config = UISwipeActionsConfiguration(actions: [action])
+        config.performsFirstActionWithFullSwipe = true
+        return config
     }
 }

@@ -14,6 +14,27 @@ final class ConversationViewController: UITableViewController {
     
     private var viewModel: ConversationViewModelProtocol?
     
+    // MARK: - DataSource
+    
+    enum Section: CaseIterable {
+        case messages
+    }
+    
+    private lazy var dataSource: UITableViewDiffableDataSource<Section, Message> = { [unowned self] in
+        
+        return EditableDiffableDataSource(
+            tableView: tableView,
+            cellProvider: { [weak self] tableView, indexPath, contact in
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+                guard let message = self?.viewModel?.viewState?.messages[safe: indexPath.row] else { return cell }
+                cell.textLabel?.text = message.text
+                cell.detailTextLabel?.text = "From: \(message.from)"
+                return cell
+            }
+        )
+    }()
+    
     // MARK: - Subviews
     
     private lazy var chatInputView: ConversationInputView = {
@@ -50,9 +71,9 @@ final class ConversationViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
         tableView.allowsSelection = false
-        
         tableView.tableHeaderView = contactsView
-        
+        dataSource.defaultRowAnimation = .fade
+
         becomeFirstResponder()
     }
     
@@ -64,7 +85,11 @@ final class ConversationViewController: UITableViewController {
         viewModel.subscribeToViewState { [weak self] viewState in
             self?.contactsView.isEditable = viewState.contactsEditable
             self?.navigationItem.title = viewState.title
-            self?.tableView.reloadData()
+            var snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
+            snapshot.appendSections(Section.allCases)
+            snapshot.appendItems(viewState.messages, toSection: Section.messages)
+            let animate = self?.tableView.numberOfSections ?? 0 > 0
+            self?.dataSource.apply(snapshot, animatingDifferences: animate)
         }
     }
     
@@ -78,26 +103,12 @@ final class ConversationViewController: UITableViewController {
     @objc private func contactEditingDidBegin() {
         viewModel?.handleViewEvent(.addContactTapped)
     }
-    
-    // MARK: - UITableViewControllerDataSource
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.viewState?.messages.count ?? 0
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // TODO: custom cell with config method
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        guard let message = viewModel?.viewState?.messages[safe: indexPath.row] else { return cell }
-        cell.textLabel?.text = message.text
-        cell.detailTextLabel?.text = "From: \(message.from)"
-        
-        return cell
-    }
-    
-    // MARK: - UITableViewDelegate
-    
+}
+
+// MARK: - UITableViewDelegate
+
+extension ConversationViewController {
+
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         viewModel?.handleViewEvent(.messageViewed(indexPath))
     }

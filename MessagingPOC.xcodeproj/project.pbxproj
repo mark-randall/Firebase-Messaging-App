@@ -47,6 +47,7 @@
 		02A775AC22FC4ACD000CB7CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */; };
 		02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */; };
 		02A775B122FCB0DC000CB7CE /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */; };
+		02A966EB2347DB1E00146FD4 /* DiffableDataSource+Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A966EA2347DB1E00146FD4 /* DiffableDataSource+Editable.swift */; };
 		02E24B352314C77000318EA4 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B342314C77000318EA4 /* Conversation.swift */; };
 		02E24B372314C78F00318EA4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B362314C78F00318EA4 /* Message.swift */; };
 		02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3A2314C80800318EA4 /* ViewModel.swift */; };
@@ -122,6 +123,7 @@
 		02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+SafeIndex.swift"; sourceTree = "<group>"; };
 		02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
+		02A966EA2347DB1E00146FD4 /* DiffableDataSource+Editable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiffableDataSource+Editable.swift"; sourceTree = "<group>"; };
 		02E24B342314C77000318EA4 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		02E24B362314C78F00318EA4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		02E24B3A2314C80800318EA4 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				023053EF2335914C00293682 /* UIView+Xib.swift */,
 				023053E92333140500293682 /* UIView+Autolayout.swift */,
 				02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */,
+				02A966EA2347DB1E00146FD4 /* DiffableDataSource+Editable.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -651,6 +654,7 @@
 				02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */,
 				0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */,
 				021A63DA2346D2A000169EF3 /* MessagesRepository.swift in Sources */,
+				02A966EB2347DB1E00146FD4 /* DiffableDataSource+Editable.swift in Sources */,
 				023053EA2333140500293682 /* UIView+Autolayout.swift in Sources */,
 				021A63CF2345A0F100169EF3 /* LoggingManager.swift in Sources */,
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
