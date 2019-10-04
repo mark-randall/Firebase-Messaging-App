@@ -30,7 +30,11 @@ final class ConversationsViewController: UITableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
                 guard let conversation = self?.viewModel?.viewState?.conversations[safe: indexPath.row] else { return cell }
                 cell.textLabel?.text = conversation.text
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.lineBreakMode = .byWordWrapping
                 cell.detailTextLabel?.text = "@: \(conversation.lastMessageSend)"
+                cell.detailTextLabel?.numberOfLines = 0
+                cell.detailTextLabel?.lineBreakMode = .byWordWrapping
                 return cell
             }
         )
@@ -86,7 +90,7 @@ extension ConversationsViewController {
             self?.viewModel?.handleViewEvent(.conversationDeleted(indexPath))
             completed(true)
         }
-        //action.backgroundColor = .red
+        action.backgroundColor = .systemRed
         let config = UISwipeActionsConfiguration(actions: [action])
         config.performsFirstActionWithFullSwipe = true
         return config

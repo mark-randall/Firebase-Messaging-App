@@ -30,13 +30,13 @@ final class ConversationInputView: UIControl {
     
     @IBOutlet private weak var textView: UITextView! {
         didSet {
-            textView.textColor = UIColor.darkText
+            textView.textColor = .label
             textView.font = UIFont.preferredFont(forTextStyle: .body)
             textView.isScrollEnabled = false
             textView.isEditable = true
             textView.textContainerInset = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
             textView.textContainer.lineFragmentPadding = 0.0
-            textView.layer.borderColor = UIColor.lightGray.cgColor
+            textView.layer.borderColor = UIColor.systemGray.cgColor
             textView.layer.borderWidth = 1
             textView.layer.cornerRadius = 22
             textView.delegate = self
@@ -58,6 +58,7 @@ final class ConversationInputView: UIControl {
         return CGSize(width: bounds.width, height: textView.intrinsicContentSize.height)
     }
     
+    @discardableResult
     override func becomeFirstResponder() -> Bool {
         return textView.becomeFirstResponder()
     }

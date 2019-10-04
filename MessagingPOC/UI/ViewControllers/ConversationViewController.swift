@@ -29,7 +29,11 @@ final class ConversationViewController: UITableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
                 guard let message = self?.viewModel?.viewState?.messages[safe: indexPath.row] else { return cell }
                 cell.textLabel?.text = message.text
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.lineBreakMode = .byWordWrapping
                 cell.detailTextLabel?.text = "From: \(message.from)"
+                cell.detailTextLabel?.numberOfLines = 0
+                cell.detailTextLabel?.lineBreakMode = .byWordWrapping
                 return cell
             }
         )
@@ -75,6 +79,11 @@ final class ConversationViewController: UITableViewController {
         dataSource.defaultRowAnimation = .fade
 
         becomeFirstResponder()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        chatInputView.becomeFirstResponder()
     }
     
     // MARK: - Bind ViewModel
