@@ -28,6 +28,7 @@ class ActionHandler<T: Flow, U: Action> {
     }
     
     func perform(_ action: U) throws {
+        LoggingManager.shared.log(action, at: .debug)
         guard let coordinator = coordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
         return try coordinator.perform(action)
     }

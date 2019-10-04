@@ -28,6 +28,8 @@ class BaseCoordinator<T: Flow>: NSObject {
         self.flow = flow
         super.init()
         rootViewController = createRootViewController() ?? presentingViewController
+        
+        LoggingManager.shared.log(flow, at: .debug)
     }
     
     func createRootViewController() -> UIViewController? {

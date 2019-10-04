@@ -12,6 +12,7 @@
 		021A63C8234570E000169EF3 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63C7234570E000169EF3 /* ContactsViewController.swift */; };
 		021A63CA2345739600169EF3 /* UIViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */; };
 		021A63CC23459E4100169EF3 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63CB23459E4100169EF3 /* WelcomeViewModel.swift */; };
+		021A63CF2345A0F100169EF3 /* LoggingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A63CE2345A0F100169EF3 /* LoggingManager.swift */; };
 		023053E8233313AB00293682 /* ConversationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053E7233313AB00293682 /* ConversationInputView.swift */; };
 		023053EA2333140500293682 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053E92333140500293682 /* UIView+Autolayout.swift */; };
 		023053F02335914C00293682 /* UIView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023053EF2335914C00293682 /* UIView+Xib.swift */; };
@@ -73,6 +74,7 @@
 		021A63C7234570E000169EF3 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Hierarchy.swift"; sourceTree = "<group>"; };
 		021A63CB23459E4100169EF3 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
+		021A63CE2345A0F100169EF3 /* LoggingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingManager.swift; sourceTree = "<group>"; };
 		023053E7233313AB00293682 /* ConversationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationInputView.swift; sourceTree = "<group>"; };
 		023053E92333140500293682 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		023053EF2335914C00293682 /* UIView+Xib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Xib.swift"; sourceTree = "<group>"; };
@@ -149,6 +151,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		021A63CD2345A0D900169EF3 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				021A63CE2345A0F100169EF3 /* LoggingManager.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		021A63D02346AF9800169EF3 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */,
+				023053EF2335914C00293682 /* UIView+Xib.swift */,
+				023053E92333140500293682 /* UIView+Autolayout.swift */,
+				02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
 		0297A77B23088EE800A4C763 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,11 +217,12 @@
 			isa = PBXGroup;
 			children = (
 				026DB83B2344420E005EAC48 /* MessagingPOC.entitlements */,
+				021A63CD2345A0D900169EF3 /* DataSources */,
 				02A5E6E82303840D0087EDBA /* Coordinators */,
 				02E24B332314C76100318EA4 /* Models */,
 				02E24B382314C7E100318EA4 /* ViewModels */,
 				02A775A722FC4470000CB7CE /* ViewControllers */,
-				02A775AD22FCAE30000CB7CE /* Common */,
+				02A775AD22FCAE30000CB7CE /* Extensions */,
 				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,
 				02A7757922FC4469000CB7CE /* AppDelegate.swift */,
 				02A7757D22FC4469000CB7CE /* Main.storyboard */,
@@ -246,17 +268,14 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		02A775AD22FCAE30000CB7CE /* Common */ = {
+		02A775AD22FCAE30000CB7CE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				021A63C92345739600169EF3 /* UIViewController+Hierarchy.swift */,
-				023053EF2335914C00293682 /* UIView+Xib.swift */,
-				023053E92333140500293682 /* UIView+Autolayout.swift */,
+				021A63D02346AF9800169EF3 /* UIKit */,
 				02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */,
-				02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */,
 				02A775AE22FCAE73000CB7CE /* Collection+SafeIndex.swift */,
 			);
-			path = Common;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		02E24B332314C76100318EA4 /* Models */ = {
@@ -547,6 +566,7 @@
 				02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */,
 				0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */,
 				023053EA2333140500293682 /* UIView+Autolayout.swift in Sources */,
+				021A63CF2345A0F100169EF3 /* LoggingManager.swift in Sources */,
 				02A7757A22FC4469000CB7CE /* AppDelegate.swift in Sources */,
 				02A775AA22FC44AA000CB7CE /* ConversationViewController.swift in Sources */,
 				021A63C42345671500169EF3 /* ConversationContactsView.swift in Sources */,

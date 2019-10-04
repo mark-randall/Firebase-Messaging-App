@@ -13,7 +13,7 @@ import Crashlytics
 
 // MARK: - ViewState
 
-struct ConversationViewState: Equatable {
+struct ConversationViewState: ViewState {
 
     let title = "Conversation"
     var contactsEditable: Bool = false
@@ -22,12 +22,12 @@ struct ConversationViewState: Equatable {
 
 // MARK: - ViewEffect
 
-enum ConversationViewEffect {
+enum ConversationViewEffect: ViewEffect {
 }
 
 // MARK: - ViewEvent
 
-enum ConversationViewEvent {
+enum ConversationViewEvent: ViewEvent {
     case messageViewed(IndexPath)
     case sendMessage(String)
     case addContactTapped
@@ -122,6 +122,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     // MARK: - Handle ViewEvent
     
     override func handleViewEvent(_ event: ConversationViewEvent) {
+        super.handleViewEvent(event)
         
         switch event {
             

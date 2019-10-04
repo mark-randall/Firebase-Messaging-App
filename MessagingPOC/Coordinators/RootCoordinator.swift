@@ -42,6 +42,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
             let vm = WelcomeViewModel(flow: flow)
+            vm.rootCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             nc.viewControllers = [vc]
         }
@@ -79,6 +80,8 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         default:
             super.flowCompleted(flow, result: result)
         }
+        
+        LoggingManager.shared.log(flow, at: .debug)
     }
     
     // MARK: - Coordinator action overrides

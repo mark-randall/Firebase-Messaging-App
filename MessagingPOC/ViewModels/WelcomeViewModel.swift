@@ -7,24 +7,22 @@
 //
 
 import Foundation
-
-import Foundation
 import os.log
 import Crashlytics
 
 // MARK: - ViewState
 
-struct WelcomeViewState: Equatable {
+struct WelcomeViewState: ViewState {
 }
 
 // MARK: - ViewEffect
 
-enum WelcomeViewEffect {
+enum WelcomeViewEffect: ViewEffect {
 }
 
 // MARK: - ViewEvent
 
-enum WelcomeViewEvent {
+enum WelcomeViewEvent: ViewEvent {
     case signInButtonTapped
 }
 
@@ -39,6 +37,7 @@ final class WelcomeViewModel: WelcomeViewModelProtocol, RootCoordinatorControlle
     // MARK: - Handle ViewEvent
 
     override func handleViewEvent(_ event: WelcomeViewEvent) {
+        super.handleViewEvent(event)
         
         switch event {
         case .signInButtonTapped:

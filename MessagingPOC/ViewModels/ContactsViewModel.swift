@@ -13,18 +13,18 @@ import Crashlytics
 
 // MARK: - ViewState
 
-struct ContactsViewState: Equatable {
+struct ContactsViewState: ViewState {
     var messages: [Contact]
 }
 
 // MARK: - ViewEffect
 
-enum ContactsViewEffect {
+enum ContactsViewEffect: ViewEffect {
 }
 
 // MARK: - ViewEvent
 
-enum ContactsViewEvent {
+enum ContactsViewEvent: ViewEvent {
 }
 
 typealias ContactsViewModelProtocol = ViewModel<MessagingApplicationFlow, ContactsViewState, ContactsViewEffect, ContactsViewEvent>

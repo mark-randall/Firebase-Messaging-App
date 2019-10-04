@@ -12,19 +12,19 @@ import Crashlytics
 
 // MARK: - ViewState
 
-struct ProfileViewState: Equatable {
+struct ProfileViewState: ViewState {
     var showStartChattingButton: Bool = false
     var showCloseButton: Bool = false
 }
 
 // MARK: - ViewEffect
 
-enum ProfileViewEffect {
+enum ProfileViewEffect: ViewEffect {
 }
 
 // MARK: - ViewEvent
 
-enum ProfileViewEvent {
+enum ProfileViewEvent: ViewEvent {
     case loggoutButtonTapped
     case closeButtonTapped
     case startChattingButtonTapped
@@ -56,6 +56,7 @@ final class ProfileViewModel: ProfileViewModelProtocol, ConversationsCoordinator
     // MARK: - Handle ViewEvent
     
     override func handleViewEvent(_ event: ProfileViewEvent) {
+        super.handleViewEvent(event)
         
         switch event {
         case .loggoutButtonTapped:

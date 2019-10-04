@@ -13,19 +13,19 @@ import Crashlytics
 
 // MARK: - ViewState
 
-struct ConversationsViewState: Equatable {
+struct ConversationsViewState: ViewState {
     let title = "Conversations"
     var conversations: [Conversation]
 }
 
 // MARK: - ViewEffect
 
-enum ConversationsViewEffect {
+enum ConversationsViewEffect: ViewEffect {
 }
 
 // MARK: - ViewEvent
 
-enum ConversationsViewEvent {
+enum ConversationsViewEvent: ViewEvent {
     case conversationSelected(IndexPath)
     case conversationDeleted(IndexPath)
     case profileButtonTapped
@@ -98,6 +98,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     // MARK: - Handle ViewEvent
     
     override func handleViewEvent(_ event: ConversationsViewEvent) {
+        super.handleViewEvent(event)
         
         switch event {
             

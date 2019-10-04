@@ -28,10 +28,8 @@ enum CoordinatorError: Error {
 
 /// Request to FlowController to update application Flow or Action with a Flow
 /// NOTE: Flows are Actions
-protocol Action: Equatable {
-}
+protocol Action: Equatable, Loggable {}
 
 // MARK: - Flow
 
-protocol Flow: Equatable {
-}
+protocol Flow: Equatable, LoggableComponent {}
