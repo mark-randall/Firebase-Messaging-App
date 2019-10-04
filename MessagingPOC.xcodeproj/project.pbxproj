@@ -226,6 +226,38 @@
 			path = Firebase;
 			sourceTree = "<group>";
 		};
+		028683D42347CA8B00C65879 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				021A63C7234570E000169EF3 /* ContactsViewController.swift */,
+				02A7757B22FC4469000CB7CE /* ConversationsViewController.swift */,
+				02A775A922FC44AA000CB7CE /* ConversationViewController.swift */,
+				0283ACA42309955F0010E7CD /* ProfileViewController.swift */,
+				02A5E6EE23038BA10087EDBA /* WelcomeViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		028683D52347CA9700C65879 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				021A63C32345671500169EF3 /* ConversationContactsView.swift */,
+				021A63C52345675400169EF3 /* ConversationContactsView.xib */,
+				023053E7233313AB00293682 /* ConversationInputView.swift */,
+				023053F12335918200293682 /* ConversationInputView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		028683D62347CAE100C65879 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				02A7757D22FC4469000CB7CE /* Main.storyboard */,
+				02A7758222FC446A000CB7CE /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		0297A77B23088EE800A4C763 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				02A7757822FC4469000CB7CE /* MessagingPOC */,
+				02A7758D22FC446A000CB7CE /* MessagingPOCTests */,
 				02A7759822FC446A000CB7CE /* MessagingPOCUITests */,
 				02A7757722FC4469000CB7CE /* Products */,
 				3F50C7C207F2838AE7884B71 /* Pods */,
@@ -275,17 +308,14 @@
 				026DB83B2344420E005EAC48 /* MessagingPOC.entitlements */,
 				021A63CD2345A0D900169EF3 /* DataSources */,
 				021A63D82346C62600169EF3 /* Repositories */,
-				02A5E6E82303840D0087EDBA /* Coordinators */,
 				02E24B332314C76100318EA4 /* Models */,
 				02E24B382314C7E100318EA4 /* ViewModels */,
-				02A775A722FC4470000CB7CE /* ViewControllers */,
+				02A5E6E82303840D0087EDBA /* Coordinators */,
+				02A775A722FC4470000CB7CE /* UI */,
 				02A775AD22FCAE30000CB7CE /* Extensions */,
 				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,
 				02A7757922FC4469000CB7CE /* AppDelegate.swift */,
-				02A7757D22FC4469000CB7CE /* Main.storyboard */,
 				02A7758022FC446A000CB7CE /* Assets.xcassets */,
-				02A7758222FC446A000CB7CE /* LaunchScreen.storyboard */,
-				02A7758D22FC446A000CB7CE /* MessagingPOCTests */,
 				02A7758522FC446A000CB7CE /* Info.plist */,
 			);
 			path = MessagingPOC;
@@ -309,20 +339,14 @@
 			path = MessagingPOCUITests;
 			sourceTree = "<group>";
 		};
-		02A775A722FC4470000CB7CE /* ViewControllers */ = {
+		02A775A722FC4470000CB7CE /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				021A63C7234570E000169EF3 /* ContactsViewController.swift */,
-				021A63C32345671500169EF3 /* ConversationContactsView.swift */,
-				021A63C52345675400169EF3 /* ConversationContactsView.xib */,
-				023053E7233313AB00293682 /* ConversationInputView.swift */,
-				023053F12335918200293682 /* ConversationInputView.xib */,
-				02A7757B22FC4469000CB7CE /* ConversationsViewController.swift */,
-				02A775A922FC44AA000CB7CE /* ConversationViewController.swift */,
-				0283ACA42309955F0010E7CD /* ProfileViewController.swift */,
-				02A5E6EE23038BA10087EDBA /* WelcomeViewController.swift */,
+				028683D62347CAE100C65879 /* Storyboards */,
+				028683D42347CA8B00C65879 /* ViewControllers */,
+				028683D52347CA9700C65879 /* Views */,
 			);
-			path = ViewControllers;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		02A775AD22FCAE30000CB7CE /* Extensions */ = {
@@ -750,7 +774,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -805,7 +829,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
