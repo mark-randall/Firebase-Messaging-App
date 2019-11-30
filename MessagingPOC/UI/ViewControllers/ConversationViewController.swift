@@ -92,6 +92,7 @@ final class ConversationViewController: UITableViewController {
         
         viewModel.subscribeToViewState { [weak self] viewState in
             self?.contactsView.isEditable = viewState.contactsEditable
+            self?.contactsView.contacts = viewState.contacts
             self?.navigationItem.title = viewState.title
             var snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
             snapshot.appendSections(Section.allCases)
@@ -123,6 +124,7 @@ extension ConversationViewController {
 }
 
 
+// TODO: move
 extension UITableView {
 
     func setTableHeaderView(headerView: UIView) {

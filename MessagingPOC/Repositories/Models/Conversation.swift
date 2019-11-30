@@ -8,7 +8,13 @@
 
 import Foundation
 
-struct Conversation: Equatable, Hashable {
+struct Conversation: Equatable, Hashable, CustomDebugStringConvertible {
+    
+    // MARK: - CustomDebugStringConvertible
+    
+    var debugDescription: String {
+        return "\(id)"
+    }
     
     // MARK: - Properties
     
@@ -16,4 +22,5 @@ struct Conversation: Equatable, Hashable {
     let text: String
     let hasUnreadMessages: Bool
     let lastMessageSend: Date
+    let contacts: [Contact] 
 }

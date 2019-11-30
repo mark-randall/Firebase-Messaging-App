@@ -8,7 +8,13 @@
 
 import Foundation
 
-struct Message: Equatable, Comparable, Hashable {
+struct Message: Equatable, Comparable, Hashable, CustomDebugStringConvertible {
+        
+    // MARK: - CustomDebugStringConvertible
+    
+    var debugDescription: String {
+        return "\(text)"
+    }
     
     // MARK: - Comparable
     

@@ -102,10 +102,10 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         switch action {
         case .presentSignIn:
             try presentFlow(.signIn)
-        case .showConversation(let id):
+        case .showConversation(let conversation):
             guard childFlow == .conversations else { throw CoordinatorError.actionNotAllowed }
             guard let conversationsCoordinator = childCoordinator as? ConversationsCoordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
-            try conversationsCoordinator.perform(.showConversation(conversationId: id))
+            try conversationsCoordinator.perform(.showConversation(conversation: conversation))
         }
     }
 }

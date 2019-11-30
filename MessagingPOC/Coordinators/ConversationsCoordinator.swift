@@ -24,6 +24,10 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
     private let auth: Auth
     private let uid: String
     
+    // MARK: - ViewModels
+    
+    private weak var conversationViewModel: ConversationViewModelProtocol?
+    
     // MARK: - Init
     
     init(
@@ -90,10 +94,9 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             complete(withResult: .success)
         case .contactAdded(let contact):
             guard
-                let nc = topViewController as? UINavigationController,
-                let presentingNC = topViewController?.presentingViewController as? UINavigationController,
-                let conversationVC = presentingNC.topViewController as? ConversationViewController
+                let nc = topViewController as? UINavigationController
                 else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            conversationViewModel?.handleCoordinatorEvent(.contactAdded(contact: contact))
             nc.dismiss(animated: true, completion: nil)
         }
     }
@@ -101,16 +104,18 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
     override func createViewController(forAction action: ConversationAction) throws -> UIViewController {
      
         switch action {
-        case .showConversation(let id):
+        case .showConversation(let conversation):
             let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
-            let vm = ConversationViewModel(flow: flow, messageRepostiory: messagesRepository, userId: uid, conversationId: id)
+            let vm = ConversationViewModel(flow: flow, messageRepostiory: messagesRepository, userId: uid, conversation: conversation)
             vm.conversationsCoordinatorActionHandler = actionHandler
+            conversationViewModel = vm
             vc.bindViewModel(vm)
             return vc
         case .presentAddConversation:
             let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
             let vm = ConversationViewModel(flow: flow, messageRepostiory: messagesRepository, userId: uid)
             vm.conversationsCoordinatorActionHandler = actionHandler
+            conversationViewModel = vm
             vc.bindViewModel(vm)
             return vc
         case .presentProfile:

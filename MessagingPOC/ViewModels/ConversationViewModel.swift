@@ -18,7 +18,7 @@ struct ConversationViewState: ViewState {
     let title = "Conversation"
     var contactsEditable: Bool = false
     var messages: [Message] = []
-    var contacts: [Contact] = []
+    var contacts: String? = nil
 }
 
 // MARK: - ViewEffect
@@ -32,10 +32,6 @@ enum ConversationViewEvent: ViewEvent {
     case messageViewed(IndexPath)
     case sendMessage(String)
     case addContactTapped
-}
-
-enum ConversationCoordinatorEvent: CoordinatorEvent {
-    case contactAdded(contact: Contact)
 }
 
 // MARK: - ViewModel
@@ -56,20 +52,26 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     // MARK: - State
     
     private let userId: String
-    private let conversationId: String?
+    private let conversation: Conversation?
+    private var newConverationContacts: [Contact] = []
     
     private var cancellable: AnyCancellable?
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, messageRepostiory: MessagesRepository, userId: String, conversationId: String? = nil) {
+    init(
+        flow: MessagingApplicationFlow,
+        messageRepostiory: MessagesRepository,
+        userId: String,
+        conversation: Conversation? = nil
+    ) {
         self.messageRepostiory = messageRepostiory
         self.userId = userId
-        self.conversationId = conversationId
+        self.conversation = conversation
         super.init(flow: flow)
         
-        if let conversationId = conversationId {
-            subscribeTo(conversationId: conversationId)
+        if let conversation = conversation {
+            subscribeTo(conversationId: conversation.id)
         } else {
             updateViewState(ConversationViewState(contactsEditable: true))
         }
@@ -78,11 +80,16 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     private func subscribeTo(conversationId: String) {
     
         cancellable = messageRepostiory.fetchMessages(forUserId: userId, conversationId: conversationId).sink { [weak self] result in
+            guard let self = self else { return }
             
             switch result {
             case .failure: break
             case .success(let messages):
-                self?.updateViewState(ConversationViewState(messages: messages))
+                let viewState = ConversationViewState(
+                    messages: messages,
+                    contacts: self.conversation?.contacts.map({ $0.name }).joined(separator: ", ")
+                )
+                self.updateViewState(viewState)
             }
         }
     }
@@ -95,7 +102,8 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         switch event {
         case .contactAdded(let contact):
             guard var viewState = self.viewState else { assertionFailure(); return }
-            viewState.contacts.append(contact)
+            newConverationContacts.append(contact)
+            viewState.contacts = newConverationContacts.map { $0.name }.joined(separator: ", ")
             updateViewState(viewState)
         }
     }
@@ -107,11 +115,11 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             
         case .messageViewed(let indexPath):
             
-            guard let conversationId = self.conversationId else { return }
+            guard let conversation = self.conversation else { return }
             guard let message = viewState?.messages[safe: indexPath.row] else { return }
             guard !message.isRead else { return }
             
-            _ = messageRepostiory.updateMessageAsRead(forUserId: userId, conversationId: conversationId, messageId: message.id).sink { [weak self] result in
+            _ = messageRepostiory.updateMessageAsRead(forUserId: userId, conversationId: conversation.id, messageId: message.id).sink { [weak self] result in
                 
                 guard let self = self else { return }
                 
@@ -126,7 +134,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
 
         case .sendMessage(let message):
             
-            guard let conversationId = self.conversationId else { return }
+            guard let conversationId = self.conversation?.id else { return }
             let message = SentMessage(conversationId: conversationId, senderId: userId, text: message)
             
             _ = messageRepostiory.sendMessage(forUserId: userId, conversationId: conversationId, message: message).sink { [weak self] result in

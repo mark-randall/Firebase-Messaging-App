@@ -13,7 +13,6 @@ import Foundation
 enum MessagingApplicationFlow: Flow {
     case root
     case conversations
-    case createConversation
     case signIn
 }
 
@@ -21,7 +20,7 @@ enum MessagingApplicationFlow: Flow {
 
 enum RootAction: Action {
     case presentSignIn
-    case showConversation(id: String)
+    case showConversation(conversation: Conversation)
 }
 
 enum SignInAction: Action {
@@ -31,11 +30,15 @@ enum SignInAction: Action {
 }
 
 enum ConversationAction: Action {
-    case showConversation(conversationId: String)
+    case showConversation(conversation: Conversation)
     case presentAddContacts
     case presentAddConversation
     case presentProfile
     case dismissProfile
     case logout
+    case contactAdded(contact: Contact)
+}
+
+enum ConversationCoordinatorEvent: CoordinatorEvent {
     case contactAdded(contact: Contact)
 }

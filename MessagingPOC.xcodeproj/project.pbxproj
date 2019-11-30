@@ -188,6 +188,7 @@
 		021A63D82346C62600169EF3 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				02E24B332314C76100318EA4 /* Models */,
 				028683CE2347C33500C65879 /* Firebase */,
 				021A63D92346D2A000169EF3 /* MessagesRepository.swift */,
 			);
@@ -311,9 +312,8 @@
 				026DB83B2344420E005EAC48 /* MessagingPOC.entitlements */,
 				021A63CD2345A0D900169EF3 /* DataSources */,
 				021A63D82346C62600169EF3 /* Repositories */,
-				02E24B332314C76100318EA4 /* Models */,
-				02E24B382314C7E100318EA4 /* ViewModels */,
 				02A5E6E82303840D0087EDBA /* Coordinators */,
+				02E24B382314C7E100318EA4 /* ViewModels */,
 				02A775A722FC4470000CB7CE /* UI */,
 				02A775AD22FCAE30000CB7CE /* Extensions */,
 				02A775AB22FC4ACD000CB7CE /* GoogleService-Info.plist */,

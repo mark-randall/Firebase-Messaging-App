@@ -22,6 +22,12 @@ final class ConversationContactsView: UIControl {
         }
     }
     
+    var contacts: String? {
+        didSet {
+            contactsLabel.text = contacts
+        }
+    }
+    
     // MARK: - Subviews
     
     @IBOutlet private weak var toLabel: UILabel! {
@@ -32,7 +38,7 @@ final class ConversationContactsView: UIControl {
     
     @IBOutlet private weak var contactsLabel: UILabel! {
         didSet {
-            contactsLabel.textColor = UIColor.lightGray
+            contactsLabel.textColor = UIColor.darkText
         }
     }
     

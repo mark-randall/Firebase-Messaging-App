@@ -20,9 +20,7 @@ extension Message {
             let timestamp = data["time"] as? Timestamp,
             let sender = data["sender"] as? [String: Any],
             let from = sender["id"] as? String
-            else {
-                return nil
-        }
+            else { return nil }
         
         self.id = snapshot.documentID
         self.text = text

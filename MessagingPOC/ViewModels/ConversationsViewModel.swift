@@ -101,7 +101,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
             }
         case .conversationSelected(let indexPath):
             guard let conversation = conversations[safe: indexPath.row] else { return }
-            try? conversationsCoordinatorActionHandler?.perform(.showConversation(conversationId: conversation.id))
+            try? conversationsCoordinatorActionHandler?.perform(.showConversation(conversation: conversation))
             
         case .profileButtonTapped:
             try? conversationsCoordinatorActionHandler?.perform(.presentProfile)
