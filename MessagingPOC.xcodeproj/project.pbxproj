@@ -25,6 +25,7 @@
 		026DB83D23450270005EAC48 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026DB83C23450270005EAC48 /* ContactsViewModel.swift */; };
 		026DB83F2345042F005EAC48 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026DB83E2345042F005EAC48 /* Contact.swift */; };
 		026DB8412345238C005EAC48 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026DB8402345238C005EAC48 /* ProfileViewModel.swift */; };
+		026F66BA2392FB32003F3549 /* UITableView+HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026F66B92392FB32003F3549 /* UITableView+HeaderView.swift */; };
 		0283ACA3230994DB0010E7CD /* BaseCoordinatorWithActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283ACA2230994DB0010E7CD /* BaseCoordinatorWithActions.swift */; };
 		0283ACA52309955F0010E7CD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283ACA42309955F0010E7CD /* ProfileViewController.swift */; };
 		028683D12347C56A00C65879 /* Conversation+Firestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028683D02347C56A00C65879 /* Conversation+Firestore.swift */; };
@@ -51,7 +52,6 @@
 		02E24B352314C77000318EA4 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B342314C77000318EA4 /* Conversation.swift */; };
 		02E24B372314C78F00318EA4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B362314C78F00318EA4 /* Message.swift */; };
 		02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3A2314C80800318EA4 /* ViewModel.swift */; };
-		02E24B3E2314C83D00318EA4 /* DispatchQueue+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */; };
 		02E24B402314C88B00318EA4 /* ConversationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3F2314C88B00318EA4 /* ConversationsViewModel.swift */; };
 		02E24B422314CE6200318EA4 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B412314CE6200318EA4 /* ConversationViewModel.swift */; };
 		CF23C00F80B81958B4C3E1D0 /* Pods_MessagingPOCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D88D96110AC5802B4197315 /* Pods_MessagingPOCTests.framework */; };
@@ -95,6 +95,7 @@
 		026DB83C23450270005EAC48 /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
 		026DB83E2345042F005EAC48 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		026DB8402345238C005EAC48 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		026F66B92392FB32003F3549 /* UITableView+HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderView.swift"; sourceTree = "<group>"; };
 		0283ACA2230994DB0010E7CD /* BaseCoordinatorWithActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinatorWithActions.swift; sourceTree = "<group>"; };
 		0283ACA42309955F0010E7CD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		028683D02347C56A00C65879 /* Conversation+Firestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Conversation+Firestore.swift"; sourceTree = "<group>"; };
@@ -127,7 +128,6 @@
 		02E24B342314C77000318EA4 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		02E24B362314C78F00318EA4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		02E24B3A2314C80800318EA4 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Util.swift"; sourceTree = "<group>"; };
 		02E24B3F2314C88B00318EA4 /* ConversationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewModel.swift; sourceTree = "<group>"; };
 		02E24B412314CE6200318EA4 /* ConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewModel.swift; sourceTree = "<group>"; };
 		0E89D3BC23C6C088EC5F66D1 /* Pods-MessagingPOCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessagingPOCTests/Pods-MessagingPOCTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -181,6 +181,7 @@
 				023053E92333140500293682 /* UIView+Autolayout.swift */,
 				02A775B022FCB0DC000CB7CE /* UIViewController+Storyboard.swift */,
 				02A966EA2347DB1E00146FD4 /* DiffableDataSource+Editable.swift */,
+				026F66B92392FB32003F3549 /* UITableView+HeaderView.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -206,7 +207,6 @@
 		021A63E02347B33300169EF3 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				02E24B3D2314C83C00318EA4 /* DispatchQueue+Util.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -645,7 +645,6 @@
 				02A5E6E7230383860087EDBA /* Coordination.swift in Sources */,
 				023053F42337D2A400293682 /* SentMessage.swift in Sources */,
 				021A63E32347B34F00169EF3 /* Result+Util.swift in Sources */,
-				02E24B3E2314C83D00318EA4 /* DispatchQueue+Util.swift in Sources */,
 				023053E8233313AB00293682 /* ConversationInputView.swift in Sources */,
 				02E24B352314C77000318EA4 /* Conversation.swift in Sources */,
 				02E24B422314CE6200318EA4 /* ConversationViewModel.swift in Sources */,
@@ -665,6 +664,7 @@
 				0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */,
 				021A63DC2346D46300169EF3 /* FirestoreMessagesRepository.swift in Sources */,
 				021A63DF2347A07E00169EF3 /* Firestore+Combine.swift in Sources */,
+				026F66BA2392FB32003F3549 /* UITableView+HeaderView.swift in Sources */,
 				02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */,
 				02A5E6ED2303848B0087EDBA /* AppFlows.swift in Sources */,
 				02E24B372314C78F00318EA4 /* Message.swift in Sources */,

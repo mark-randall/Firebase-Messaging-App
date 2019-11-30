@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 protocol MessagesRepository {
-        
+    
     func fetchConversations(forUserId id: String) -> AnyPublisher<Result<[Conversation], Error>, Never>
     
     func deleteConversation(forUserId userId: String, conversationId: String) -> AnyPublisher<Result<Bool, Error>, Never>

@@ -52,7 +52,6 @@ final class ProfileViewController: UIViewController {
         }))
     }
 
-    
     // MARK: - Actions
     
     @IBAction private func logoutButtonTapped() {

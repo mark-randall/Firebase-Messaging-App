@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Existing message
 struct Message: Equatable, Comparable, Hashable, CustomDebugStringConvertible {
         
     // MARK: - CustomDebugStringConvertible

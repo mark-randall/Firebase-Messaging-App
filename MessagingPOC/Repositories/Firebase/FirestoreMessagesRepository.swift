@@ -19,7 +19,6 @@ final class FirestoreMessagesRepository {
     }
 }
 
-
 // MARK: - MessagesRepository
 
 extension FirestoreMessagesRepository: MessagesRepository {

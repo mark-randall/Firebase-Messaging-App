@@ -22,6 +22,7 @@ struct EmptyCoordinatorEvent: CoordinatorEvent {}
 /// - ViewState - value object completely represents a View state
 /// - ViewEffects - events from the VM the needs to be handled by the view. e.g. present error
 /// - ViewEvents - user actions and system events from the View the VM needs to handled. e.g. button tapped
+/// - CoordinatorEvent - events published by the coordinator. Generally used for pass messages from another VM within the coordinators Flow
 ///
 class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEvent, CEvent: CoordinatorEvent> {
 
@@ -42,10 +43,10 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
     let viewEffectSubject = PassthroughSubject<VEffect, Never>()
     var viewEffect: AnyPublisher<VEffect, Never> {
         viewEffectSubject
-            .receive(on: DispatchQueue.main)
             .handleEvents(receiveOutput: {
                 LoggingManager.shared.log($0, at: .debug)
             })
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 

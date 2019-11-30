@@ -9,7 +9,14 @@
 import Foundation
 import FirebaseFirestore
 
-struct SentMessage: Equatable {
+// Message begin sent
+struct SentMessage: Equatable, CustomDebugStringConvertible {
+    
+    // MARK: - CustomDebugStringConvertible
+    
+    var debugDescription: String {
+        return "'\(text)' SENT TO '\(conversationId)'"
+    }
     
     // MARK: - Properties
     

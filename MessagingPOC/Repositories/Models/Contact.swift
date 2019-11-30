@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Existing for new contact
 struct Contact: Equatable, Hashable, CustomDebugStringConvertible {
     
     // MARK: - CustomDebugStringConvertible
