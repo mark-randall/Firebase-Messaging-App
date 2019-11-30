@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseAuth
 
 protocol ConversationsCoordinatorController: CoordinatorController {
     
@@ -19,9 +17,7 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
     
     // MARK: - Dependencies
     
-    private let firestore: Firestore
-    private let messagesRepository: MessagesRepository
-    private let auth: Auth
+    private let serviceLocator: ServiceLocator
     private let uid: String
     
     // MARK: - ViewModels
@@ -33,21 +29,17 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
     init(
         flow: MessagingApplicationFlow,
         presentingViewController: UIViewController,
-        firestore: Firestore,
-        messagesRepository: MessagesRepository,
-        auth: Auth,
+        serviceLocator: ServiceLocator,
         uid: String
     ) {
-        self.firestore = firestore
-        self.messagesRepository = messagesRepository
-        self.auth = auth
+        self.serviceLocator = serviceLocator
         self.uid = "mJ0ROv2pEqg1E8JK13OF9D1Mfay2" // TODO: hardcoding for dev
-        super.init(flow: flow, presentingViewController: presentingViewController)
+        super.init(flow: flow, presentingViewController: presentingViewController, loggingManager: serviceLocator.loggingManager)
     }
     
     override func createRootViewController() -> UIViewController? {
         guard let vc: ConversationsViewController = try? UIViewController.create(storyboard: "Main", identifier: "ConversationsViewController") else { return nil }
-        let vm = ConversationsViewModel(flow: flow, messagesRepository: messagesRepository, userId: uid) // TODO
+        let vm = ConversationsViewModel(flow: flow, serviceLocator: serviceLocator, userId: uid)
         vm.conversationsCoordinatorActionHandler = actionHandler
         vc.bindViewModel(vm)
         return vc
@@ -90,7 +82,7 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             let nc = UINavigationController(rootViewController: vc)
             topViewController?.present(nc, animated: true, completion: nil)
         case .logout:
-            try auth.signOut()
+            serviceLocator.userRepository.signOut() // TODO
             complete(withResult: .success)
         case .contactSelected(let contact):
             guard
@@ -106,27 +98,27 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         switch action {
         case .showConversation(let conversation):
             let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
-            let vm = ConversationViewModel(flow: flow, messageRepostiory: messagesRepository, userId: uid, conversation: conversation)
+            let vm = ConversationViewModel(flow: flow, serviceLocator: serviceLocator, userId: uid, conversation: conversation)
             vm.conversationsCoordinatorActionHandler = actionHandler
             conversationViewModel = vm
             vc.bindViewModel(vm)
             return vc
         case .presentAddConversation:
             let vc: ConversationViewController = try UIViewController.create(storyboard: "Main", identifier: "ConversationViewController")
-            let vm = ConversationViewModel(flow: flow, messageRepostiory: messagesRepository, userId: uid)
+            let vm = ConversationViewModel(flow: flow, serviceLocator: serviceLocator, userId: uid)
             vm.conversationsCoordinatorActionHandler = actionHandler
             conversationViewModel = vm
             vc.bindViewModel(vm)
             return vc
         case .presentProfile:
             let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
-            let vm = ProfileViewModel(flow: flow)
+            let vm = ProfileViewModel(flow: flow, serviceLocator: serviceLocator)
             vm.conversationsCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             return vc
         case .presentAddContacts:
             let vc: ContactsViewController = try UIViewController.create(storyboard: "Main", identifier: "ContactsViewController")
-            let vm = ContactsViewModel(flow: flow, firestore: firestore)
+            let vm = ContactsViewModel(flow: flow, serviceLocator: serviceLocator)
             vm.conversationsCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             return vc

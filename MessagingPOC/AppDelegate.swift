@@ -52,7 +52,7 @@ extension AppDelegate: UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         // try? Auth.auth().signOut()
-        rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window!.rootViewController!)
+        rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window!.rootViewController!, loggingManager: LoggingManager()) // TODO: second instance
         do {
             try rootCoordinator?.start(topViewController: window!.rootViewController!)
         } catch {

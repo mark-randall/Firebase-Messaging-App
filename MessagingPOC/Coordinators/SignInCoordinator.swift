@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import FirebaseUI
-import FirebaseAuth
+import Combine
+
 
 protocol SignInCoordinatorController: CoordinatorController {
     
@@ -19,27 +19,40 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
     
     // MARK: - Dependencies
     
-    private let auth: Auth
-    
-    private lazy var authUI: FUIAuth? = { [weak self] in
-        let authUI = FUIAuth.defaultAuthUI()
-        authUI?.delegate = self
-        let phoneAuth = FUIPhoneAuth.init(authUI: FUIAuth.defaultAuthUI()!)
-        authUI?.providers = [FUIGoogleAuth(), FUIEmailAuth(), phoneAuth]
-        return authUI
-    }()
+    private let serviceLocator: ServiceLocator
+        
+    private var subscriptions: [Cancellable] = []
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController, auth: Auth) {
-        self.auth = auth
-        super.init(flow: flow, presentingViewController: presentingViewController)
+    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController, serviceLocator: ServiceLocator) {
+        self.serviceLocator = serviceLocator
+        super.init(
+            flow: flow,
+            presentingViewController: presentingViewController,
+            loggingManager: serviceLocator.loggingManager
+        )
     }
     
     // MARK: - Coordinator
     
     override func start(topViewController: UIViewController?) throws {
-        guard let vc = authUI?.authViewController() else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+        guard let vc = serviceLocator.userRepository.fetchAuthViewController() else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+        
+        subscriptions.append(serviceLocator.userRepository.fetchAuthResult().sink(receiveValue: { [weak self] result in
+            
+            switch result {
+            case .failure(let error):
+                self?.complete(withResult: .error(error: error))
+            case .success(let user):
+                if user != nil {
+                    try? self?.perform(.showProfile)
+                } else {
+                    self?.complete(withResult: .success)
+                }
+            }
+        }))
+        
         rootViewController.present(vc, animated: true, completion: nil)
     }
         
@@ -51,7 +64,7 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
             guard let presentingNc = topViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             presentingNc.viewControllers = [vc]
         case .logout:
-            try auth.signOut()
+            serviceLocator.userRepository.signOut() // TODO
             complete(withResult: .success)
         case .showConversations:
             complete(withResult: .success)
@@ -63,31 +76,12 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
         switch action {
         case .showProfile:
             let vc: ProfileViewController = try UIViewController.create(storyboard: "Main", identifier: "ProfileViewController")
-            let vm = ProfileViewModel(flow: flow)
+            let vm = ProfileViewModel(flow: flow, serviceLocator: serviceLocator)
             vm.signInCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             return vc
         default:
             return try super.createViewController(forAction: action)
-        }
-    }
-}
-
-// MARK: - FUIAuthDelegate
-
-extension SignInCoordinator: FUIAuthDelegate {
-    
-    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, url: URL?, error: Error?) {
-        
-        if let error = error {
-            
-            if (error as NSError).code == FUIAuthErrorCode.userCancelledSignIn.rawValue {
-                complete(withResult: .success)
-            } else {
-                complete(withResult: .error(error: error))
-            }
-        } else {
-            try? perform(.showProfile)
         }
     }
 }

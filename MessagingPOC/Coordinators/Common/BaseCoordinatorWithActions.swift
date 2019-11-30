@@ -23,12 +23,18 @@ class ActionHandler<T: Flow, U: Action> {
     
     private weak var coordinator: BaseCoordinatorWithActions<T,U>?
     
+    private let loggingManager: LoggingManager
+    
+    init(loggingManager: LoggingManager) {
+        self.loggingManager = loggingManager
+    }
+    
     func setCoordinator(_ coordinator: BaseCoordinatorWithActions<T,U>) {
         self.coordinator = coordinator
     }
     
     func perform(_ action: U) throws {
-        LoggingManager.shared.log(action, at: .debug)
+        loggingManager.log(action, at: .debug)
         guard let coordinator = coordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
         return try coordinator.perform(action)
     }
@@ -40,9 +46,9 @@ class BaseCoordinatorWithActions<T: Flow, U: Action>: BaseCoordinator<T> {
     
     let actionHandler: ActionHandler<T, U>
     
-    override init(flow: T, presentingViewController: UIViewController) {
-        actionHandler = ActionHandler()
-        super.init(flow: flow, presentingViewController: presentingViewController)
+    override init(flow: T, presentingViewController: UIViewController, loggingManager: LoggingManager) {
+        actionHandler = ActionHandler(loggingManager: loggingManager)
+        super.init(flow: flow, presentingViewController: presentingViewController, loggingManager: loggingManager)
         actionHandler.setCoordinator(self)
     }
     

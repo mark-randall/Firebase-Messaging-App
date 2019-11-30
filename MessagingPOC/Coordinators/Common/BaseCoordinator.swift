@@ -24,12 +24,12 @@ class BaseCoordinator<T: Flow>: NSObject {
     private(set) var childCoordinator: BaseCoordinator<T>?
     weak var parentCoordinator: BaseCoordinator<T>?
     
-    init(flow: T, presentingViewController: UIViewController) {
+    init(flow: T, presentingViewController: UIViewController, loggingManager: LoggingManager) {
         self.flow = flow
         super.init()
         rootViewController = createRootViewController() ?? presentingViewController
         
-        LoggingManager.shared.log(flow, at: .debug)
+        loggingManager.log(flow, at: .debug)
     }
     
     func createRootViewController() -> UIViewController? {

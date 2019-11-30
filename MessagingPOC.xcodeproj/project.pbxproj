@@ -30,6 +30,12 @@
 		0283ACA52309955F0010E7CD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283ACA42309955F0010E7CD /* ProfileViewController.swift */; };
 		028683D12347C56A00C65879 /* Conversation+Firestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028683D02347C56A00C65879 /* Conversation+Firestore.swift */; };
 		028683D32347C57600C65879 /* Message+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028683D22347C57600C65879 /* Message+Firebase.swift */; };
+		0293252923930E9A006F9D24 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293252823930E9A006F9D24 /* ServiceLocator.swift */; };
+		0293252B23930ED9006F9D24 /* FirebaseServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293252A23930ED9006F9D24 /* FirebaseServiceLocator.swift */; };
+		0293252D23931479006F9D24 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293252C23931479006F9D24 /* UserRepository.swift */; };
+		0293252F239314C3006F9D24 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293252E239314C3006F9D24 /* User.swift */; };
+		0293253123931508006F9D24 /* User+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293253023931508006F9D24 /* User+Firebase.swift */; };
+		02932533239315A7006F9D24 /* FirebaseUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02932532239315A7006F9D24 /* FirebaseUserRepository.swift */; };
 		0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0297A7792308734200A4C763 /* BaseCoordinator.swift */; };
 		02A5E6E7230383860087EDBA /* Coordination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E6230383860087EDBA /* Coordination.swift */; };
 		02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5E6E9230384220087EDBA /* RootCoordinator.swift */; };
@@ -100,6 +106,12 @@
 		0283ACA42309955F0010E7CD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		028683D02347C56A00C65879 /* Conversation+Firestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Conversation+Firestore.swift"; sourceTree = "<group>"; };
 		028683D22347C57600C65879 /* Message+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Firebase.swift"; sourceTree = "<group>"; };
+		0293252823930E9A006F9D24 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
+		0293252A23930ED9006F9D24 /* FirebaseServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseServiceLocator.swift; sourceTree = "<group>"; };
+		0293252C23931479006F9D24 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		0293252E239314C3006F9D24 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0293253023931508006F9D24 /* User+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Firebase.swift"; sourceTree = "<group>"; };
+		02932532239315A7006F9D24 /* FirebaseUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserRepository.swift; sourceTree = "<group>"; };
 		0297A7792308734200A4C763 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		02A5E6E6230383860087EDBA /* Coordination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordination.swift; sourceTree = "<group>"; };
 		02A5E6E9230384220087EDBA /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -191,7 +203,9 @@
 			children = (
 				02E24B332314C76100318EA4 /* Models */,
 				028683CE2347C33500C65879 /* Firebase */,
+				0293252823930E9A006F9D24 /* ServiceLocator.swift */,
 				021A63D92346D2A000169EF3 /* MessagesRepository.swift */,
+				0293252C23931479006F9D24 /* UserRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -223,9 +237,12 @@
 		028683CE2347C33500C65879 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
+				0293252A23930ED9006F9D24 /* FirebaseServiceLocator.swift */,
 				021A63DB2346D46300169EF3 /* FirestoreMessagesRepository.swift */,
+				02932532239315A7006F9D24 /* FirebaseUserRepository.swift */,
 				028683D02347C56A00C65879 /* Conversation+Firestore.swift */,
 				028683D22347C57600C65879 /* Message+Firebase.swift */,
+				0293253023931508006F9D24 /* User+Firebase.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -370,6 +387,7 @@
 				02E24B342314C77000318EA4 /* Conversation.swift */,
 				02E24B362314C78F00318EA4 /* Message.swift */,
 				023053F32337D2A400293682 /* SentMessage.swift */,
+				0293252E239314C3006F9D24 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -641,6 +659,7 @@
 				02A5E6F123038C830087EDBA /* ConversationsCoordinator.swift in Sources */,
 				021A63C8234570E000169EF3 /* ContactsViewController.swift in Sources */,
 				028683D12347C56A00C65879 /* Conversation+Firestore.swift in Sources */,
+				02932533239315A7006F9D24 /* FirebaseUserRepository.swift in Sources */,
 				026DB8412345238C005EAC48 /* ProfileViewModel.swift in Sources */,
 				02A5E6E7230383860087EDBA /* Coordination.swift in Sources */,
 				023053F42337D2A400293682 /* SentMessage.swift in Sources */,
@@ -663,6 +682,7 @@
 				026DB83D23450270005EAC48 /* ContactsViewModel.swift in Sources */,
 				0297A77A2308734200A4C763 /* BaseCoordinator.swift in Sources */,
 				021A63DC2346D46300169EF3 /* FirestoreMessagesRepository.swift in Sources */,
+				0293253123931508006F9D24 /* User+Firebase.swift in Sources */,
 				021A63DF2347A07E00169EF3 /* Firestore+Combine.swift in Sources */,
 				026F66BA2392FB32003F3549 /* UITableView+HeaderView.swift in Sources */,
 				02A5E6F3230393850087EDBA /* SignInCoordinator.swift in Sources */,
@@ -670,9 +690,13 @@
 				02E24B372314C78F00318EA4 /* Message.swift in Sources */,
 				02E24B402314C88B00318EA4 /* ConversationsViewModel.swift in Sources */,
 				02A775AF22FCAE73000CB7CE /* Collection+SafeIndex.swift in Sources */,
+				0293252923930E9A006F9D24 /* ServiceLocator.swift in Sources */,
+				0293252B23930ED9006F9D24 /* FirebaseServiceLocator.swift in Sources */,
+				0293252D23931479006F9D24 /* UserRepository.swift in Sources */,
 				02A5E6EA230384220087EDBA /* RootCoordinator.swift in Sources */,
 				021A63CC23459E4100169EF3 /* WelcomeViewModel.swift in Sources */,
 				023053F02335914C00293682 /* UIView+Xib.swift in Sources */,
+				0293252F239314C3006F9D24 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

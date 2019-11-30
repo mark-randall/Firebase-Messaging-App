@@ -76,11 +76,7 @@ extension Loggable {
 // MARK: - LoggingManager
 
 final class LoggingManager {
-    
-    static var shared = LoggingManager()
-    
-    private init() {}
-    
+        
     private var component: String = ""
     
     func log(_ log: LoggableComponent, at level: LogLevel) {

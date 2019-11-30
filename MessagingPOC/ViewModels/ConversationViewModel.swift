@@ -57,7 +57,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     
     // MARK: - Dependencies
     
-    private let messageRepostiory: MessagesRepository
+    private let serviceLocator: ServiceLocator
     private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
     // MARK: - State
@@ -73,14 +73,14 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     
     init(
         flow: MessagingApplicationFlow,
-        messageRepostiory: MessagesRepository,
+        serviceLocator: ServiceLocator,
         userId: String,
         conversation: Conversation? = nil
     ) {
-        self.messageRepostiory = messageRepostiory
+        self.serviceLocator = serviceLocator
         self.userId = userId
         self.conversation = conversation
-        super.init(flow: flow)
+        super.init(flow: flow, loggingManager: serviceLocator.loggingManager)
         
         if let conversation = conversation {
             subscribeTo(conversationId: conversation.id)
@@ -91,7 +91,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         
     private func subscribeTo(conversationId: String) {
     
-        cancellable = messageRepostiory.fetchMessages(forUserId: userId, conversationId: conversationId).sink { [weak self] result in
+        cancellable = serviceLocator.messagesRepository.fetchMessages(forUserId: userId, conversationId: conversationId).sink { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -132,7 +132,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             guard let message = messages[safe: indexPath.row] else { return }
             guard !message.isRead else { return }
             
-            _ = messageRepostiory.updateMessageAsRead(forUserId: userId, conversationId: conversation.id, messageId: message.id).sink { [weak self] result in
+            _ = serviceLocator.messagesRepository.updateMessageAsRead(forUserId: userId, conversationId: conversation.id, messageId: message.id).sink { [weak self] result in
                 
                 guard let self = self else { return }
                 
@@ -150,7 +150,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             guard let conversationId = self.conversation?.id else { return }
             let message = SentMessage(conversationId: conversationId, senderId: userId, text: message)
             
-            _ = messageRepostiory.sendMessage(forUserId: userId, conversationId: conversationId, message: message).sink { [weak self] result in
+            _ = serviceLocator.messagesRepository.sendMessage(forUserId: userId, conversationId: conversationId, message: message).sink { [weak self] result in
                 
                 guard let self = self else { return }
                 

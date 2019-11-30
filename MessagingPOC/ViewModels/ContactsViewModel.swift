@@ -52,7 +52,7 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
     
     // MARK: - Dependencies
 
-    private let firestore: Firestore
+    private let serviceLocator: ServiceLocator
     private let log = OSLog(subsystem: "com.messaging", category: "contacts")
     
     // MARK: - State
@@ -61,9 +61,9 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, firestore: Firestore) {
-        self.firestore = firestore
-        super.init(flow: flow)
+    init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator) {
+        self.serviceLocator = serviceLocator
+        super.init(flow: flow, loggingManager: serviceLocator.loggingManager)
         
         self.contacts = [Contact(id: "123", name: "Beans")]
         let contactData = contacts.map { ContactData(contact: $0) }

@@ -43,8 +43,8 @@ final class ProfileViewModel: ProfileViewModelProtocol, ConversationsCoordinator
     
     // MARK: - Init
     
-    override init(flow: MessagingApplicationFlow) {
-        super.init(flow: flow)
+    convenience init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator) {
+        self.init(flow: flow, loggingManager: serviceLocator.loggingManager)
             
         switch currentFlow {
         case .conversations:

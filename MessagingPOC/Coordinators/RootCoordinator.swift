@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import FirebaseAuth
-import FirebaseFirestore
+import Combine
 
 protocol RootCoordinatorController: CoordinatorController {
 
@@ -18,34 +17,21 @@ protocol RootCoordinatorController: CoordinatorController {
 final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow, RootAction> {
     
     // MARK: - Dependencies
-    
-    private lazy var firestore: Firestore = {
-        let db = Firestore.firestore()
-        let settings = db.settings
-        db.settings = settings
-        return db
-    }()
-    
-    private lazy var messagesRepository: MessagesRepository = { [unowned self] in
-        return FirestoreMessagesRepository(firestore: self.firestore)
-    }()
-    
-    private lazy var auth: Auth = {
-       return Auth.auth()
-    }()
-    
+
+    private let serviceLocator: ServiceLocator = FirebaseServiceLocator()
+        
     // MARK: - Coordinator overrides
     
     override func start(topViewController: UIViewController?) throws {
         
         rootViewController.view.backgroundColor = .white
         
-        if auth.currentUser != nil {
+        if serviceLocator.userRepository.currentUser != nil {
             try presentFlow(.conversations)
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
-            let vm = WelcomeViewModel(flow: flow)
+            let vm = WelcomeViewModel(flow: flow, loggingManager: serviceLocator.loggingManager)
             vm.rootCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             nc.viewControllers = [vc]
@@ -62,15 +48,13 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         switch flow {
         case .signIn:
-            return SignInCoordinator(flow: flow, presentingViewController: rootViewController, auth: auth)
+            return SignInCoordinator(flow: flow, presentingViewController: rootViewController, serviceLocator: serviceLocator)
         case .conversations:
-            guard let uid = auth.currentUser?.uid else { throw CoordinatorError.flowNotAllowed }
+            guard let uid = serviceLocator.userRepository.currentUser?.id else { throw CoordinatorError.flowNotAllowed }
             return ConversationsCoordinator(
                 flow: flow,
                 presentingViewController: rootViewController,
-                firestore: firestore,
-                messagesRepository: messagesRepository,
-                auth: auth,
+                serviceLocator: serviceLocator,
                 uid: uid
             )
         case .root:
@@ -92,7 +76,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
             super.flowCompleted(flow, result: result)
         }
         
-        LoggingManager.shared.log(MessagingApplicationFlow.root, at: .debug)
+        serviceLocator.loggingManager.log(MessagingApplicationFlow.root, at: .debug)
     }
     
     // MARK: - Coordinator action overrides

@@ -58,7 +58,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     
     // MARK: - Dependencies
 
-    private let messagesRepository: MessagesRepository
+    private let serviceLocator: ServiceLocator
     private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
     // MARK: - State
@@ -70,15 +70,15 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, messagesRepository: MessagesRepository, userId: String) {
-        self.messagesRepository = messagesRepository
+    init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator, userId: String) {
+        self.serviceLocator = serviceLocator
         self.userId = userId
-        super.init(flow: flow)
+        super.init(flow: flow, loggingManager: serviceLocator.loggingManager)
         
         Crashlytics.sharedInstance().setUserIdentifier(userId) // TODO: should this be here
         os_log("show converations for %@", log: self.log, type: .info, userId)
         
-        cancellable = messagesRepository.fetchConversations(forUserId: userId).sink { [weak self] result in
+        cancellable = serviceLocator.messagesRepository.fetchConversations(forUserId: userId).sink { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -102,7 +102,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
             
             guard let conversation = conversations[safe: indexPath.row] else { return }
                         
-            _ = messagesRepository.deleteConversation(forUserId: userId, conversationId: conversation.id).sink { [weak self] result in
+            _ = serviceLocator.messagesRepository.deleteConversation(forUserId: userId, conversationId: conversation.id).sink { [weak self] result in
                 
                 guard let self = self else { return }
                 

@@ -28,13 +28,15 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
 
     private(set) var currentFlow: F
     
+    private let loggingManager: LoggingManager
+    
     let viewStateSubject = CurrentValueSubject<VState?, Never>(nil)
     var viewState: AnyPublisher<VState?, Never> {
         viewStateSubject
             .removeDuplicates()
-            .handleEvents(receiveOutput: {
+            .handleEvents(receiveOutput: { [weak self] in
                 guard let viewState = $0 else { return }
-                LoggingManager.shared.log(viewState, at: .debug)
+                self?.loggingManager.log(viewState, at: .debug)
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -43,8 +45,8 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
     let viewEffectSubject = PassthroughSubject<VEffect, Never>()
     var viewEffect: AnyPublisher<VEffect, Never> {
         viewEffectSubject
-            .handleEvents(receiveOutput: {
-                LoggingManager.shared.log($0, at: .debug)
+            .handleEvents(receiveOutput: { [weak self] in
+                self?.loggingManager.log($0, at: .debug)
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -52,19 +54,20 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
 
     // MARK: - Init
     
-    init(flow: F) {
+    init(flow: F, loggingManager: LoggingManager) {
         self.currentFlow = flow
+        self.loggingManager = loggingManager
     }
     
     // MARK: - ViewModel lifecycle
     
     func handleViewEvent(_ event: VEvent) {
-        LoggingManager.shared.log(event, at: .debug)
+        loggingManager.log(event, at: .debug)
         // Override as necessary
     }
     
     func handleCoordinatorEvent(_ event: CEvent) {
-        LoggingManager.shared.log(event, at: .debug)
+        loggingManager.log(event, at: .debug)
         // Override as necessary
     }
 }
