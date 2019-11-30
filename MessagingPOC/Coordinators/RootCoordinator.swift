@@ -36,7 +36,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
     
     // MARK: - Coordinator overrides
     
-    override func start(presentingViewController: UIViewController?) throws {
+    override func start(topViewController: UIViewController?) throws {
         
         rootViewController.view.backgroundColor = .white
         
@@ -53,7 +53,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
     }
     
     override func createRootViewController() -> UIViewController? {
-        return presentingViewController
+        return topViewController
     }
     
     // MARK: - Coordinator flow overrides
@@ -83,11 +83,11 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         switch flow {
         case .signIn:
             if case .success = result {
-                try? start(presentingViewController: nil)
+                try? start(topViewController: nil)
             }
         case .conversations:
             (rootViewController as? UINavigationController)?.topViewController?.dismiss(animated: true, completion: nil)
-            try? start(presentingViewController: nil)
+            try? start(topViewController: nil)
         default:
             super.flowCompleted(flow, result: result)
         }

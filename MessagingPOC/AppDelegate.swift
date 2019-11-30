@@ -54,7 +54,7 @@ extension AppDelegate: UIApplicationDelegate {
         // try? Auth.auth().signOut()
         rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window!.rootViewController!)
         do {
-            try rootCoordinator?.start(presentingViewController: window!.rootViewController!)
+            try rootCoordinator?.start(topViewController: window!.rootViewController!)
         } catch {
             print(error)
         }

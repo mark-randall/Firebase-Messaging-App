@@ -42,14 +42,17 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="NLx-FQ-Efh"/>
+                    </constraints>
                 </stackView>
             </subviews>
             <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="vdt-cX-tgF" secondAttribute="trailing" id="E42-yi-0Fd"/>
-                <constraint firstItem="vdt-cX-tgF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="YEF-tz-E1u"/>
-                <constraint firstItem="vdt-cX-tgF" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="aUJ-K1-e4Z"/>
-                <constraint firstItem="vdt-cX-tgF" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="cs3-Tc-Xkn"/>
+                <constraint firstItem="vdt-cX-tgF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="0kc-ao-O3e"/>
+                <constraint firstAttribute="trailing" secondItem="vdt-cX-tgF" secondAttribute="trailing" id="E42-yi-0Fd"/>
+                <constraint firstItem="vdt-cX-tgF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="XsE-F7-io3"/>
+                <constraint firstItem="vdt-cX-tgF" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="cs3-Tc-Xkn"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

@@ -22,12 +22,11 @@ final class ConversationViewController: UITableViewController {
     
     private lazy var dataSource: UITableViewDiffableDataSource<Section, Message> = { [unowned self] in
         
-        return EditableDiffableDataSource(
+        return UITableViewDiffableDataSource(
             tableView: tableView,
-            cellProvider: { [weak self] tableView, indexPath, contact in
+            cellProvider: { [weak self] tableView, indexPath, message in
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-                guard let message = self?.viewModel?.viewState?.messages[safe: indexPath.row] else { return cell }
                 cell.textLabel?.text = message.text
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.lineBreakMode = .byWordWrapping
@@ -75,7 +74,7 @@ final class ConversationViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
         tableView.allowsSelection = false
-        tableView.tableHeaderView = contactsView
+        tableView.setTableHeaderView(headerView: contactsView)
         dataSource.defaultRowAnimation = .fade
 
         becomeFirstResponder()
@@ -120,5 +119,29 @@ extension ConversationViewController {
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         viewModel?.handleViewEvent(.messageViewed(indexPath))
+    }
+}
+
+
+extension UITableView {
+
+    func setTableHeaderView(headerView: UIView) {
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        self.tableHeaderView = headerView
+
+        // ** Must setup AutoLayout after set tableHeaderView.
+        headerView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        headerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        headerView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+    }
+
+    func shouldUpdateHeaderViewFrame() -> Bool {
+        guard let headerView = self.tableHeaderView else { return false }
+        let oldSize = headerView.bounds.size
+        // Update the size
+        headerView.layoutIfNeeded()
+        let newSize = headerView.bounds.size
+        return oldSize != newSize
     }
 }

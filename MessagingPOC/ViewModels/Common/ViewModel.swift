@@ -12,13 +12,17 @@ protocol ViewEffect: Loggable {}
 
 protocol ViewEvent: Loggable {}
 
+protocol CoordinatorEvent: Loggable {}
+
+struct EmptyCoordinatorEvent: CoordinatorEvent {}
+
 /// Each ViewModel is responsible for 3 things:
 ///
 /// - ViewState - value object completely represents a View state
 /// - ViewEffects - events from the VM the needs to be handled by the view. e.g. present error
 /// - ViewEvents - user actions and system events from the View the VM needs to handled. e.g. button tapped
 ///
-class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEvent> {
+class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEvent, CEvent: CoordinatorEvent> {
 
     private(set) var currentFlow: F
     
@@ -58,6 +62,11 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
     }
 
     func handleViewEvent(_ event: VEvent) {
+        LoggingManager.shared.log(event, at: .debug)
+        // Override as necessary
+    }
+    
+    func handleCoordinatorEvent(_ event: CEvent) {
         LoggingManager.shared.log(event, at: .debug)
         // Override as necessary
     }

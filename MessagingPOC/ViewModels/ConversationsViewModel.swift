@@ -35,7 +35,7 @@ enum ConversationsViewEvent: ViewEvent {
 
 // MARK: - ViewModel
 
-typealias ConversationsViewModelProtocol = ViewModel<MessagingApplicationFlow, ConversationsViewState, ConversationsViewEffect, ConversationsViewEvent>
+typealias ConversationsViewModelProtocol = ViewModel<MessagingApplicationFlow, ConversationsViewState, ConversationsViewEffect, ConversationsViewEvent, EmptyCoordinatorEvent>
 
 final class ConversationsViewModel: ConversationsViewModelProtocol, ConversationsCoordinatorController {
 
@@ -99,7 +99,6 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
                     os_log("deleted conversation", log: self.log, type: .info)
                 }
             }
-            
         case .conversationSelected(let indexPath):
             guard let conversation = conversations[safe: indexPath.row] else { return }
             try? conversationsCoordinatorActionHandler?.perform(.showConversation(conversationId: conversation.id))

@@ -49,8 +49,8 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         return vc
     }
 
-    override func start(presentingViewController: UIViewController?) throws {
-        guard let nc = presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+    override func start(topViewController: UIViewController?) throws {
+        guard let nc = topViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
         nc.viewControllers = [rootViewController]
     }
     
@@ -61,7 +61,7 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         switch action {
         case .showConversation:
             let vc = try createViewController(forAction: action)
-            guard let nc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            guard let nc = topViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             
             if nc.topViewController is ConversationViewController {
                 nc.popViewController(animated: false)
@@ -72,22 +72,29 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         case .presentAddConversation:
             let vc = try createViewController(forAction: action)
             let nc = UINavigationController(rootViewController: vc)
-            presentingViewController?.present(nc, animated: true, completion: nil)
+            topViewController?.present(nc, animated: true, completion: nil)
         case .presentProfile:
             let vc = try createViewController(forAction: action)
             let nc = UINavigationController(rootViewController: vc)
-            guard let presentingNc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            guard let presentingNc = topViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             presentingNc.present(nc, animated: true, completion: nil)
         case .dismissProfile:
-            guard let nc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            guard let nc = topViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             nc.dismiss(animated: true, completion: nil)
         case .presentAddContacts:
             let vc = try createViewController(forAction: action)
             let nc = UINavigationController(rootViewController: vc)
-            presentingViewController?.present(nc, animated: true, completion: nil)
+            topViewController?.present(nc, animated: true, completion: nil)
         case .logout:
             try auth.signOut()
             complete(withResult: .success)
+        case .contactAdded(let contact):
+            guard
+                let nc = topViewController as? UINavigationController,
+                let presentingNC = topViewController?.presentingViewController as? UINavigationController,
+                let conversationVC = presentingNC.topViewController as? ConversationViewController
+                else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            nc.dismiss(animated: true, completion: nil)
         }
     }
     

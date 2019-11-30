@@ -24,11 +24,10 @@ final class ConversationsViewController: UITableViewController {
         
         return EditableDiffableDataSource(
             tableView: tableView,
-            cellProvider: { [weak self] tableView, indexPath, contact in
+            cellProvider: { [weak self] tableView, indexPath, conversation in
                 
                 // TODO: custom cell with config method
                 let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-                guard let conversation = self?.viewModel?.viewState?.conversations[safe: indexPath.row] else { return cell }
                 cell.textLabel?.text = conversation.text
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.lineBreakMode = .byWordWrapping

@@ -10,11 +10,12 @@ import Foundation
 import FirebaseFirestore
 import os.log
 import Crashlytics
+import Combine
 
 // MARK: - ViewState
 
 struct ContactsViewState: ViewState {
-    var messages: [Contact]
+    var contacts: [Contact]
 }
 
 // MARK: - ViewEffect
@@ -25,11 +26,12 @@ enum ContactsViewEffect: ViewEffect {
 // MARK: - ViewEvent
 
 enum ContactsViewEvent: ViewEvent {
+    case contactSelected(IndexPath)
 }
 
 // MARK: - ViewModel
 
-typealias ContactsViewModelProtocol = ViewModel<MessagingApplicationFlow, ContactsViewState, ContactsViewEffect, ContactsViewEvent>
+typealias ContactsViewModelProtocol = ViewModel<MessagingApplicationFlow, ContactsViewState, ContactsViewEffect, ContactsViewEvent, EmptyCoordinatorEvent>
 
 final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinatorController {
     
@@ -47,5 +49,16 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
     init(flow: MessagingApplicationFlow, firestore: Firestore) {
         self.firestore = firestore
         super.init(flow: flow)
+        
+        updateViewState(ContactsViewState(contacts: [Contact(id: "123", name: "Beans")]))
+    }
+    
+    override func handleViewEvent(_ event: ContactsViewEvent) {
+        
+        switch event {
+        case .contactSelected(let indexPath):
+            guard let contact = viewState?.contacts[safe: indexPath.row] else { assertionFailure(); return }
+            try? conversationsCoordinatorActionHandler?.perform(.contactAdded(contact: contact))
+        }
     }
 }

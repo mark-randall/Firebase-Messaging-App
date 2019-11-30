@@ -43,7 +43,6 @@ final class ConversationContactsView: UIControl {
     }
     
     override var intrinsicContentSize: CGSize {
-        // TODO: figure this out
         return CGSize(width: bounds.width, height: max(contactsLabel.intrinsicContentSize.height,addContactButton.intrinsicContentSize.height))
     }
     

@@ -17,7 +17,7 @@ class BaseCoordinator<T: Flow>: NSObject {
     
     private(set) var rootViewController: UIViewController!
     
-    var presentingViewController: UIViewController? {
+    var topViewController: UIViewController? {
         rootViewController?.getTopNavigationOrTabbarController()
     }
     
@@ -36,7 +36,7 @@ class BaseCoordinator<T: Flow>: NSObject {
         return nil
     }
     
-    func start(presentingViewController: UIViewController?) throws {
+    func start(topViewController: UIViewController?) throws {
     }
     
     func complete(withResult result: FlowResult) {
@@ -54,7 +54,7 @@ class BaseCoordinator<T: Flow>: NSObject {
         childCoordinator = flowCoordinator
         flowCoordinator.parentCoordinator = self
         childFlow = flow
-        try flowCoordinator.start(presentingViewController: presentingViewController)
+        try flowCoordinator.start(topViewController: topViewController)
     }
     
     func createCoordinator(forFlow flow: T) throws -> BaseCoordinator<T> {

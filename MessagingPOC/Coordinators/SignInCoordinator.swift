@@ -38,7 +38,7 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
     
     // MARK: - Coordinator
     
-    override func start(presentingViewController: UIViewController?) throws {
+    override func start(topViewController: UIViewController?) throws {
         guard let vc = authUI?.authViewController() else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
         rootViewController.present(vc, animated: true, completion: nil)
     }
@@ -48,7 +48,7 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
         switch action {
         case .showProfile:
             let vc = try createViewController(forAction: action)
-            guard let presentingNc = self.presentingViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+            guard let presentingNc = topViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             presentingNc.viewControllers = [vc]
         case .logout:
             try auth.signOut()

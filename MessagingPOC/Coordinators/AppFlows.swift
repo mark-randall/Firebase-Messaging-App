@@ -13,6 +13,7 @@ import Foundation
 enum MessagingApplicationFlow: Flow {
     case root
     case conversations
+    case createConversation
     case signIn
 }
 
@@ -36,4 +37,5 @@ enum ConversationAction: Action {
     case presentProfile
     case dismissProfile
     case logout
+    case contactAdded(contact: Contact)
 }

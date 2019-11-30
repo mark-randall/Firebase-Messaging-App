@@ -15,10 +15,10 @@ import Combine
 // MARK: - ViewState
 
 struct ConversationViewState: ViewState {
-
     let title = "Conversation"
     var contactsEditable: Bool = false
     var messages: [Message] = []
+    var contacts: [Contact] = []
 }
 
 // MARK: - ViewEffect
@@ -34,9 +34,13 @@ enum ConversationViewEvent: ViewEvent {
     case addContactTapped
 }
 
+enum ConversationCoordinatorEvent: CoordinatorEvent {
+    case contactAdded(contact: Contact)
+}
+
 // MARK: - ViewModel
 
-typealias ConversationViewModelProtocol = ViewModel<MessagingApplicationFlow, ConversationViewState, ConversationViewEffect, ConversationViewEvent>
+typealias ConversationViewModelProtocol = ViewModel<MessagingApplicationFlow, ConversationViewState, ConversationViewEffect, ConversationViewEvent, ConversationCoordinatorEvent>
 
 final class ConversationViewModel: ConversationViewModelProtocol, ConversationsCoordinatorController {
     
@@ -83,7 +87,18 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         }
     }
     
-    // MARK: - Handle ViewEvent
+    // MARK: - Handle Events
+    
+    override func handleCoordinatorEvent(_ event: ConversationCoordinatorEvent) {
+        super.handleCoordinatorEvent(event)
+        
+        switch event {
+        case .contactAdded(let contact):
+            guard var viewState = self.viewState else { assertionFailure(); return }
+            viewState.contacts.append(contact)
+            updateViewState(viewState)
+        }
+    }
     
     override func handleViewEvent(_ event: ConversationViewEvent) {
         super.handleViewEvent(event)

@@ -32,7 +32,7 @@ enum ProfileViewEvent: ViewEvent {
 
 // MARK: - ViewModel
 
-typealias ProfileViewModelProtocol = ViewModel<MessagingApplicationFlow, ProfileViewState, ProfileViewEffect, ProfileViewEvent>
+typealias ProfileViewModelProtocol = ViewModel<MessagingApplicationFlow, ProfileViewState, ProfileViewEffect, ProfileViewEvent, EmptyCoordinatorEvent>
 
 final class ProfileViewModel: ProfileViewModelProtocol, ConversationsCoordinatorController, SignInCoordinatorController {
     

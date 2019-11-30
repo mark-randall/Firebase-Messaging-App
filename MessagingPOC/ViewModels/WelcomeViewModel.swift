@@ -28,7 +28,7 @@ enum WelcomeViewEvent: ViewEvent {
 
 // MARK: - ViewModel
 
-typealias WelcomeViewModelProtocol = ViewModel<MessagingApplicationFlow, WelcomeViewState, WelcomeViewEffect, WelcomeViewEvent>
+typealias WelcomeViewModelProtocol = ViewModel<MessagingApplicationFlow, WelcomeViewState, WelcomeViewEffect, WelcomeViewEvent, EmptyCoordinatorEvent>
 
 final class WelcomeViewModel: WelcomeViewModelProtocol, RootCoordinatorController {
     

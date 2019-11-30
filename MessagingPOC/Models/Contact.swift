@@ -8,6 +8,8 @@
 
 import Foundation
 
-struct Contact: Equatable {
+struct Contact: Equatable, Hashable {
     
+    let id: String
+    let name: String
 }
