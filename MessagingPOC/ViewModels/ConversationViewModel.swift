@@ -14,10 +14,21 @@ import Combine
 
 // MARK: - ViewState
 
+struct MessageData: Equatable, Hashable {
+    
+    let text: String
+    let from: String
+
+    init(message: Message) {
+        text = message.text
+        from = message.from.name
+    }
+}
+
 struct ConversationViewState: ViewState {
     let title = "Conversation"
     var contactsEditable: Bool = false
-    var messages: [Message] = []
+    var messages: [MessageData] = []
     var contacts: String? = nil
 }
 
@@ -53,7 +64,8 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     
     private let userId: String
     private let conversation: Conversation?
-    private var newConverationContacts: [Contact] = []
+    private var newConverationContacts: [ContactData] = []
+    private var messages: [Message] = []
     
     private var cancellable: AnyCancellable?
     
@@ -85,8 +97,9 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             switch result {
             case .failure: break
             case .success(let messages):
+                self.messages = messages
                 let viewState = ConversationViewState(
-                    messages: messages,
+                    messages: messages.map({ MessageData(message: $0) }),
                     contacts: self.conversation?.contacts.map({ $0.name }).joined(separator: ", ")
                 )
                 self.viewStateSubject.send(viewState)
@@ -100,9 +113,9 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         super.handleCoordinatorEvent(event)
         
         switch event {
-        case .contactAdded(let contact):
+        case .contactWasSelected(let contact):
             guard var viewState = self.viewStateSubject.value else { assertionFailure(); return }
-            newConverationContacts.append(contact)
+            newConverationContacts.append(ContactData(contact: contact))
             viewState.contacts = newConverationContacts.map { $0.name }.joined(separator: ", ")
             viewStateSubject.send(viewState)
         }
@@ -116,7 +129,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         case .messageViewed(let indexPath):
             
             guard let conversation = self.conversation else { return }
-            guard let message = viewStateSubject.value?.messages[safe: indexPath.row] else { return }
+            guard let message = messages[safe: indexPath.row] else { return }
             guard !message.isRead else { return }
             
             _ = messageRepostiory.updateMessageAsRead(forUserId: userId, conversationId: conversation.id, messageId: message.id).sink { [weak self] result in

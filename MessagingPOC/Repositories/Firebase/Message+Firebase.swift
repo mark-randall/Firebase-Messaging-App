@@ -18,14 +18,15 @@ extension Message {
             let text = data["text"] as? String,
             let isRead = data["is_read"] as? Bool,
             let timestamp = data["time"] as? Timestamp,
-            let sender = data["sender"] as? [String: Any],
-            let from = sender["id"] as? String
+            let senderData = data["sender"] as? [String: Any],
+            let senderId = senderData["id"] as? String,
+            let senderName = senderData["name"] as? String
             else { return nil }
         
         self.id = snapshot.documentID
         self.text = text
         self.isRead = isRead
         self.sent = timestamp.dateValue()
-        self.from = from
+        self.from = Contact(id: senderId, name: senderName)
     }
 }

@@ -29,5 +29,5 @@ struct Message: Equatable, Comparable, Hashable, CustomDebugStringConvertible {
     let text: String
     let isRead: Bool
     let sent: Date
-    let from: String
+    let from: Contact
 }

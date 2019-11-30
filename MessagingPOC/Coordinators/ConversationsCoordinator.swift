@@ -92,11 +92,11 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         case .logout:
             try auth.signOut()
             complete(withResult: .success)
-        case .contactAdded(let contact):
+        case .contactSelected(let contact):
             guard
                 let nc = topViewController as? UINavigationController
                 else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
-            conversationViewModel?.handleCoordinatorEvent(.contactAdded(contact: contact))
+            conversationViewModel?.handleCoordinatorEvent(.contactWasSelected(contact: contact))
             nc.dismiss(animated: true, completion: nil)
         }
     }

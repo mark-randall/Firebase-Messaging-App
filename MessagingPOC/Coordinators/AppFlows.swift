@@ -36,9 +36,9 @@ enum ConversationAction: Action {
     case presentProfile
     case dismissProfile
     case logout
-    case contactAdded(contact: Contact)
+    case contactSelected(contact: Contact)
 }
 
 enum ConversationCoordinatorEvent: CoordinatorEvent {
-    case contactAdded(contact: Contact)
+    case contactWasSelected(contact: Contact)
 }

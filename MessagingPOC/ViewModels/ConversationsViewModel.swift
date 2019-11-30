@@ -14,9 +14,22 @@ import Combine
 
 // MARK: - ViewState
 
+struct ConversationData: Equatable, Hashable {
+    
+    let id: String
+    let text: String
+    let lastMessageSend: Date
+    
+    init(conversation: Conversation) {
+        id = conversation.id
+        text = conversation.text
+        lastMessageSend = conversation.lastMessageSend
+    }
+}
+
 struct ConversationsViewState: ViewState {
     let title = "Conversations"
-    var conversations: [Conversation]
+    var conversations: [ConversationData]
 }
 
 // MARK: - ViewEffect
@@ -66,12 +79,14 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
         os_log("show converations for %@", log: self.log, type: .info, userId)
         
         cancellable = messagesRepository.fetchConversations(forUserId: userId).sink { [weak self] result in
+            guard let self = self else { return }
             
             switch result {
             case .failure: break
             case .success(let conversations):
-                self?.conversations = conversations
-                self?.viewStateSubject.send(ConversationsViewState(conversations: conversations))
+                self.conversations = conversations
+                let conversationsData = conversations.map { ConversationData(conversation: $0) }
+                self.viewStateSubject.send(ConversationsViewState(conversations: conversationsData))
             }
         }
     }

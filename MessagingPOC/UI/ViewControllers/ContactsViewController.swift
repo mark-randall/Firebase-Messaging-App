@@ -21,7 +21,7 @@ final class ContactsViewController: UITableViewController {
         case contacts
     }
     
-    private lazy var dataSource: UITableViewDiffableDataSource<Section, Contact> = { [unowned self] in
+    private lazy var dataSource: UITableViewDiffableDataSource<Section, ContactData> = { [unowned self] in
         
         return EditableDiffableDataSource(
             tableView: tableView,
@@ -60,7 +60,7 @@ final class ContactsViewController: UITableViewController {
         subscriptions.append(viewModel.viewState.sink(receiveValue: { [weak self] viewState in
             guard let viewState = viewState else { return }
             
-            var snapshot = NSDiffableDataSourceSnapshot<Section, Contact>()
+            var snapshot = NSDiffableDataSourceSnapshot<Section, ContactData>()
             snapshot.appendSections(Section.allCases)
             snapshot.appendItems(viewState.contacts, toSection: Section.contacts)
             let animate = self?.tableView.numberOfSections ?? 0 > 0

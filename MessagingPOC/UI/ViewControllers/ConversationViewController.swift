@@ -21,7 +21,7 @@ final class ConversationViewController: UITableViewController {
         case messages
     }
     
-    private lazy var dataSource: UITableViewDiffableDataSource<Section, Message> = { [unowned self] in
+    private lazy var dataSource: UITableViewDiffableDataSource<Section, MessageData> = { [unowned self] in
         
         return UITableViewDiffableDataSource(
             tableView: tableView,
@@ -101,7 +101,7 @@ final class ConversationViewController: UITableViewController {
             self?.contactsView.isEditable = viewState.contactsEditable
             self?.contactsView.contacts = viewState.contacts
             self?.navigationItem.title = viewState.title
-            var snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
+            var snapshot = NSDiffableDataSourceSnapshot<Section, MessageData>()
             snapshot.appendSections(Section.allCases)
             snapshot.appendItems(viewState.messages, toSection: Section.messages)
             let animate = self?.tableView.numberOfSections ?? 0 > 0
