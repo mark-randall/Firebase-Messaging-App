@@ -71,7 +71,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
             case .failure: break
             case .success(let conversations):
                 self?.conversations = conversations
-                self?.updateViewState(ConversationsViewState(conversations: conversations))
+                self?.viewStateSubject.send(ConversationsViewState(conversations: conversations))
             }
         }
     }

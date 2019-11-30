@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 final class ProfileViewController: UIViewController {
     
@@ -23,11 +24,14 @@ final class ProfileViewController: UIViewController {
         return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeButtonTapped))
     }()
     
+    // MARK: - Combine
+    
+    private var subscriptions: [Cancellable] = []
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     // MARK: - Bind ViewModel
@@ -35,7 +39,8 @@ final class ProfileViewController: UIViewController {
     func bindViewModel(_ viewModel: ProfileViewModelProtocol) {
         self.viewModel = viewModel
         
-        viewModel.subscribeToViewState { [weak self] viewState in
+        subscriptions.append(viewModel.viewState.sink(receiveValue: { [weak self] viewState in
+            guard let viewState = viewState else { return }
             
             if viewState.showCloseButton {
                 self?.navigationItem.rightBarButtonItem = self?.closeButton
@@ -44,7 +49,7 @@ final class ProfileViewController: UIViewController {
             }
             
             self?.startChattingButton?.isHidden = !viewState.showStartChattingButton
-        }
+        }))
     }
 
     

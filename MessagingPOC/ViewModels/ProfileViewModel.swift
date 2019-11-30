@@ -48,9 +48,9 @@ final class ProfileViewModel: ProfileViewModelProtocol, ConversationsCoordinator
             
         switch currentFlow {
         case .conversations:
-            updateViewState(ProfileViewState(showCloseButton: true))
+            viewStateSubject.send(ProfileViewState(showCloseButton: true))
         case .signIn:
-            updateViewState(ProfileViewState(showStartChattingButton: true))
+            viewStateSubject.send(ProfileViewState(showStartChattingButton: true))
         default: break
         }
     }

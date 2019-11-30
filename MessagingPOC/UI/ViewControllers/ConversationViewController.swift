@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 final class ConversationViewController: UITableViewController {
     
@@ -66,6 +67,10 @@ final class ConversationViewController: UITableViewController {
         return true
     }
     
+    // MARK: - Combine
+    
+    private var subscriptions: [Cancellable] = []
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -90,7 +95,9 @@ final class ConversationViewController: UITableViewController {
     func bindViewModel(_ viewModel: ConversationViewModelProtocol) {
         self.viewModel = viewModel
         
-        viewModel.subscribeToViewState { [weak self] viewState in
+        subscriptions.append(viewModel.viewState.sink(receiveValue: { [weak self] viewState in
+            guard let viewState = viewState else { return }
+            
             self?.contactsView.isEditable = viewState.contactsEditable
             self?.contactsView.contacts = viewState.contacts
             self?.navigationItem.title = viewState.title
@@ -99,7 +106,7 @@ final class ConversationViewController: UITableViewController {
             snapshot.appendItems(viewState.messages, toSection: Section.messages)
             let animate = self?.tableView.numberOfSections ?? 0 > 0
             self?.dataSource.apply(snapshot, animatingDifferences: animate)
-        }
+        }))
     }
     
     // MARK: - Actions

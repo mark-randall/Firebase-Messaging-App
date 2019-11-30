@@ -73,7 +73,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         if let conversation = conversation {
             subscribeTo(conversationId: conversation.id)
         } else {
-            updateViewState(ConversationViewState(contactsEditable: true))
+            viewStateSubject.send(ConversationViewState(contactsEditable: true))
         }
     }
         
@@ -89,7 +89,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
                     messages: messages,
                     contacts: self.conversation?.contacts.map({ $0.name }).joined(separator: ", ")
                 )
-                self.updateViewState(viewState)
+                self.viewStateSubject.send(viewState)
             }
         }
     }
@@ -101,10 +101,10 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         
         switch event {
         case .contactAdded(let contact):
-            guard var viewState = self.viewState else { assertionFailure(); return }
+            guard var viewState = self.viewStateSubject.value else { assertionFailure(); return }
             newConverationContacts.append(contact)
             viewState.contacts = newConverationContacts.map { $0.name }.joined(separator: ", ")
-            updateViewState(viewState)
+            viewStateSubject.send(viewState)
         }
     }
     
@@ -116,7 +116,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         case .messageViewed(let indexPath):
             
             guard let conversation = self.conversation else { return }
-            guard let message = viewState?.messages[safe: indexPath.row] else { return }
+            guard let message = viewStateSubject.value?.messages[safe: indexPath.row] else { return }
             guard !message.isRead else { return }
             
             _ = messageRepostiory.updateMessageAsRead(forUserId: userId, conversationId: conversation.id, messageId: message.id).sink { [weak self] result in

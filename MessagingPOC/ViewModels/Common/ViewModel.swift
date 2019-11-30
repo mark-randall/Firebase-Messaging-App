@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol ViewState: Equatable, Loggable {}
 
@@ -26,18 +27,27 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
 
     private(set) var currentFlow: F
     
-    private(set) var viewState: VState? {
-        didSet {
-            if let viewState = self.viewState {
-                DispatchQueue.main.execute { [weak self] in
-                    self?.viewStateSubscription?(viewState)
-                }
-            }
-        }
+    let viewStateSubject = CurrentValueSubject<VState?, Never>(nil)
+    var viewState: AnyPublisher<VState?, Never> {
+        viewStateSubject
+            .removeDuplicates()
+            .handleEvents(receiveOutput: {
+                guard let viewState = $0 else { return }
+                LoggingManager.shared.log(viewState, at: .debug)
+            })
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 
-    private var viewStateSubscription: ((VState) -> Void)?
-    private var viewEffectSubscription: ((VEffect) -> Void)?
+    let viewEffectSubject = PassthroughSubject<VEffect, Never>()
+    var viewEffect: AnyPublisher<VEffect, Never> {
+        viewEffectSubject
+            .receive(on: DispatchQueue.main)
+            .handleEvents(receiveOutput: {
+                LoggingManager.shared.log($0, at: .debug)
+            })
+            .eraseToAnyPublisher()
+    }
 
     // MARK: - Init
     
@@ -47,20 +57,6 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
     
     // MARK: - ViewModel lifecycle
     
-    func subscribeToViewState(_ completion: @escaping (VState) -> Void) {
-        
-        if let viewState = self.viewState {
-            DispatchQueue.main.async {
-                completion(viewState)
-            }
-        }
-        viewStateSubscription = completion
-    }
-
-    func subscribeToViewEffects(_ completion: @escaping (VEffect) -> Void) {
-        viewEffectSubscription = completion
-    }
-
     func handleViewEvent(_ event: VEvent) {
         LoggingManager.shared.log(event, at: .debug)
         // Override as necessary
@@ -69,20 +65,5 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
     func handleCoordinatorEvent(_ event: CEvent) {
         LoggingManager.shared.log(event, at: .debug)
         // Override as necessary
-    }
-
-    // TODO: determine how to hide from View. Should not be called by View.
-    func performViewEffect(_ viewEffect: VEffect) {
-        LoggingManager.shared.log(viewEffect, at: .debug)
-        DispatchQueue.main.execute { [weak self] in
-            self?.viewEffectSubscription?(viewEffect)
-        }
-    }
-
-    // TODO: determine how to hide from View. Should not be called by View.
-    func updateViewState(_ viewState: VState) {
-        LoggingManager.shared.log(viewState, at: .debug)
-        guard viewState != self.viewState else { return }
-        self.viewState = viewState
     }
 }

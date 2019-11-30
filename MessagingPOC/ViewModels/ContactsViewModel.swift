@@ -50,14 +50,14 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
         self.firestore = firestore
         super.init(flow: flow)
         
-        updateViewState(ContactsViewState(contacts: [Contact(id: "123", name: "Beans")]))
+        viewStateSubject.send(ContactsViewState(contacts: [Contact(id: "123", name: "Beans")]))
     }
     
     override func handleViewEvent(_ event: ContactsViewEvent) {
         
         switch event {
         case .contactSelected(let indexPath):
-            guard let contact = viewState?.contacts[safe: indexPath.row] else { assertionFailure(); return }
+            guard let contact = viewStateSubject.value?.contacts[safe: indexPath.row] else { assertionFailure(); return }
             try? conversationsCoordinatorActionHandler?.perform(.contactAdded(contact: contact))
         }
     }
