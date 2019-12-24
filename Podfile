@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '12.0'
+platform :ios, '13.0'
 
 use_frameworks!
 inhibit_all_warnings!
@@ -31,6 +31,7 @@ target 'MessagingPOC' do
     commonPods
     
     target 'MessagingPOCTests' do
+        pod 'Cuckoo'
         inherit! :search_paths
     end
 end

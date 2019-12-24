@@ -26,7 +26,8 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         rootViewController.view.backgroundColor = .white
         
-        if serviceLocator.userRepository.currentUser != nil {
+        if let user = serviceLocator.userRepository.currentUser {
+            serviceLocator.loggingManager.set(userProperty: MessagesUserProperty.signedInAs(id: user.id))
             try presentFlow(.conversations)
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }

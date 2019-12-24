@@ -59,15 +59,24 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
     
     private var contacts: [Contact] = []
     
+    private var cancellable: AnyCancellable?
+    
     // MARK: - Init
     
-    init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator) {
+    init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator, userId: String) {
         self.serviceLocator = serviceLocator
         super.init(flow: flow, loggingManager: serviceLocator.loggingManager)
-        
-        self.contacts = [Contact(id: "123", name: "Beans")]
-        let contactData = contacts.map { ContactData(contact: $0) }
-        viewStateSubject.send(ContactsViewState(contacts: contactData))
+        cancellable = serviceLocator.messagesRepository.fetchContacts(forUserId: userId).sink { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .failure: break
+            case .success(let contacts):
+                self.contacts = contacts
+                let contactsData = contacts.map { ContactData(contact: $0) }
+                self.viewStateSubject.send(ContactsViewState(contacts: contactsData))
+            }
+        }
     }
     
     override func handleViewEvent(_ event: ContactsViewEvent) {

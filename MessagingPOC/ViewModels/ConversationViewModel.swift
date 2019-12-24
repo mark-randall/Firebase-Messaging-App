@@ -64,7 +64,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     
     private let userId: String
     private let conversation: Conversation?
-    private var newConverationContacts: [ContactData] = []
+    private var newConverationContacts: [Contact] = []
     private var messages: [Message] = []
     
     private var cancellable: AnyCancellable?
@@ -115,8 +115,12 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         switch event {
         case .contactWasSelected(let contact):
             guard var viewState = self.viewStateSubject.value else { assertionFailure(); return }
-            newConverationContacts.append(ContactData(contact: contact))
-            viewState.contacts = newConverationContacts.map { $0.name }.joined(separator: ", ")
+            newConverationContacts.append(contact)
+            
+            viewState.contacts = newConverationContacts
+            .map { ContactData(contact: $0) }
+            .map { $0.name }.joined(separator: ", ")
+            
             viewStateSubject.send(viewState)
         }
     }
@@ -145,12 +149,25 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
                 }
             }
 
-        case .sendMessage(let message):
+        case .sendMessage(let messageText):
             
-            guard let conversationId = self.conversation?.id else { return }
-            let message = SentMessage(conversationId: conversationId, senderId: userId, text: message)
+            let message: SentMessage
+            if let conversationId = self.conversation?.id {
+                message = SentMessage(
+                    sendTo: .existingConversation(id: conversationId),
+                    senderId: userId,
+                    text: messageText
+                )
+            } else {
+                message = SentMessage(
+                    sendTo: .newConversation(id: UUID().uuidString, to: newConverationContacts),
+                    senderId: userId,
+                    text: messageText
+                )
+                subscribeTo(conversationId: message.conversationId)
+            }
             
-            _ = serviceLocator.messagesRepository.sendMessage(forUserId: userId, conversationId: conversationId, message: message).sink { [weak self] result in
+            _ = serviceLocator.messagesRepository.sendMessage(message, fromUserId: userId).sink { [weak self] result in
                 
                 guard let self = self else { return }
                 

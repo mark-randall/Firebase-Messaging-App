@@ -33,7 +33,7 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
         uid: String
     ) {
         self.serviceLocator = serviceLocator
-        self.uid = "mJ0ROv2pEqg1E8JK13OF9D1Mfay2" // TODO: hardcoding for dev
+        self.uid = uid //"mJ0ROv2pEqg1E8JK13OF9D1Mfay2" // TODO: hardcoding for dev
         super.init(flow: flow, presentingViewController: presentingViewController, loggingManager: serviceLocator.loggingManager)
     }
     
@@ -118,7 +118,7 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
             return vc
         case .presentAddContacts:
             let vc: ContactsViewController = try UIViewController.create(storyboard: "Main", identifier: "ContactsViewController")
-            let vm = ContactsViewModel(flow: flow, serviceLocator: serviceLocator)
+            let vm = ContactsViewModel(flow: flow, serviceLocator: serviceLocator, userId: uid)
             vm.conversationsCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             return vc

@@ -8,7 +8,7 @@
 
 import Foundation
 
-// TODO: improve / finish though
+// TODO: improve / finish thought
 
 // MARK: Loggable things
 
@@ -73,10 +73,24 @@ extension Loggable {
     }
 }
 
+// MARK: - UserProperty
+
+protocol UserProperty: Loggable {
+    var key: String { get }
+    var value: Any { get }
+}
+
+extension UserProperty where Self: Loggable {
+    
+    var logMessage: String {
+        return "\(key) = \(value)"
+    }
+}
+
 // MARK: - LoggingManager
 
 final class LoggingManager {
-        
+    
     private var component: String = ""
     
     func log(_ log: LoggableComponent, at level: LogLevel) {
@@ -87,5 +101,9 @@ final class LoggingManager {
     
     func log(_ log: Loggable, at level: LogLevel) {
         print("~ \(level.rawValue) - \(component): \(log.logMessage)")
+    }
+    
+    func set(userProperty: UserProperty & Loggable) {
+        log(userProperty, at: .debug)
     }
 }
