@@ -55,8 +55,7 @@ struct SentMessage: Equatable, CustomDebugStringConvertible {
     }
     
     var data: [String: Any] {
-        return [
-            "id": UUID().uuidString,
+        return [ 
             "sender": [
                 "id": senderId,
                 "name": "TODO"

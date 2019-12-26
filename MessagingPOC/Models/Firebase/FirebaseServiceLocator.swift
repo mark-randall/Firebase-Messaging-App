@@ -11,7 +11,9 @@ import FirebaseFirestore
 
 final class FirebaseServiceLocator: ServiceLocator {
     
-    lazy var userRepository: UserRepository = FirebaseUserRepository()
+    lazy var userRepository: UserRepository = { [unowned self] in
+        return FirebaseUserRepository(logger: self.loggingManager)
+    }()
 
     lazy var messagesRepository: MessagesRepository = { [unowned self] in
         let db = Firestore.firestore()

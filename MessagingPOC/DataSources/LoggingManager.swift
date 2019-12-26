@@ -66,6 +66,13 @@ extension Loggable where Self: ViewState {
     }
 }
 
+extension String: Loggable {
+    
+    var logMessage: String {
+        return self
+    }
+}
+
 extension Loggable {
     
     var logMessage: String {

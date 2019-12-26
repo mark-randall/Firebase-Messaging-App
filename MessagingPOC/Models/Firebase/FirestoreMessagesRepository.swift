@@ -49,7 +49,10 @@ extension FirestoreMessagesRepository: MessagesRepository {
         .order(by: "time", descending: true)
         .snapshotListenerPublisher()
         .handleEvents(receiveOutput: { [weak self] result in
+            
+            // Debug log
             self?.logging.log(FirestoreMessagesRepositoryLoggable.collectionUpdated(path: "\(collection.path)", snapshotResult: result), at: .debug)
+            
         }).map { result in
             
             switch result {

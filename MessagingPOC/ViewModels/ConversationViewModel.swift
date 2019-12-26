@@ -16,10 +16,12 @@ import Combine
 
 struct MessageData: Equatable, Hashable {
     
+    let id: String
     let text: String
     let from: String
 
     init(message: Message) {
+        id = message.id
         text = message.text
         from = message.from.name
     }

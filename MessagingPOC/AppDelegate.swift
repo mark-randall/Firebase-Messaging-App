@@ -51,7 +51,11 @@ extension AppDelegate: UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
         
-        // try? Auth.auth().signOut()
+        // Prompt for APNs
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization( options: authOptions, completionHandler: { (granted, error) in
+        })
+        
         rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window!.rootViewController!, loggingManager: LoggingManager()) // TODO: second instance
         do {
             try rootCoordinator?.start(topViewController: window!.rootViewController!)
@@ -68,10 +72,7 @@ extension AppDelegate: UIApplicationDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        
-        #if DEBUG
-        print("FCM registration token: \(fcmToken)")
-        #endif
+        LoggingManager().set(userProperty: MessagesUserProperty.fcmToken(id: fcmToken))
     }
 }
 

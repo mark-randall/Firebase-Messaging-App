@@ -80,8 +80,8 @@
             filePath = "MessagingPOC/Models/Firebase/FirestoreMessagesRepository.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "fetchMessages(forUserId:conversationId:)"
             landmarkType = "7">
             <Locations>
@@ -116,70 +116,6 @@
                   offsetFromSymbolStart = "52">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DC110D00-C6C2-47F9-839D-B90B54005381"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MessagingPOC/ViewModels/ConversationViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
-            landmarkName = "handleViewEvent(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "DC110D00-C6C2-47F9-839D-B90B54005381 - 278761cf8650da84"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MessagingPOC.ConversationViewModel.handleViewEvent(MessagingPOC.ConversationViewEvent) -&gt; ()"
-                  moduleName = "MessagingPOC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mrandall/Development/MessagingPOC/MessagingPOC/ViewModels/ConversationViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "139"
-                  endingLineNumber = "139"
-                  offsetFromSymbolStart = "1324">
-               </Location>
-               <Location
-                  uuid = "DC110D00-C6C2-47F9-839D-B90B54005381 - 289af8b6576dcb2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Swift.Bool, Swift.Error&gt;) -&gt; () in MessagingPOC.ConversationViewModel.handleViewEvent(MessagingPOC.ConversationViewEvent) -&gt; ()"
-                  moduleName = "MessagingPOC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mrandall/Development/MessagingPOC/MessagingPOC/ViewModels/ConversationViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "139"
-                  endingLineNumber = "139"
-                  offsetFromSymbolStart = "168">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9E1EF86A-B4FB-4BB6-AA9B-2A0E026817E9"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MessagingPOC/Models/Firebase/Conversation+Firestore.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "init(snapshot:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

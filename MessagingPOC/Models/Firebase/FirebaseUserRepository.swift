@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import FirebaseAuth
 import FirebaseUI
+import FirebaseMessaging
 
 final class FirebaseUserRepository: NSObject, UserRepository {
     
@@ -28,6 +29,12 @@ final class FirebaseUserRepository: NSObject, UserRepository {
         return User(firebaseUser: firebaseUser)
     }
     
+    private let logger: LoggingManager
+    
+    init(logger: LoggingManager) {
+        self.logger = logger
+    }
+    
     func fetchAuthViewController() -> UIViewController? {
         return authUI?.authViewController()
     }
@@ -39,6 +46,10 @@ final class FirebaseUserRepository: NSObject, UserRepository {
     
     // TODO: how are errors surfaced here
     func signOut() {
+        if let currentUser = self.currentUser {
+            logger.log("FCM unsubscribe from topic: \(currentUser.id)", at: .debug)
+            Messaging.messaging().unsubscribe(fromTopic: currentUser.id)
+        }
         try? auth.signOut()
     }
 }
@@ -56,6 +67,12 @@ extension FirebaseUserRepository: FUIAuthDelegate {
                 fetchAuthResultSubject.send(.failure(error))
             }
         } else {
+            
+            if let currentUser = self.currentUser {
+                logger.log("FCM subscribe to topic: \(currentUser.id)", at: .debug)
+                Messaging.messaging().subscribe(toTopic: currentUser.id)
+            }
+            
             fetchAuthResultSubject.send(.success(currentUser))
         }
     }
