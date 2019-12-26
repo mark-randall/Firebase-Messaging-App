@@ -9,5 +9,5 @@
 protocol ServiceLocator: class {
     var userRepository: UserRepository { get }
     var messagesRepository: MessagesRepository { get }
-    var loggingManager: LoggingManager { get }
+    var logger: Logger { get }
 }

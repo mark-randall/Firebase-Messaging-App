@@ -28,7 +28,7 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
 
     private(set) var currentFlow: F
     
-    private let loggingManager: LoggingManager
+    private let logger: Logger
     
     let viewStateSubject = CurrentValueSubject<VState?, Never>(nil)
     var viewState: AnyPublisher<VState?, Never> {
@@ -36,7 +36,8 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
             .removeDuplicates()
             .handleEvents(receiveOutput: { [weak self] in
                 guard let viewState = $0 else { return }
-                self?.loggingManager.log(viewState, at: .debug)
+                guard let self = self else { return }
+                self.logger.log(viewState.forComponent("\(self.currentFlow)"), at: .debug)
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -46,7 +47,8 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
     var viewEffect: AnyPublisher<VEffect, Never> {
         viewEffectSubject
             .handleEvents(receiveOutput: { [weak self] in
-                self?.loggingManager.log($0, at: .debug)
+                guard let self = self else { return }
+                self.logger.log($0.forComponent("\(self.currentFlow)"), at: .debug)
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -54,20 +56,20 @@ class ViewModel<F: Flow, VState: ViewState, VEffect: ViewEffect, VEvent: ViewEve
 
     // MARK: - Init
     
-    init(flow: F, loggingManager: LoggingManager) {
+    init(flow: F, logger: Logger) {
         self.currentFlow = flow
-        self.loggingManager = loggingManager
+        self.logger = logger
     }
     
     // MARK: - ViewModel lifecycle
     
     func handleViewEvent(_ event: VEvent) {
-        loggingManager.log(event, at: .debug)
+        logger.log(event.forComponent("\(currentFlow)"), at: .debug)
         // Override as necessary
     }
     
     func handleCoordinatorEvent(_ event: CEvent) {
-        loggingManager.log(event, at: .debug)
+        logger.log(event.forComponent("\(currentFlow)"), at: .debug)
         // Override as necessary
     }
 }

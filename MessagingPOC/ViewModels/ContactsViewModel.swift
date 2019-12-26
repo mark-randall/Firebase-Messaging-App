@@ -7,9 +7,6 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import os.log
-import Crashlytics
 import Combine
 
 // MARK: - ViewState
@@ -53,7 +50,6 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
     // MARK: - Dependencies
 
     private let serviceLocator: ServiceLocator
-    private let log = OSLog(subsystem: "com.messaging", category: "contacts")
     
     // MARK: - State
     
@@ -65,7 +61,7 @@ final class ContactsViewModel: ContactsViewModelProtocol, ConversationsCoordinat
     
     init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator, userId: String) {
         self.serviceLocator = serviceLocator
-        super.init(flow: flow, loggingManager: serviceLocator.loggingManager)
+        super.init(flow: flow, logger: serviceLocator.logger)
         cancellable = serviceLocator.messagesRepository.fetchContacts(forUserId: userId).sink { [weak self] result in
             guard let self = self else { return }
             

@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import os.log
-import Crashlytics
 
 // MARK: - ViewState
 

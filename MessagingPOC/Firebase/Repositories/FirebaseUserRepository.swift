@@ -29,9 +29,9 @@ final class FirebaseUserRepository: NSObject, UserRepository {
         return User(firebaseUser: firebaseUser)
     }
     
-    private let logger: LoggingManager
+    private let logger: Logger
     
-    init(logger: LoggingManager) {
+    init(logger: Logger) {
         self.logger = logger
     }
     

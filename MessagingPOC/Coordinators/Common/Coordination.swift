@@ -32,4 +32,4 @@ protocol Action: Equatable, Loggable {}
 
 // MARK: - Flow
 
-protocol Flow: Equatable, LoggableComponent {}
+protocol Flow: Equatable, Loggable {}

@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import os.log
-import Crashlytics
 
 // MARK: - ViewState
 
@@ -44,7 +42,7 @@ final class ProfileViewModel: ProfileViewModelProtocol, ConversationsCoordinator
     // MARK: - Init
     
     convenience init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator) {
-        self.init(flow: flow, loggingManager: serviceLocator.loggingManager)
+        self.init(flow: flow, logger: serviceLocator.logger)
             
         switch currentFlow {
         case .conversations:

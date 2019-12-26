@@ -10,7 +10,7 @@ import Foundation
 import FirebaseFirestore
 import Combine
 
-enum FirestoreMessagesRepositoryLoggable: LoggableComponent {
+enum FirestoreMessagesRepositoryLoggable: Loggable {
     
     case collectionUpdated(path: String, snapshotResult: Result<QuerySnapshot, Error>)
     
@@ -27,9 +27,9 @@ enum FirestoreMessagesRepositoryLoggable: LoggableComponent {
 final class FirestoreMessagesRepository {
     
     private let firestore: Firestore
-    private let logging: LoggingManager
+    private let logging: Logger
     
-    init(firestore: Firestore, logging: LoggingManager) {
+    init(firestore: Firestore, logging: Logger) {
         self.firestore = firestore
         self.logging = logging
     }

@@ -7,9 +7,6 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import os.log
-import Crashlytics
 import Combine
 
 // MARK: - ViewState
@@ -60,7 +57,6 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
     // MARK: - Dependencies
     
     private let serviceLocator: ServiceLocator
-    private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
     // MARK: - State
     
@@ -82,7 +78,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
         self.serviceLocator = serviceLocator
         self.userId = userId
         self.conversation = conversation
-        super.init(flow: flow, loggingManager: serviceLocator.loggingManager)
+        super.init(flow: flow, logger: serviceLocator.logger)
         
         if let conversation = conversation {
             subscribeTo(conversationId: conversation.id)
@@ -139,15 +135,12 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             guard !message.isRead else { return }
             
             _ = serviceLocator.messagesRepository.updateMessageAsRead(forUserId: userId, conversationId: conversation.id, messageId: message.id).sink { [weak self] result in
-                
-                guard let self = self else { return }
-                
+                                
                 switch result {
                 case .failure(let error):
-                    os_log("error marking message as read", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
+                    self?.conversationsCoordinatorActionHandler?.log("error marking message as read", at: .error)
                 case .success:
-                    os_log("message marked as read", log: self.log, type: .info)
+                    self?.conversationsCoordinatorActionHandler?.log("message marked as read")
                 }
             }
 
@@ -170,15 +163,12 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
             }
             
             _ = serviceLocator.messagesRepository.sendMessage(message, fromUserId: userId).sink { [weak self] result in
-                
-                guard let self = self else { return }
-                
+                                
                 switch result {
                 case .failure(let error):
-                    os_log("error sending message", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
+                    self?.conversationsCoordinatorActionHandler?.log("error sending message", at: .error)
                 case .success:
-                    os_log("message sent", log: self.log, type: .info)
+                    self?.conversationsCoordinatorActionHandler?.log("message sent")
                 }
             }
             

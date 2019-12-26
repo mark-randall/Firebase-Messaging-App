@@ -1,5 +1,5 @@
 //
-//  LoggingManager.swift
+//  Logger.swift
 //  MessagingPOC
 //
 //  Created by Mark Randall on 10/2/19.
@@ -7,27 +7,31 @@
 //
 
 import Foundation
-
-// TODO: improve / finish thought
+import os.log
 
 // MARK: Loggable things
 
-enum LogLevel: String {
-    case debug
-}
-
 protocol Loggable {
+    var component: String { get }
     var logMessage: String { get }
 }
 
-protocol LoggableComponent {
-    var logMessage: String { get }
-    var component: String { get }
+private struct LoggableWithComponent: Loggable {
+    var component: String
+    var logMessage: String
+}
+
+extension Loggable {
+    var component: String { "Default" }
+    
+    func forComponent(_ component: String) -> Loggable {
+        return LoggableWithComponent(component: component.capitalized, logMessage: self.logMessage)
+    }
 }
 
 // MARK: - Things which are loggable
 
-extension LoggableComponent where Self: Flow {
+extension Loggable where Self: Flow {
 
     var logMessage: String {
         return "Enter Flow: \(self)".capitalized
@@ -73,6 +77,13 @@ extension String: Loggable {
     }
 }
 
+extension Error where Self: Loggable {
+    
+    var logMessage: String {
+        return localizedDescription
+    }
+}
+
 extension Loggable {
     
     var logMessage: String {
@@ -94,23 +105,16 @@ extension UserProperty where Self: Loggable {
     }
 }
 
-// MARK: - LoggingManager
+// MARK: - Unified logging
 
-final class LoggingManager {
-    
-    private var component: String = ""
-    
-    func log(_ log: LoggableComponent, at level: LogLevel) {
-        self.component = ""
-        print("~ \(level.rawValue) - \(component): \(log.logMessage)")
-        self.component = log.component
-    }
-    
-    func log(_ log: Loggable, at level: LogLevel) {
-        print("~ \(level.rawValue) - \(component): \(log.logMessage)")
+class Logger {
+        
+    func log(_ log: Loggable, at type: OSLogType = .default) {
+        let oslog = OSLog(subsystem: "com.messaging", category: log.component)
+        os_log("%@", log: oslog, type: type, "\(log.logMessage) ~")
     }
     
     func set(userProperty: UserProperty & Loggable) {
-        log(userProperty, at: .debug)
+        log(userProperty.forComponent("User property"))
     }
 }

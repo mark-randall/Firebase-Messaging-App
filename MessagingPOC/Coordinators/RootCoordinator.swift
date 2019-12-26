@@ -18,8 +18,13 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
     
     // MARK: - Dependencies
 
-    private let serviceLocator: ServiceLocator = FirebaseServiceLocator()
+    private let serviceLocator: ServiceLocator
         
+    init(flow: MessagingApplicationFlow, presentingViewController: UIViewController, serviceLocator: ServiceLocator) {
+        self.serviceLocator = serviceLocator
+        super.init(flow: flow, presentingViewController: presentingViewController, logger: serviceLocator.logger)
+    }
+    
     // MARK: - Coordinator overrides
     
     override func start(topViewController: UIViewController?) throws {
@@ -27,12 +32,12 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         rootViewController.view.backgroundColor = .white
         
         if let user = serviceLocator.userRepository.currentUser {
-            serviceLocator.loggingManager.set(userProperty: MessagesUserProperty.signedInAs(id: user.id))
+            serviceLocator.logger.set(userProperty: MessagesUserProperty.signedInAs(id: user.id))
             try presentFlow(.conversations)
         } else {
             guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
             let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
-            let vm = WelcomeViewModel(flow: flow, loggingManager: serviceLocator.loggingManager)
+            let vm = WelcomeViewModel(flow: flow, logger: serviceLocator.logger)
             vm.rootCoordinatorActionHandler = actionHandler
             vc.bindViewModel(vm)
             nc.viewControllers = [vc]
@@ -77,7 +82,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
             super.flowCompleted(flow, result: result)
         }
         
-        serviceLocator.loggingManager.log(MessagingApplicationFlow.root, at: .debug)
+        serviceLocator.logger.log(MessagingApplicationFlow.root, at: .debug)
     }
     
     // MARK: - Coordinator action overrides

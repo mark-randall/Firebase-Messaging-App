@@ -9,7 +9,6 @@
 import UIKit
 import Combine
 
-
 protocol SignInCoordinatorController: CoordinatorController {
     
     var signInCoordinatorActionHandler: ActionHandler<MessagingApplicationFlow, SignInAction>? { get set }
@@ -30,7 +29,7 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
         super.init(
             flow: flow,
             presentingViewController: presentingViewController,
-            loggingManager: serviceLocator.loggingManager
+            logger: serviceLocator.logger
         )
     }
     

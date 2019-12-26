@@ -34,7 +34,7 @@ final class ConversationsCoordinator: BaseCoordinatorWithActions<MessagingApplic
     ) {
         self.serviceLocator = serviceLocator
         self.uid = uid //"mJ0ROv2pEqg1E8JK13OF9D1Mfay2" // TODO: hardcoding for dev
-        super.init(flow: flow, presentingViewController: presentingViewController, loggingManager: serviceLocator.loggingManager)
+        super.init(flow: flow, presentingViewController: presentingViewController, logger: serviceLocator.logger)
     }
     
     override func createRootViewController() -> UIViewController? {

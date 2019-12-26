@@ -23,6 +23,10 @@ class AppDelegate: UIResponder {
     var window: UIWindow?
     
     private var rootCoordinator: RootCoordinator?
+    
+    func configForFirebase() -> ServiceLocator {
+        return FirebaseServiceLocator()
+    }
 }
 
 // MARK: - UIApplicationDelegate
@@ -31,23 +35,9 @@ extension AppDelegate: UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        // Configure Firebase
-        guard
-            let firebasePlistFileName = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
-            let firebaseOptions = FirebaseOptions(contentsOfFile: firebasePlistFileName)
-            else {
-                preconditionFailure()
-        }
-        FirebaseApp.configure(options: firebaseOptions)
+        let serviceLocator = configForFirebase()
         
-        // Configure crash reporting
-        Fabric.with([Crashlytics.self])
-        
-        // Configure Google Sign in
-        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        
-        // Configure APNs
-        Messaging.messaging().delegate = self
+        // Configure APN
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
         
@@ -56,7 +46,7 @@ extension AppDelegate: UIApplicationDelegate {
         UNUserNotificationCenter.current().requestAuthorization( options: authOptions, completionHandler: { (granted, error) in
         })
         
-        rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window!.rootViewController!, loggingManager: LoggingManager()) // TODO: second instance
+        rootCoordinator = RootCoordinator(flow: .root, presentingViewController: window!.rootViewController!, serviceLocator: serviceLocator)
         do {
             try rootCoordinator?.start(topViewController: window!.rootViewController!)
         } catch {
@@ -64,15 +54,6 @@ extension AppDelegate: UIApplicationDelegate {
         }
 
         return true
-    }
-}
-
-// MARK: - MessagingDelegate
-
-extension AppDelegate: MessagingDelegate {
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        LoggingManager().set(userProperty: MessagesUserProperty.fcmToken(id: fcmToken))
     }
 }
 
@@ -91,22 +72,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-//        if let connectionRequest = NetworkingPendingConnectionLink(dictionary: notification.request.content.userInfo) {
-//            //deepLinkManager?.handleConnectionRequestNotification(connectionRequest)
-//            completionHandler([])
-//        } else {
-//            completionHandler([.alert, .badge, .sound])
-//        }
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        //deepLinkManager?.handlePushNotification(with: userInfo)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        //deepLinkManager?.handlePushNotification(with: userInfo)
         completionHandler(UIBackgroundFetchResult.newData)
     }
 }

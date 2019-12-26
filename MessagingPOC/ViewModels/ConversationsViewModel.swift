@@ -7,9 +7,6 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import os.log
-import Crashlytics
 import Combine
 
 // MARK: - ViewState
@@ -59,7 +56,6 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     // MARK: - Dependencies
 
     private let serviceLocator: ServiceLocator
-    private let log = OSLog(subsystem: "com.messaging", category: "conversations")
     
     // MARK: - State
     
@@ -73,11 +69,10 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
     init(flow: MessagingApplicationFlow, serviceLocator: ServiceLocator, userId: String) {
         self.serviceLocator = serviceLocator
         self.userId = userId
-        super.init(flow: flow, loggingManager: serviceLocator.loggingManager)
+        super.init(flow: flow, logger: serviceLocator.logger)
         
-        Crashlytics.sharedInstance().setUserIdentifier(userId) // TODO: should this be here
-        os_log("show converations for %@", log: self.log, type: .info, userId)
-        
+        conversationsCoordinatorActionHandler?.log("show converations for \(userId)")
+            
         cancellable = serviceLocator.messagesRepository.fetchConversations(forUserId: userId).sink { [weak self] result in
             guard let self = self else { return }
             
@@ -103,15 +98,12 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
             guard let conversation = conversations[safe: indexPath.row] else { return }
                         
             _ = serviceLocator.messagesRepository.deleteConversation(forUserId: userId, conversationId: conversation.id).sink { [weak self] result in
-                
-                guard let self = self else { return }
-                
+                                
                 switch result {
                 case .failure(let error):
-                    os_log("error deleting conversation", log: self.log, type: .error)
-                    Crashlytics.sharedInstance().recordError(error)
+                    self?.conversationsCoordinatorActionHandler?.log("error deleting conversation", at: .error)
                 case .success:
-                    os_log("deleted conversation", log: self.log, type: .info)
+                    self?.conversationsCoordinatorActionHandler?.log("deleted conversation", at: .error)
                 }
             }
         case .conversationSelected(let indexPath):
