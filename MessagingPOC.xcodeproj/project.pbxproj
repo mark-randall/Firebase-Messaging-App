@@ -313,6 +313,7 @@
 		02A7757822FC4469000CB7CE /* MessagingPOC */ = {
 			isa = PBXGroup;
 			children = (
+				02C06DD123B5536900AA2B35 /* Amplify */,
 				02C06DCB23B543AD00AA2B35 /* Firebase */,
 				026DB83B2344420E005EAC48 /* MessagingPOC.entitlements */,
 				021A63CD2345A0D900169EF3 /* DataSources */,
@@ -417,6 +418,13 @@
 				02C06DC923B25D6A00AA2B35 /* QuerySnapshot+Debug.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		02C06DD123B5536900AA2B35 /* Amplify */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Amplify;
 			sourceTree = "<group>";
 		};
 		02E24B332314C76100318EA4 /* Models */ = {
