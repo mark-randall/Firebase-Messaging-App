@@ -138,7 +138,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
                                 
                 switch result {
                 case .failure(let error):
-                    self?.conversationsCoordinatorActionHandler?.log("error marking message as read", at: .error)
+                    self?.conversationsCoordinatorActionHandler?.log(error as NSError, at: .error)
                 case .success:
                     self?.conversationsCoordinatorActionHandler?.log("message marked as read")
                 }
@@ -166,7 +166,7 @@ final class ConversationViewModel: ConversationViewModelProtocol, ConversationsC
                                 
                 switch result {
                 case .failure(let error):
-                    self?.conversationsCoordinatorActionHandler?.log("error sending message", at: .error)
+                    self?.conversationsCoordinatorActionHandler?.log(error as NSError, at: .error)
                 case .success:
                     self?.conversationsCoordinatorActionHandler?.log("message sent")
                 }

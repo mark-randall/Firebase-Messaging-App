@@ -77,7 +77,7 @@ extension String: Loggable {
     }
 }
 
-extension Error where Self: Loggable {
+extension NSError: Loggable {
     
     var logMessage: String {
         return localizedDescription

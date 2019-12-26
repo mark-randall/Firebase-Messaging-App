@@ -101,7 +101,7 @@ final class ConversationsViewModel: ConversationsViewModelProtocol, Conversation
                                 
                 switch result {
                 case .failure(let error):
-                    self?.conversationsCoordinatorActionHandler?.log("error deleting conversation", at: .error)
+                    self?.conversationsCoordinatorActionHandler?.log(error as NSError, at: .error)
                 case .success:
                     self?.conversationsCoordinatorActionHandler?.log("deleted conversation", at: .error)
                 }
