@@ -21,6 +21,21 @@ def commonPods
     pod 'FirebaseUI/Google'
     pod 'FirebaseUI/Email'
     pod 'FirebaseUI/Phone'
+    pod 'Firebase/Analytics'
+    
+    #AWS Amplify
+    pod 'amplify-tools'
+    pod 'Amplify'
+    pod 'AWSMobileClient'
+    pod 'AWSAuthUI'
+    pod 'AWSUserPoolsSignIn'
+    
+#    pod 'AWSPluginsCore'
+#    pod 'AWSCognito'
+#    pod 'AWSCognitoIdentityProvider'
+#    pod 'AWSDynamoDB'
+#    pod 'AWSSNS'
+#    pod 'AWSMobileAnalytics'
     
     #Linting swift syntax
     pod 'SwiftLint'

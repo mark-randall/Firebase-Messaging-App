@@ -60,6 +60,8 @@
 		02AB69E823B0870400C69913 /* Contact+Firestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB69E723B0870400C69913 /* Contact+Firestore.swift */; };
 		02C06DCA23B25D6A00AA2B35 /* QuerySnapshot+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C06DC923B25D6A00AA2B35 /* QuerySnapshot+Debug.swift */; };
 		02C06DD023B5527500AA2B35 /* FirebaseLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C06DCF23B5527500AA2B35 /* FirebaseLogger.swift */; };
+		02C06DD323B572BB00AA2B35 /* AmplifyUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C06DD223B572BB00AA2B35 /* AmplifyUserRepository.swift */; };
+		02C06DD623BA614A00AA2B35 /* AmplifyServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C06DD523BA614A00AA2B35 /* AmplifyServiceLocator.swift */; };
 		02E24B352314C77000318EA4 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B342314C77000318EA4 /* Conversation.swift */; };
 		02E24B372314C78F00318EA4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B362314C78F00318EA4 /* Message.swift */; };
 		02E24B3B2314C80800318EA4 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B3A2314C80800318EA4 /* ViewModel.swift */; };
@@ -67,6 +69,8 @@
 		02E24B422314CE6200318EA4 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E24B412314CE6200318EA4 /* ConversationViewModel.swift */; };
 		3084E6FEE101928AF0F9F199 /* Pods_MessagingPOC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7DEFF322480077F24DE77 /* Pods_MessagingPOC.framework */; };
 		98BF03271EDC607D7B352FD7 /* Pods_MessagingPOCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7069ACC8F0E9E0BC50E082E /* Pods_MessagingPOCTests.framework */; };
+		7D87117303A74E45A6C2A8AC /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 3EC15853423C43E1AC090E46 /* awsconfiguration.json */; };
+		D4D57A46C0544AB2997AE1E3 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = A5E3C7BCD64C453EA63FF2CF /* amplifyconfiguration.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +151,8 @@
 		02AB69E723B0870400C69913 /* Contact+Firestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Firestore.swift"; sourceTree = "<group>"; };
 		02C06DC923B25D6A00AA2B35 /* QuerySnapshot+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuerySnapshot+Debug.swift"; sourceTree = "<group>"; };
 		02C06DCF23B5527500AA2B35 /* FirebaseLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseLogger.swift; sourceTree = "<group>"; };
+		02C06DD223B572BB00AA2B35 /* AmplifyUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplifyUserRepository.swift; sourceTree = "<group>"; };
+		02C06DD523BA614A00AA2B35 /* AmplifyServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplifyServiceLocator.swift; sourceTree = "<group>"; };
 		02E24B342314C77000318EA4 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		02E24B362314C78F00318EA4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		02E24B3A2314C80800318EA4 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -158,6 +164,10 @@
 		890AB383574FD92C6E99CDEC /* Pods-MessagingPOCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagingPOCTests.release.xcconfig"; path = "Target Support Files/Pods-MessagingPOCTests/Pods-MessagingPOCTests.release.xcconfig"; sourceTree = "<group>"; };
 		AAE7DEFF322480077F24DE77 /* Pods_MessagingPOC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessagingPOC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7069ACC8F0E9E0BC50E082E /* Pods_MessagingPOCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessagingPOCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42120FE9FCA34D53A92EEC09 /* amplifyxc.config */ = {isa = PBXFileReference; name = "amplifyxc.config"; path = "./amplifyxc.config"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3EC15853423C43E1AC090E46 /* awsconfiguration.json */ = {isa = PBXFileReference; name = "awsconfiguration.json"; path = "./awsconfiguration.json"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A5E3C7BCD64C453EA63FF2CF /* amplifyconfiguration.json */ = {isa = PBXFileReference; name = "amplifyconfiguration.json"; path = "./amplifyconfiguration.json"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		44CB0FF4EEF348228B78CDB2 /* amplify */ = {isa = PBXFileReference; name = "amplify"; path = "./amplify"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +307,10 @@
 				02A7757722FC4469000CB7CE /* Products */,
 				1E0D66A837997D7CC82AFBC9 /* Pods */,
 				74E2D89B2C471CD0ACC96E84 /* Frameworks */,
+				42120FE9FCA34D53A92EEC09 /* amplifyxc.config */,
+				3EC15853423C43E1AC090E46 /* awsconfiguration.json */,
+				A5E3C7BCD64C453EA63FF2CF /* amplifyconfiguration.json */,
+				44CB0FF4EEF348228B78CDB2 /* amplify */,
 			);
 			sourceTree = "<group>";
 		};
@@ -423,8 +437,18 @@
 		02C06DD123B5536900AA2B35 /* Amplify */ = {
 			isa = PBXGroup;
 			children = (
+				02C06DD423BA612900AA2B35 /* Repositories */,
+				02C06DD523BA614A00AA2B35 /* AmplifyServiceLocator.swift */,
 			);
 			path = Amplify;
+			sourceTree = "<group>";
+		};
+		02C06DD423BA612900AA2B35 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				02C06DD223B572BB00AA2B35 /* AmplifyUserRepository.swift */,
+			);
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		02E24B332314C76100318EA4 /* Models */ = {
@@ -596,6 +620,8 @@
 				021A63C62345675400169EF3 /* ConversationContactsView.xib in Resources */,
 				02A7758122FC446A000CB7CE /* Assets.xcassets in Resources */,
 				02A7757F22FC4469000CB7CE /* Main.storyboard in Resources */,
+				7D87117303A74E45A6C2A8AC /* awsconfiguration.json in Resources */,
+				D4D57A46C0544AB2997AE1E3 /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,6 +763,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				026DB83F2345042F005EAC48 /* Contact.swift in Sources */,
+				02C06DD323B572BB00AA2B35 /* AmplifyUserRepository.swift in Sources */,
 				02A5E6EF23038BA10087EDBA /* WelcomeViewController.swift in Sources */,
 				028683D32347C57600C65879 /* Message+Firebase.swift in Sources */,
 				021A63CA2345739600169EF3 /* UIViewController+Hierarchy.swift in Sources */,
@@ -750,6 +777,7 @@
 				023053F42337D2A400293682 /* SentMessage.swift in Sources */,
 				021A63E32347B34F00169EF3 /* Result+Util.swift in Sources */,
 				023053E8233313AB00293682 /* ConversationInputView.swift in Sources */,
+				02C06DD623BA614A00AA2B35 /* AmplifyServiceLocator.swift in Sources */,
 				02E24B352314C77000318EA4 /* Conversation.swift in Sources */,
 				02E24B422314CE6200318EA4 /* ConversationViewModel.swift in Sources */,
 				02A7757C22FC4469000CB7CE /* ConversationsViewController.swift in Sources */,

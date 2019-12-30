@@ -1,0 +1,22 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-messaging-dev-152723-authRole",
+            "UnauthRoleArn": "arn:aws:iam::786051076612:role/amplify-messaging-dev-152723-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::786051076612:role/amplify-messaging-dev-152723-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-messaging-dev-152723-deployment",
+            "UnauthRoleName": "amplify-messaging-dev-152723-unauthRole",
+            "StackName": "amplify-messaging-dev-152723",
+            "StackId": "arn:aws:cloudformation:us-east-2:786051076612:stack/amplify-messaging-dev-152723/823103a0-2826-11ea-9de0-0608930970a0",
+            "AmplifyAppId": "d2f2pmpxlzixaq"
+        },
+        "categories": {
+            "auth": {
+                "messagingdfbb39d9": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\" 351300578038-17i5n9fqkbove8q0n1otc0h2oegaavh2.apps.googleusercontent.com\",\"client_secret\":\"U7mEzK7lLY0x6iQcmC-O-LG-\"},{\"ProviderName\":\"LoginWithAmazon\",\"client_id\":\"test\",\"client_secret\":\"test\"}]"
+                }
+            }
+        }
+    }
+}

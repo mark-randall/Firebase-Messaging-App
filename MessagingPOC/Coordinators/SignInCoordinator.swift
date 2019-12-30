@@ -36,9 +36,14 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
     // MARK: - Coordinator
     
     override func start(topViewController: UIViewController?) throws {
-        guard let vc = serviceLocator.userRepository.fetchAuthViewController() else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+
+        guard let nc = rootViewController as? UINavigationController else {
+            throw CoordinatorError.coordinatorNotPropertlyConfigured
+        }
         
-        subscriptions.append(serviceLocator.userRepository.fetchAuthResult().sink(receiveValue: { [weak self] result in
+        serviceLocator.userRepository.presentAuthViewController(with: nc)
+        
+        subscriptions.append(serviceLocator.userRepository.fetchAuthResult().sink { [weak self] result in
             
             switch result {
             case .failure(let error):
@@ -50,9 +55,7 @@ final class SignInCoordinator: BaseCoordinatorWithActions<MessagingApplicationFl
                     self?.complete(withResult: .success)
                 }
             }
-        }))
-        
-        rootViewController.present(vc, animated: true, completion: nil)
+        })
     }
         
     override func perform(_ action: SignInAction) throws {

@@ -7,13 +7,7 @@
 //
 
 import UIKit
-import Firebase
-import FirebaseMessaging
-import FirebaseUI
-import GoogleSignIn
 import UserNotifications
-import Fabric
-import Crashlytics
 
 // MARK: - AppDelegate
 
@@ -27,6 +21,10 @@ class AppDelegate: UIResponder {
     func configForFirebase() -> ServiceLocator {
         return FirebaseServiceLocator()
     }
+    
+    func configForAmpliy() -> ServiceLocator {
+        return AmplifyServiceLocator()
+    }
 }
 
 // MARK: - UIApplicationDelegate
@@ -35,7 +33,7 @@ extension AppDelegate: UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let serviceLocator = configForFirebase()
+        let serviceLocator = configForAmpliy()
         
         // Configure APN
         UNUserNotificationCenter.current().delegate = self
@@ -62,12 +60,6 @@ extension AppDelegate: UIApplicationDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-        
-        let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?
-        if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
-            return true
-        }
-      
         return false
     }
     
@@ -82,4 +74,3 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler(UIBackgroundFetchResult.newData)
     }
 }
-

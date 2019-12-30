@@ -10,12 +10,9 @@ import Combine
 import UIKit
 
 protocol UserRepository {
+        
+    func presentAuthViewController(with navigationController: UINavigationController)
     
-    var currentUser: User? { get }
-    
-    func fetchAuthViewController() -> UIViewController?
-    
-    // TODO: figure out how to make this a Future
     func fetchAuthResult() -> AnyPublisher<Result<User?, Error>,Never>
     
     // TODO: how to surface errors

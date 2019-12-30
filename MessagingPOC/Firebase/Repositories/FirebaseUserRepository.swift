@@ -24,24 +24,34 @@ final class FirebaseUserRepository: NSObject, UserRepository {
     
     private lazy var auth: Auth = Auth.auth()
     
-    var currentUser: User? {
+    private var currentUser: User? {
         guard let firebaseUser = auth.currentUser else { return nil }
         return User(firebaseUser: firebaseUser)
     }
     
     private let logger: Logger
     
+    private let fetchAuthResultSubject = CurrentValueSubject<Result<User?, Error>,Never>(.success(nil))
+    
     init(logger: Logger) {
         self.logger = logger
+        super.init()
+        
+        auth.addStateDidChangeListener { [weak self] _, user in
+            self?.fetchAuthResultSubject.send(.success(self?.currentUser))
+        }
     }
     
-    func fetchAuthViewController() -> UIViewController? {
-        return authUI?.authViewController()
+    func presentAuthViewController(with navigationController: UINavigationController) {
+        guard let vc = authUI?.authViewController() else {
+            // TODO: handle error
+            return
+        }
+        navigationController.show(vc, sender: self)
     }
     
-    private let fetchAuthResultSubject = PassthroughSubject<Result<User?, Error>,Never>()
     func fetchAuthResult() -> AnyPublisher<Result<User?, Error>,Never> {
-        fetchAuthResultSubject.first().eraseToAnyPublisher()
+        fetchAuthResultSubject.eraseToAnyPublisher()
     }
     
     // TODO: how are errors surfaced here

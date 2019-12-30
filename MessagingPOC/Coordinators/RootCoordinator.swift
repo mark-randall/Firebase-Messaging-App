@@ -16,6 +16,8 @@ protocol RootCoordinatorController: CoordinatorController {
 
 final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow, RootAction> {
     
+    private var subscriptions: [Cancellable] = []
+    
     // MARK: - Dependencies
 
     private let serviceLocator: ServiceLocator
@@ -31,17 +33,34 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         
         rootViewController.view.backgroundColor = .white
         
-        if let user = serviceLocator.userRepository.currentUser {
-            serviceLocator.logger.set(userProperty: MessagesUserProperty.signedInAs(id: user.id))
-            try presentFlow(.conversations)
-        } else {
-            guard let nc = rootViewController as? UINavigationController else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
-            let vc: WelcomeViewController = try UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
-            let vm = WelcomeViewModel(flow: flow, logger: serviceLocator.logger)
-            vm.rootCoordinatorActionHandler = actionHandler
-            vc.bindViewModel(vm)
-            nc.viewControllers = [vc]
-        }
+        subscriptions.append(serviceLocator.userRepository.fetchAuthResult().sink { [weak self] userResult in
+            
+            guard let self = self else { return }
+            
+            switch self.flow {
+                
+            case .root:
+                
+                if case .success(let u) = userResult, let user = u {
+                    self.serviceLocator.logger.set(userProperty: MessagesUserProperty.signedInAs(id: user.id))
+                    try? self.presentFlow(.conversations(userId: user.id))
+                } else {
+                    
+                    guard
+                        let nc = self.rootViewController as? UINavigationController,
+                        let vc: WelcomeViewController = try? UIViewController.create(storyboard: "Main", identifier: "WelcomeViewController")
+                        else { return }
+                    let vm = WelcomeViewModel(flow: self.flow, logger: self.serviceLocator.logger)
+                    vm.rootCoordinatorActionHandler = self.actionHandler
+                    vc.bindViewModel(vm)
+                    nc.viewControllers = [vc]
+                }
+                
+            case .conversations: return // TODO: log user out
+                
+            case .signIn: return // TODO: this should never happen?
+            }
+        })
     }
     
     override func createRootViewController() -> UIViewController? {
@@ -55,8 +74,7 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         switch flow {
         case .signIn:
             return SignInCoordinator(flow: flow, presentingViewController: rootViewController, serviceLocator: serviceLocator)
-        case .conversations:
-            guard let uid = serviceLocator.userRepository.currentUser?.id else { throw CoordinatorError.flowNotAllowed }
+        case .conversations(let uid):
             return ConversationsCoordinator(
                 flow: flow,
                 presentingViewController: rootViewController,
@@ -93,9 +111,14 @@ final class RootCoordinator: BaseCoordinatorWithActions<MessagingApplicationFlow
         case .presentSignIn:
             try presentFlow(.signIn)
         case .showConversation(let conversation):
-            guard childFlow == .conversations else { throw CoordinatorError.actionNotAllowed }
-            guard let conversationsCoordinator = childCoordinator as? ConversationsCoordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
-            try conversationsCoordinator.perform(.showConversation(conversation: conversation))
+            
+            switch childFlow {
+            case .conversations:
+                guard let conversationsCoordinator = childCoordinator as? ConversationsCoordinator else { throw CoordinatorError.coordinatorNotPropertlyConfigured }
+                try conversationsCoordinator.perform(.showConversation(conversation: conversation))
+            default:
+                throw CoordinatorError.actionNotAllowed
+            }
         }
     }
 }

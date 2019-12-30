@@ -12,7 +12,7 @@ import Foundation
 
 enum MessagingApplicationFlow: Flow {
     case root
-    case conversations
+    case conversations(userId: String)
     case signIn
 }
 
